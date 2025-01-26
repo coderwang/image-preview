@@ -1,0 +1,53 @@
+{
+  "name": "image-preview",
+  "displayName": "Image Preview",
+  "description": "Preview all images in the folder",
+  "keywords": ["image", "preview", "folder"],
+  "version": "0.0.1",
+  "publisher": "coderwsh",
+  "icon": "assets/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/coderwang/image-preview"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.imagePreview",
+        "title": "Image Preview"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "extension.imagePreview",
+          "when": "explorerResourceIsFolder",
+          "group": "z_commands"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.96.0",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^8.17.0",
+    "@typescript-eslint/parser": "^8.17.0",
+    "eslint": "^9.16.0",
+    "typescript": "^5.7.2"
+  }
+}
