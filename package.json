@@ -32,6 +32,12 @@
           "when": "explorerResourceIsFolder",
           "group": "z_commands"
         }
+      ],
+      "commandPalette": [
+        {
+          "command": "extension.imagePreview",
+          "when": "false"
+        }
       ]
     }
   },
