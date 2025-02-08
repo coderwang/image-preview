@@ -52,8 +52,7 @@
     "pretest": "pnpm run compile && pnpm run lint",
     "lint": "eslint src",
     "build": "webpack --mode production",
-    "build:watch": "webpack --mode development --watch",
-    "watch-all": "pnpm run watch & pnpm run build:watch"
+    "build:watch": "webpack --mode development --watch"
   },
   "devDependencies": {
     "@types/node": "20.x",

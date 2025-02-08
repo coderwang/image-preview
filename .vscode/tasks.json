@@ -5,23 +5,49 @@
 	"tasks": [
 		{
 			"label": "watch-all",
+			"dependsOn": ["watch-extension", "watch-webview"],
+			"dependsOrder": "parallel"
+		},
+		{
+			"label": "watch-extension",
 			"type": "shell",
 			"command": "pnpm",
-			"args": ["run", "watch-all"],
+			"args": ["run", "watch"],
 			"isBackground": true,
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "watcher"
+			},
 			"problemMatcher": [
-				"$tsc-watch",
-				{
-					"pattern": {
-						"regexp": "^.*$"
-					},
-					"background": {
-						"activeOnStart": true,
-						"beginsPattern": "webpack is watching the files…",
-						"endsPattern": "webpack compiled successfully"
-					}
-				}
+				"$tsc-watch"
 			]
+		},
+		{
+			"label": "watch-webview",
+			"type": "shell",
+			"command": "pnpm",
+			"args": ["run", "build:watch"],
+			"isBackground": true,
+			"presentation": {
+				"reveal": "always",
+				"panel": "new",
+				"group": "watcher"
+			},
+			"problemMatcher": {
+				"owner": "webpack",
+				"severity": "error",
+				"fileLocation": "absolute",
+				"pattern": {
+					"regexp": "^([^\\s].*)$",
+					"message": 1
+				},
+				"background": {
+					"activeOnStart": true,
+					"beginsPattern": ".",
+					"endsPattern": "compiled|failed"
+				}
+			}
 		}
 	]
 }
