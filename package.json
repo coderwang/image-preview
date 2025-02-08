@@ -2,7 +2,11 @@
   "name": "image-preview",
   "displayName": "Image Preview",
   "description": "Preview all images in the folder",
-  "keywords": ["image", "preview", "folder"],
+  "keywords": [
+    "image",
+    "preview",
+    "folder"
+  ],
   "version": "0.0.1",
   "publisher": "coderwsh",
   "icon": "assets/icon.png",
@@ -46,14 +50,24 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "build": "webpack --mode production"
   },
   "devDependencies": {
-    "@types/vscode": "^1.96.0",
     "@types/node": "20.x",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@types/vscode": "^1.96.0",
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "@typescript-eslint/parser": "^8.17.0",
     "eslint": "^9.16.0",
-    "typescript": "^5.7.2"
+    "ts-loader": "^9.5.2",
+    "typescript": "^5.7.2",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }
