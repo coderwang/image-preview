@@ -1,53 +1,51 @@
 // See https://go.microsoft.com/fwlink/?LinkId=733558
 // for the documentation about the tasks.json format
 {
-	"version": "2.0.0",
-	"tasks": [
-		{
-			"label": "watch-all",
-			"dependsOn": ["watch-extension", "watch-webview"],
-			"dependsOrder": "parallel"
-		},
-		{
-			"label": "watch-extension",
-			"type": "shell",
-			"command": "pnpm",
-			"args": ["run", "watch"],
-			"isBackground": true,
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "watcher"
-			},
-			"problemMatcher": [
-				"$tsc-watch"
-			]
-		},
-		{
-			"label": "watch-webview",
-			"type": "shell",
-			"command": "pnpm",
-			"args": ["run", "build:watch"],
-			"isBackground": true,
-			"presentation": {
-				"reveal": "always",
-				"panel": "new",
-				"group": "watcher"
-			},
-			"problemMatcher": {
-				"owner": "webpack",
-				"severity": "error",
-				"fileLocation": "absolute",
-				"pattern": {
-					"regexp": "^([^\\s].*)$",
-					"message": 1
-				},
-				"background": {
-					"activeOnStart": true,
-					"beginsPattern": ".",
-					"endsPattern": "compiled|failed"
-				}
-			}
-		}
-	]
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "watch-all",
+      "dependsOn": ["watch-extension", "watch-webview"],
+      "dependsOrder": "parallel"
+    },
+    {
+      "label": "watch-extension",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "watch"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "watcher"
+      },
+      "problemMatcher": ["$tsc-watch"]
+    },
+    {
+      "label": "watch-webview",
+      "type": "shell",
+      "command": "npm",
+      "args": ["run", "build:watch"],
+      "isBackground": true,
+      "presentation": {
+        "reveal": "always",
+        "panel": "new",
+        "group": "watcher"
+      },
+      "problemMatcher": {
+        "owner": "webpack",
+        "severity": "error",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^([^\\s].*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "compiled|failed"
+        }
+      }
+    }
+  ]
 }

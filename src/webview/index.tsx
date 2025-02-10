@@ -1,5 +1,6 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
+import "./index.less";
 
 const vscode = acquireVsCodeApi();
 
@@ -27,7 +28,7 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <h1>{projectName}</h1>
+      <div className="title">{projectName}</div>
       {images.map((item, index) => (
         <div key={index}>
           <h2>{item.path}</h2>
