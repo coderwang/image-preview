@@ -4,9 +4,9 @@ import * as path from 'path';
 export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand('extension.imagePreview', () => {
     const panel = vscode.window.createWebviewPanel(
-      'reactWebview',
-      'React Webview',
-      vscode.ViewColumn.One,
+      'imagePreview',
+      'Image Preview',
+      vscode.ViewColumn.Two,
       {
         enableScripts: true,
         localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'out'))]
@@ -26,7 +26,6 @@ export function activate(context: vscode.ExtensionContext) {
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>React Webview</title>
       </head>
       <body>
           <div id="root"></div>
@@ -34,6 +33,16 @@ export function activate(context: vscode.ExtensionContext) {
       </body>
       </html>
     `;
+
+    panel.webview.onDidReceiveMessage(message => {
+      switch (message.command) {
+        case 'requestFolderPath':
+          vscode.workspace.workspaceFolders?.forEach(folder => {
+            console.log(folder.uri.fsPath);
+          });
+          break;
+      }
+    });
   });
 
   context.subscriptions.push(disposable);
