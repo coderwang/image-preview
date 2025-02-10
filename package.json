@@ -51,8 +51,8 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src",
-    "build": "webpack --mode development",
-    "build:watch": "webpack --mode development --watch"
+    "build": "webpack --mode production",
+    "build:watch": "webpack --mode production --watch"
   },
   "devDependencies": {
     "@types/node": "^16.x",
