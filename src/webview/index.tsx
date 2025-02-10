@@ -35,13 +35,17 @@ const App: React.FC = () => {
         You are previewing the images in the <i>{dirPath}</i> directory under
         the <i>{projectName}</i> project!
       </div>
-      <ArrowDown />
       {images.map((item, index) => (
-        <div key={index}>
-          <h2>{item.path}</h2>
-          {item.images.map((image, index) => (
-            <img key={index} src={image} alt={image} />
-          ))}
+        <div className="imageBox" key={index}>
+          <div className="imageTitleContainer">
+            <div className="imageTitle">{item.path}</div>
+            <ArrowDown className="arrowDown" color="#fff" />
+          </div>
+          <div className="imageContainer">
+            {item.images.map((image, index) => (
+              <img key={index} src={image} alt={image} />
+            ))}
+          </div>
         </div>
       ))}
     </div>
