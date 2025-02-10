@@ -11,6 +11,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.ViewColumn.Two,
         {
           enableScripts: true,
+          retainContextWhenHidden: true,
           localResourceRoots: [
             vscode.Uri.file(path.join(context.extensionPath, "out")),
             vscode.Uri.file(path.dirname(uri.path)),
@@ -45,9 +46,9 @@ export function activate(context: vscode.ExtensionContext) {
             const getImagesInDirectory = async (
               dirPath: string, // 当前目录
               folderPath: string // 当前工作区路径
-            ): Promise<{ path: string; images: string[] }[]> => {
-              const result: { path: string; images: string[] }[] = [];
-              const currentDirImages: string[] = [];
+            ): Promise<{ path: string; images: ImageInfo[] }[]> => {
+              const result: { path: string; images: ImageInfo[] }[] = [];
+              const currentDirImages: ImageInfo[] = [];
               const files = await vscode.workspace.fs.readDirectory(
                 vscode.Uri.file(dirPath)
               );
@@ -68,11 +69,13 @@ export function activate(context: vscode.ExtensionContext) {
                       ext
                     )
                   ) {
-                    currentDirImages.push(
-                      panel.webview
+                    currentDirImages.push({
+                      url: panel.webview
                         .asWebviewUri(vscode.Uri.file(fullPath))
-                        .toString()
-                    );
+                        .toString(),
+                      name: name,
+                      ext: ext,
+                    });
                   }
                 }
               }

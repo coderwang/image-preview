@@ -9,7 +9,7 @@ const App: React.FC = () => {
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
   const [images, setImages] = React.useState<
-    { path: string; images: string[] }[]
+    { path: string; images: ImageInfo[] }[]
   >([]);
 
   React.useEffect(() => {
@@ -21,6 +21,7 @@ const App: React.FC = () => {
     // 监听来自extension的消息
     window.addEventListener("message", (event) => {
       const message = event.data;
+      console.log(message.images);
       if (message.command === "showImages") {
         setImages(message.images);
         setProjectName(message.projectName);
@@ -36,14 +37,19 @@ const App: React.FC = () => {
         the <i>{projectName}</i> project!
       </div>
       {images.map((item, index) => (
-        <div className="imageBox" key={index}>
+        <div className="imageCard" key={index}>
           <div className="imageTitleContainer">
             <div className="imageTitle">{item.path}</div>
             <ArrowDown className="arrowDown" color="#fff" />
           </div>
           <div className="imageContainer">
             {item.images.map((image, index) => (
-              <img key={index} src={image} alt={image} />
+              <div className="imageItem" key={index}>
+                <div className="imageBox">
+                  <img className="image" src={image.url} alt={image.name} />
+                </div>
+                <div className="imageName">{image.name}</div>
+              </div>
             ))}
           </div>
         </div>
