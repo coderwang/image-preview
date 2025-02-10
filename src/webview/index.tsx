@@ -6,6 +6,7 @@ const vscode = acquireVsCodeApi();
 
 const App: React.FC = () => {
   const [projectName, setProjectName] = React.useState<string>("");
+  const [dirPath, setDirPath] = React.useState<string>("");
   const [images, setImages] = React.useState<
     { path: string; images: string[] }[]
   >([]);
@@ -22,13 +23,17 @@ const App: React.FC = () => {
       if (message.command === "showImages") {
         setImages(message.images);
         setProjectName(message.projectName);
+        setDirPath(message.dirPath);
       }
     });
   }, []);
 
   return (
-    <div>
-      <div className="title">{projectName}</div>
+    <div className="container">
+      <div className="title">
+        You are previewing the images in the <i>{dirPath}</i> directory under
+        the <i>{projectName}</i> project!
+      </div>
       {images.map((item, index) => (
         <div key={index}>
           <h2>{item.path}</h2>

@@ -95,6 +95,7 @@ export function activate(context: vscode.ExtensionContext) {
                     panel.webview.postMessage({
                       command: "showImages",
                       projectName: folder.name,
+                      dirPath: uri.path.replace(folder.uri.fsPath, ""),
                       images: results,
                     });
                   }
