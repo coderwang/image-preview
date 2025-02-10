@@ -1,5 +1,6 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
+import { ReactComponent as ArrowDown } from "../../assets/arrow_down.svg";
 import "./index.less";
 
 const vscode = acquireVsCodeApi();
@@ -34,6 +35,7 @@ const App: React.FC = () => {
         You are previewing the images in the <i>{dirPath}</i> directory under
         the <i>{projectName}</i> project!
       </div>
+      <ArrowDown />
       {images.map((item, index) => (
         <div key={index}>
           <h2>{item.path}</h2>

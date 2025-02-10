@@ -49,6 +49,41 @@ module.exports = {
           "less-loader",
         ],
       },
+      {
+        test: /\.(png|jpg|jpeg|gif)$/,
+        type: "asset",
+        parser: {
+          dataUrlCondition: {
+            maxSize: 8 * 1024,
+          },
+        },
+        generator: {
+          filename: "img/[name].[contenthash][ext]",
+        },
+      },
+      {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "@svgr/webpack",
+            options: {
+              svgoConfig: {
+                plugins: [
+                  {
+                    name: "preset-default",
+                    params: {
+                      overrides: {
+                        removeViewBox: false, // 不主动清除ViewBox
+                      },
+                    },
+                  },
+                ],
+              },
+            },
+          },
+          "url-loader", // 支持url的方式
+        ],
+      },
     ],
   },
   optimization: {
