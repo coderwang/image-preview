@@ -48,7 +48,14 @@ const App: React.FC = () => {
                 <div className="imageBox">
                   <img className="image" src={image.url} alt={image.name} />
                 </div>
-                <div className="imageName">{image.name}</div>
+                <div
+                  className="imageName"
+                  onClick={() => {
+                    navigator.clipboard.writeText(image.name);
+                  }}
+                >
+                  {image.name}
+                </div>
               </div>
             ))}
           </div>
