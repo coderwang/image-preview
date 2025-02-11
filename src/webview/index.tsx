@@ -10,6 +10,7 @@ const vscode = acquireVsCodeApi();
 
 const App: React.FC = () => {
   const [imageSize, setImageSize] = React.useState(50);
+  const [backgroundColor, setBackgroundColor] = React.useState("#fff");
 
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
@@ -89,6 +90,33 @@ const App: React.FC = () => {
             onChange={(value) => setImageSize(value as number)}
           />
         </div>
+        <div className="backgroundContainer">
+          <div className="backgroundTitle">Background color: </div>
+          <div
+            className="backgroundBox"
+            onClick={() => setBackgroundColor("#fff")}
+          />
+          <div
+            className="backgroundBox"
+            style={{ backgroundColor: "#8eeed8" }}
+            onClick={() => setBackgroundColor("#8eeed8")}
+          />
+          <div
+            className="backgroundBox"
+            style={{ backgroundColor: "#8ec6ee" }}
+            onClick={() => setBackgroundColor("#8ec6ee")}
+          />
+          <div
+            className="backgroundBox"
+            style={{ backgroundColor: "#ee8ead" }}
+            onClick={() => setBackgroundColor("#ee8ead")}
+          />
+          <div
+            className="backgroundBox"
+            style={{ backgroundColor: "#eead8e" }}
+            onClick={() => setBackgroundColor("#eead8e")}
+          />
+        </div>
         <div className="btnContainer">
           <div className="gradientBtn gradientStatic" onClick={expandAll}>
             Expand All
@@ -119,7 +147,10 @@ const App: React.FC = () => {
                 key={index}
                 style={{ width: imageSize }}
               >
-                <div className="imageBox" style={{ height: imageSize }}>
+                <div
+                  className="imageBox"
+                  style={{ height: imageSize, backgroundColor }}
+                >
                   <img
                     className="image"
                     src={image.url}
