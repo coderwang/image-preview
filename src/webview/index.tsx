@@ -7,6 +7,8 @@ import "./index.less";
 const vscode = acquireVsCodeApi();
 
 const App: React.FC = () => {
+  const imageSize = 50;
+
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
   const [images, setImages] = React.useState<
@@ -41,6 +43,15 @@ const App: React.FC = () => {
     document.querySelectorAll(`.imageCard`).forEach((item) => {
       item.setAttribute("data-expanded", "false");
     });
+  };
+
+  const getImageBasicInfo = (image: ImageInfo) => {
+    console.log(image);
+    const img = new Image();
+    img.src = image.url;
+    img.onload = () => {
+      console.log(img.width, img.height);
+    };
   };
 
   return (
@@ -89,9 +100,20 @@ const App: React.FC = () => {
           </div>
           <div className="imageContainer">
             {item.images.map((image, index) => (
-              <div className="imageItem" key={index}>
-                <div className="imageBox">
-                  <img className="image" src={image.url} alt={image.name} />
+              <div
+                className="imageItem"
+                key={index}
+                style={{ width: imageSize }}
+              >
+                <div className="imageBox" style={{ height: imageSize }}>
+                  <img
+                    className="image"
+                    src={image.url}
+                    alt={image.name}
+                    onMouseOver={() => {
+                      getImageBasicInfo(image);
+                    }}
+                  />
                 </div>
                 <div
                   className="imageName"
