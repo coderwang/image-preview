@@ -27,7 +27,6 @@ const App: React.FC = () => {
     // 监听来自extension的消息
     window.addEventListener("message", (event) => {
       const message = event.data;
-      console.log(message.images);
       if (message.command === "showImages") {
         setImages(message.images);
         setProjectName(message.projectName);
@@ -49,12 +48,9 @@ const App: React.FC = () => {
   };
 
   const getImageBasicInfo = (image: ImageInfo) => {
-    console.log(image);
     const img = new Image();
     img.src = image.url;
-    img.onload = () => {
-      console.log(img.width, img.height);
-    };
+    img.onload = () => {};
   };
 
   return (

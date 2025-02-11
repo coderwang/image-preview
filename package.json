@@ -3,11 +3,13 @@
   "displayName": "Image Preview",
   "description": "Preview all images in the folder",
   "keywords": [
-    "image",
-    "preview",
-    "folder"
+    "image preview",
+    "svg",
+    "pic",
+    "view",
+    "图片预览"
   ],
-  "version": "0.0.1",
+  "version": "1.0.0",
   "publisher": "coderwsh",
   "icon": "assets/icon.png",
   "repository": {
