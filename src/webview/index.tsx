@@ -31,6 +31,18 @@ const App: React.FC = () => {
     });
   }, []);
 
+  const expandAll = () => {
+    document.querySelectorAll(`.imageCard`).forEach((item) => {
+      item.setAttribute("data-expanded", "true");
+    });
+  };
+
+  const collapseAll = () => {
+    document.querySelectorAll(`.imageCard`).forEach((item) => {
+      item.setAttribute("data-expanded", "false");
+    });
+  };
+
   return (
     <div className="container">
       <Toaster
@@ -52,6 +64,14 @@ const App: React.FC = () => {
       <div className="title">
         You are previewing the images in the <i>{dirPath}</i> directory under
         the <i>{projectName}</i> project!
+      </div>
+      <div className="actionContainer">
+        <div className="gradientBtn gradientStatic" onClick={expandAll}>
+          Expand All
+        </div>
+        <div className="gradientBtn gradientBorder" onClick={collapseAll}>
+          Collapse All
+        </div>
       </div>
       {images.map((item, index) => (
         <div className="imageCard" key={index} data-expanded={true}>
