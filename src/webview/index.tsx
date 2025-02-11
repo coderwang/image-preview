@@ -1,3 +1,5 @@
+import Slider from "rc-slider";
+import "rc-slider/assets/index.css";
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { Toaster, toast } from "sonner";
@@ -7,7 +9,7 @@ import "./index.less";
 const vscode = acquireVsCodeApi();
 
 const App: React.FC = () => {
-  const imageSize = 50;
+  const [imageSize, setImageSize] = React.useState(50);
 
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
@@ -76,12 +78,24 @@ const App: React.FC = () => {
         You are previewing the images in the <i>{dirPath}</i> directory under
         the <i>{projectName}</i> project!
       </div>
-      <div className="actionContainer">
-        <div className="gradientBtn gradientStatic" onClick={expandAll}>
-          Expand All
+      <div className="actionBar">
+        <div className="sliderContainer">
+          <div className="sliderTitle">Image size({imageSize}px):</div>
+          <Slider
+            className="slider"
+            min={30}
+            max={200}
+            value={imageSize}
+            onChange={(value) => setImageSize(value as number)}
+          />
         </div>
-        <div className="gradientBtn gradientBorder" onClick={collapseAll}>
-          Collapse All
+        <div className="btnContainer">
+          <div className="gradientBtn gradientStatic" onClick={expandAll}>
+            Expand All
+          </div>
+          <div className="gradientBtn gradientBorder" onClick={collapseAll}>
+            Collapse All
+          </div>
         </div>
       </div>
       {images.map((item, index) => (
