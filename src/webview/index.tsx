@@ -1,5 +1,6 @@
 import * as React from "react";
 import { createRoot } from "react-dom/client";
+import { Toaster, toast } from "sonner";
 import { ReactComponent as ArrowDown } from "../../assets/arrow_down.svg";
 import "./index.less";
 
@@ -32,6 +33,22 @@ const App: React.FC = () => {
 
   return (
     <div className="container">
+      <Toaster
+        theme="light"
+        visibleToasts={2}
+        richColors
+        offset={{
+          right: 16,
+          bottom: 8,
+        }}
+        mobileOffset={{
+          right: 16,
+          bottom: 8,
+        }}
+        toastOptions={{
+          duration: 2000,
+        }}
+      />
       <div className="title">
         You are previewing the images in the <i>{dirPath}</i> directory under
         the <i>{projectName}</i> project!
@@ -51,7 +68,9 @@ const App: React.FC = () => {
                 <div
                   className="imageName"
                   onClick={() => {
-                    navigator.clipboard.writeText(image.name);
+                    navigator.clipboard.writeText(image.name).then(() => {
+                      toast.success("copy to clipboard success!");
+                    });
                   }}
                 >
                   {image.name}
