@@ -54,8 +54,16 @@ const App: React.FC = () => {
         the <i>{projectName}</i> project!
       </div>
       {images.map((item, index) => (
-        <div className="imageCard" key={index}>
-          <div className="imageTitleContainer">
+        <div className="imageCard" key={index} data-expanded={true}>
+          <div
+            className="imageTitleContainer"
+            onClick={() => {
+              const target = document.querySelectorAll(`.imageCard`)[index];
+              target.getAttribute("data-expanded") === "true"
+                ? target.setAttribute("data-expanded", "false")
+                : target.setAttribute("data-expanded", "true");
+            }}
+          >
             <div className="imageTitle">{item.path}</div>
             <ArrowDown className="arrowDown" color="#fff" />
           </div>
