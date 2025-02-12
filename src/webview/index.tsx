@@ -3,6 +3,7 @@ import "rc-slider/assets/index.css";
 import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { Toaster, toast } from "sonner";
+import { useImmer } from "use-immer";
 import { ReactComponent as ArrowDown } from "../../assets/arrow_down.svg";
 import "./index.less";
 
@@ -12,7 +13,16 @@ const App: React.FC = () => {
   const [imageSize, setImageSize] = React.useState(50);
   const [backgroundColor, setBackgroundColor] = React.useState("#fff");
 
-  const [dirList, setDirList] = React.useState<DirInfo[]>([]);
+  const originDirListRef = React.useRef<DirInfo[]>([]);
+  const [filteredDirList, setFilteredDirList] = React.useState<DirInfo[]>([]);
+
+  const [showType, updateShowType] = useImmer({
+    jpg: true,
+    png: true,
+    gif: true,
+    webp: true,
+    svg: true,
+  });
 
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
@@ -40,13 +50,54 @@ const App: React.FC = () => {
     window.addEventListener("message", (event) => {
       const message = event.data;
       if (message.command === "showImages") {
-        setDirList(message.dirList);
+        originDirListRef.current = message.dirList;
+        setFilteredDirList(message.dirList);
         setProjectName(message.projectName);
         setDirPath(message.dirPath);
         setNums(message.nums);
       }
     });
   }, []);
+
+  React.useEffect(() => {
+    console.log("showType", showType);
+    if (Object.values(showType).every((item) => item)) {
+      setFilteredDirList(originDirListRef.current);
+    } else {
+      setFilteredDirList(
+        originDirListRef.current.reduce((acc: DirInfo[], dir) => {
+          let list: ImageInfo[] = [];
+          dir.imageList.forEach((image) => {
+            switch (image.ext) {
+              case ".jpg":
+              case ".jpeg":
+                showType.jpg && list.push(image);
+                break;
+              case ".png":
+                showType.png && list.push(image);
+                break;
+              case ".gif":
+                showType.gif && list.push(image);
+                break;
+              case ".webp":
+                showType.webp && list.push(image);
+                break;
+              case ".svg":
+                showType.svg && list.push(image);
+                break;
+            }
+          });
+          if (list.length > 0) {
+            acc.push({
+              path: dir.path,
+              imageList: list,
+            });
+          }
+          return acc;
+        }, [])
+      );
+    }
+  }, [showType]);
 
   const expandAll = () => {
     document.querySelectorAll(`.imageCard`).forEach((item) => {
@@ -91,7 +142,7 @@ const App: React.FC = () => {
       <div className="actionBar">
         <div className="numsContainer">
           <div className="numsTitle">
-            Image count (
+            Image count(
             {nums.jpgNum +
               nums.pngNum +
               nums.gifNum +
@@ -101,27 +152,87 @@ const App: React.FC = () => {
           </div>
           {nums.jpgNum > 0 && (
             <div className="numsItem">
-              JPG<i>({nums.jpgNum})</i>
+              <input
+                id="jpg"
+                type="checkbox"
+                checked={showType.jpg}
+                onChange={() =>
+                  updateShowType((draft) => {
+                    draft.jpg = !draft.jpg;
+                  })
+                }
+              />
+              <label htmlFor="jpg">
+                JPG<i>({nums.jpgNum})</i>
+              </label>
             </div>
           )}
           {nums.pngNum > 0 && (
             <div className="numsItem">
-              PNG<i>({nums.pngNum})</i>
+              <input
+                id="png"
+                type="checkbox"
+                checked={showType.png}
+                onChange={() =>
+                  updateShowType((draft) => {
+                    draft.png = !draft.png;
+                  })
+                }
+              />
+              <label htmlFor="png">
+                PNG<i>({nums.pngNum})</i>
+              </label>
             </div>
           )}
           {nums.gifNum > 0 && (
             <div className="numsItem">
-              GIF<i>({nums.gifNum})</i>
+              <input
+                id="gif"
+                type="checkbox"
+                checked={showType.gif}
+                onChange={() =>
+                  updateShowType((draft) => {
+                    draft.gif = !draft.gif;
+                  })
+                }
+              />
+              <label htmlFor="gif">
+                GIF<i>({nums.gifNum})</i>
+              </label>
             </div>
           )}
           {nums.webpNum > 0 && (
             <div className="numsItem">
-              WebP<i>({nums.webpNum})</i>
+              <input
+                id="webp"
+                type="checkbox"
+                checked={showType.webp}
+                onChange={() =>
+                  updateShowType((draft) => {
+                    draft.webp = !draft.webp;
+                  })
+                }
+              />
+              <label htmlFor="webp">
+                WebP<i>({nums.webpNum})</i>
+              </label>
             </div>
           )}
           {nums.svgNum > 0 && (
             <div className="numsItem">
-              SVG<i>({nums.svgNum})</i>
+              <input
+                id="svg"
+                type="checkbox"
+                checked={showType.svg}
+                onChange={() =>
+                  updateShowType((draft) => {
+                    draft.svg = !draft.svg;
+                  })
+                }
+              />
+              <label htmlFor="svg">
+                SVG<i>({nums.svgNum})</i>
+              </label>
             </div>
           )}
         </div>
@@ -171,8 +282,8 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
-      {dirList.map((dir, index) => (
-        <div className="imageCard" key={index} data-expanded={true}>
+      {filteredDirList.map((dir, index) => (
+        <div className="imageCard" key={dir.path} data-expanded={true}>
           <div
             className="dirPathContainer"
             onClick={() => {
@@ -186,10 +297,10 @@ const App: React.FC = () => {
             <ArrowDown className="arrowDown" color="#fff" />
           </div>
           <div className="imageContainer">
-            {dir.imageList.map((image, index) => (
+            {dir.imageList.map((image) => (
               <div
                 className="imageItem"
-                key={index}
+                key={image.name}
                 style={{ width: imageSize }}
               >
                 <div

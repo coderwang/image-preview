@@ -75,16 +75,23 @@ export function activate(context: vscode.ExtensionContext) {
                       ext
                     )
                   ) {
-                    if (ext === ".jpg" || ext === ".jpeg") {
-                      jpgNum++;
-                    } else if (ext === ".png") {
-                      pngNum++;
-                    } else if (ext === ".gif") {
-                      gifNum++;
-                    } else if (ext === ".webp") {
-                      webpNum++;
-                    } else if (ext === ".svg") {
-                      svgNum++;
+                    switch (ext) {
+                      case ".jpg":
+                      case ".jpeg":
+                        jpgNum++;
+                        break;
+                      case ".png":
+                        pngNum++;
+                        break;
+                      case ".gif":
+                        gifNum++;
+                        break;
+                      case ".webp":
+                        webpNum++;
+                        break;
+                      case ".svg":
+                        svgNum++;
+                        break;
                     }
                     currentDirImages.push({
                       url: panel.webview
