@@ -17,6 +17,19 @@ const App: React.FC = () => {
   const [images, setImages] = React.useState<
     { path: string; images: ImageInfo[] }[]
   >([]);
+  const [nums, setNums] = React.useState<{
+    jpgNum: number;
+    pngNum: number;
+    gifNum: number;
+    webpNum: number;
+    svgNum: number;
+  }>({
+    jpgNum: 0,
+    pngNum: 0,
+    gifNum: 0,
+    webpNum: 0,
+    svgNum: 0,
+  });
 
   React.useEffect(() => {
     // 向extension发送消息请求当前目录下的所有图片
@@ -31,6 +44,7 @@ const App: React.FC = () => {
         setImages(message.images);
         setProjectName(message.projectName);
         setDirPath(message.dirPath);
+        setNums(message.nums);
       }
     });
   }, []);
@@ -76,6 +90,42 @@ const App: React.FC = () => {
         the <i>{projectName}</i> project!
       </div>
       <div className="actionBar">
+        <div className="numsContainer">
+          <div className="numsTitle">
+            Image count (
+            {nums.jpgNum +
+              nums.pngNum +
+              nums.gifNum +
+              nums.webpNum +
+              nums.svgNum}
+            ) :
+          </div>
+          {nums.jpgNum > 0 && (
+            <div className="numsItem">
+              JPG<i>({nums.jpgNum})</i>
+            </div>
+          )}
+          {nums.pngNum > 0 && (
+            <div className="numsItem">
+              PNG<i>({nums.pngNum})</i>
+            </div>
+          )}
+          {nums.gifNum > 0 && (
+            <div className="numsItem">
+              GIF<i>({nums.gifNum})</i>
+            </div>
+          )}
+          {nums.webpNum > 0 && (
+            <div className="numsItem">
+              WebP<i>({nums.webpNum})</i>
+            </div>
+          )}
+          {nums.svgNum > 0 && (
+            <div className="numsItem">
+              SVG<i>({nums.svgNum})</i>
+            </div>
+          )}
+        </div>
         <div className="sliderContainer">
           <div className="sliderTitle">Image size({imageSize}px):</div>
           <Slider

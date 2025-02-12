@@ -43,6 +43,12 @@ export function activate(context: vscode.ExtensionContext) {
       panel.webview.onDidReceiveMessage((message) => {
         switch (message.command) {
           case "requestImages":
+            let jpgNum = 0;
+            let pngNum = 0;
+            let gifNum = 0;
+            let webpNum = 0;
+            let svgNum = 0;
+
             const getImagesInDirectory = async (
               dirPath: string, // 当前目录
               folderPath: string // 当前工作区路径
@@ -69,6 +75,17 @@ export function activate(context: vscode.ExtensionContext) {
                       ext
                     )
                   ) {
+                    if (ext === ".jpg" || ext === ".jpeg") {
+                      jpgNum++;
+                    } else if (ext === ".png") {
+                      pngNum++;
+                    } else if (ext === ".gif") {
+                      gifNum++;
+                    } else if (ext === ".webp") {
+                      webpNum++;
+                    } else if (ext === ".svg") {
+                      svgNum++;
+                    }
                     currentDirImages.push({
                       url: panel.webview
                         .asWebviewUri(vscode.Uri.file(fullPath))
@@ -99,6 +116,13 @@ export function activate(context: vscode.ExtensionContext) {
                       command: "showImages",
                       projectName: folder.name,
                       dirPath: uri.path.replace(folder.uri.fsPath, ""),
+                      nums: {
+                        jpgNum,
+                        pngNum,
+                        gifNum,
+                        webpNum,
+                        svgNum,
+                      },
                       images: results,
                     });
                   }

@@ -4,6 +4,10 @@ body {
   margin: 0;
 }
 
+i {
+  font-style: normal;
+}
+
 .container {
   min-height: 100vh;
   padding-bottom: 20px;
@@ -17,7 +21,6 @@ body {
     padding: 8px 12px;
 
     i {
-      font-style: normal;
       font-weight: bold;
       color: orange;
     }
@@ -27,6 +30,28 @@ body {
     position: sticky;
     top: 0;
     background-color: #fff;
+
+    .numsContainer {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      padding: 8px 12px;
+      gap: 12px;
+      color: #666;
+
+      .numsTitle {
+        flex-shrink: 0;
+        font-size: 14px;
+      }
+
+      .numsItem {
+        font-size: 14px;
+
+        i {
+          color: #0078d4;
+        }
+      }
+    }
 
     .sliderContainer {
       display: flex;
