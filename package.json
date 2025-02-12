@@ -1,12 +1,12 @@
 {
   "name": "image-preview",
-  "displayName": "Image Preview",
+  "displayName": "Super Image Preview",
   "description": "Preview all images in the folder",
   "keywords": [
+    "images preview",
+    "image viewer",
     "image preview",
-    "svg",
-    "pic",
-    "view",
+    "preview images",
     "图片预览"
   ],
   "version": "1.0.0",

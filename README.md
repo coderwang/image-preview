@@ -1,6 +1,6 @@
 ## Image Preview
 
-This is a VSCode extension that allows you to preview all images in the folder, including `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`.
+This is a powerful VSCode extension with a beautiful UI that allows you to preview all images in the folder, including `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`.
 
 ![image-preview](./assets/webview.png)
 
