@@ -16,10 +16,10 @@ Find the folder you want to preview, and right-click to select `Image Preview`.
 - Adjust the image size and background color.
 - Expand or collapse the folder.
 - Copy the image name to the clipboard.
+- Support filtering by image type.
 
 ## Plan
 
-- Support filtering by image type.
 - Support searching by image name.
 - Copy the image to the clipboard.
 - Convert the image to base64.
