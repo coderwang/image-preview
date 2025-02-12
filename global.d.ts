@@ -68,3 +68,8 @@ interface ImageInfo {
   name: string;
   ext: string;
 }
+
+interface DirInfo {
+  path: string;
+  imageList: ImageInfo[];
+}

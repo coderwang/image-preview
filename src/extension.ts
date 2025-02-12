@@ -52,8 +52,8 @@ export function activate(context: vscode.ExtensionContext) {
             const getImagesInDirectory = async (
               dirPath: string, // 当前目录
               folderPath: string // 当前工作区路径
-            ): Promise<{ path: string; images: ImageInfo[] }[]> => {
-              const result: { path: string; images: ImageInfo[] }[] = [];
+            ): Promise<DirInfo[]> => {
+              const result: DirInfo[] = [];
               const currentDirImages: ImageInfo[] = [];
               const files = await vscode.workspace.fs.readDirectory(
                 vscode.Uri.file(dirPath)
@@ -100,7 +100,7 @@ export function activate(context: vscode.ExtensionContext) {
               if (currentDirImages.length > 0) {
                 result.push({
                   path: dirPath.replace(folderPath, ""),
-                  images: currentDirImages,
+                  imageList: currentDirImages,
                 });
               }
 
@@ -123,7 +123,7 @@ export function activate(context: vscode.ExtensionContext) {
                         webpNum,
                         svgNum,
                       },
-                      images: results,
+                      dirList: results,
                     });
                   }
                 );

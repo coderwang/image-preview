@@ -12,11 +12,10 @@ const App: React.FC = () => {
   const [imageSize, setImageSize] = React.useState(50);
   const [backgroundColor, setBackgroundColor] = React.useState("#fff");
 
+  const [dirList, setDirList] = React.useState<DirInfo[]>([]);
+
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
-  const [images, setImages] = React.useState<
-    { path: string; images: ImageInfo[] }[]
-  >([]);
   const [nums, setNums] = React.useState<{
     jpgNum: number;
     pngNum: number;
@@ -41,7 +40,7 @@ const App: React.FC = () => {
     window.addEventListener("message", (event) => {
       const message = event.data;
       if (message.command === "showImages") {
-        setImages(message.images);
+        setDirList(message.dirList);
         setProjectName(message.projectName);
         setDirPath(message.dirPath);
         setNums(message.nums);
@@ -172,10 +171,10 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
-      {images.map((item, index) => (
+      {dirList.map((dir, index) => (
         <div className="imageCard" key={index} data-expanded={true}>
           <div
-            className="imageTitleContainer"
+            className="dirPathContainer"
             onClick={() => {
               const target = document.querySelectorAll(`.imageCard`)[index];
               target.getAttribute("data-expanded") === "true"
@@ -183,11 +182,11 @@ const App: React.FC = () => {
                 : target.setAttribute("data-expanded", "true");
             }}
           >
-            <div className="imageTitle">{item.path}</div>
+            <div className="dirPath">{dir.path}</div>
             <ArrowDown className="arrowDown" color="#fff" />
           </div>
           <div className="imageContainer">
-            {item.images.map((image, index) => (
+            {dir.imageList.map((image, index) => (
               <div
                 className="imageItem"
                 key={index}
