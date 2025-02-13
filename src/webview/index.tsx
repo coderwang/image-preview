@@ -374,6 +374,14 @@ const App: React.FC = () => {
                   onMouseLeave={() => {
                     setCurrentImageUrl("");
                   }}
+                  onClick={() => {
+                    imageBasicInfo[image.url] &&
+                      navigator.clipboard
+                        .writeText(imageBasicInfo[image.url].base64)
+                        .then(() => {
+                          toast.success("copy base64 success!");
+                        });
+                  }}
                 >
                   <img className="image" src={image.url} alt={image.name} />
                   <div

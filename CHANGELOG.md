@@ -5,6 +5,7 @@
 ### Added
 
 - Obtain the height, width, and original size of the image.
+- Convert the image to base64, and copy to the clipboard.
 
 ## [1.2.0] - 2025-02-13
 
