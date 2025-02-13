@@ -48,12 +48,10 @@ const App: React.FC = () => {
   });
 
   React.useEffect(() => {
-    // 向extension发送消息请求当前目录下的所有图片
     vscode.postMessage({
       command: "requestImages",
     });
 
-    // 监听来自extension的消息
     window.addEventListener("message", (event) => {
       const message = event.data;
       if (message.command === "showImages") {
@@ -142,8 +140,39 @@ const App: React.FC = () => {
     };
 
     img.onload = () => {
-      basicInfo.width = img.width;
-      basicInfo.height = img.height;
+      // svg 没有明确设置高宽时，浏览器会使用默认值 150x150，所以需特殊处理
+      if (image.ext === ".svg") {
+        const svgContent = atob(basicInfo.base64.split(",")[1]);
+        const svgDoc = new DOMParser().parseFromString(
+          svgContent,
+          "image/svg+xml"
+        );
+        const svgElement = svgDoc.documentElement;
+
+        const width = svgElement.getAttribute("width");
+        const height = svgElement.getAttribute("height");
+
+        if (width && height) {
+          basicInfo.width = parseInt(width);
+          basicInfo.height = parseInt(height);
+        } else {
+          const viewBox = svgElement
+            .getAttribute("viewBox")
+            ?.split(" ")
+            .map(Number);
+          if (viewBox && viewBox.length === 4) {
+            basicInfo.width = viewBox[2];
+            basicInfo.height = viewBox[3];
+          } else {
+            basicInfo.width = img.width;
+            basicInfo.height = img.height;
+          }
+        }
+      } else {
+        basicInfo.width = img.width;
+        basicInfo.height = img.height;
+      }
+
       setImageBasicInfo((draft) => {
         draft[image.url] = basicInfo;
       });
