@@ -26,6 +26,10 @@ const App: React.FC = () => {
     svg: true,
   });
 
+  const [imageBasicInfo, setImageBasicInfo] = useImmer<
+    Record<string, ImageBasicInfo>
+  >({});
+
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
   const [nums, setNums] = React.useState<{
@@ -62,7 +66,6 @@ const App: React.FC = () => {
   }, []);
 
   React.useEffect(() => {
-    console.log("showType", showType);
     if (Object.values(showType).every((item) => item) && searchValue === "") {
       setFilteredDirList(originDirListRef.current);
     } else {
@@ -124,9 +127,47 @@ const App: React.FC = () => {
   };
 
   const getImageBasicInfo = (image: ImageInfo) => {
-    const img = new Image();
-    img.src = image.url;
-    img.onload = () => {};
+    if (Object.keys(imageBasicInfo).includes(image.url)) {
+      console.log("already get info:", imageBasicInfo[image.url]);
+      return;
+    }
+
+    const reader = new FileReader();
+    let img = new Image();
+    let basicInfo: ImageBasicInfo = {
+      width: 0,
+      height: 0,
+      size: "",
+      base64: "",
+    };
+
+    img.onload = () => {
+      basicInfo.width = img.width;
+      basicInfo.height = img.height;
+      console.log("basicInfo:", basicInfo);
+      setImageBasicInfo((draft) => {
+        draft[image.url] = basicInfo;
+      });
+    };
+
+    reader.onload = () => {
+      basicInfo.base64 = reader.result as string;
+      img.src = reader.result as string;
+    };
+
+    fetch(image.url)
+      .then((res) => res.blob())
+      .then((blob) => {
+        if (blob.size < 1024) {
+          basicInfo.size = `${blob.size}B`;
+        } else if (blob.size < 1024 * 1024) {
+          basicInfo.size = `${(blob.size / 1024).toFixed(2)}KB`;
+        } else {
+          basicInfo.size = `${(blob.size / 1024 / 1024).toFixed(2)}MB`;
+        }
+
+        reader.readAsDataURL(blob);
+      });
   };
 
   return (
