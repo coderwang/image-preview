@@ -86,7 +86,4 @@ module.exports = {
       },
     ],
   },
-  optimization: {
-    minimize: false, // 禁用压缩
-  },
 };
