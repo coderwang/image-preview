@@ -63,7 +63,7 @@ const App: React.FC = () => {
 
   React.useEffect(() => {
     console.log("showType", showType);
-    if (Object.values(showType).every((item) => item)) {
+    if (Object.values(showType).every((item) => item) && searchValue === "") {
       setFilteredDirList(originDirListRef.current);
     } else {
       setFilteredDirList(
@@ -73,19 +73,29 @@ const App: React.FC = () => {
             switch (image.ext) {
               case ".jpg":
               case ".jpeg":
-                showType.jpg && list.push(image);
+                showType.jpg &&
+                  image.name.includes(searchValue) &&
+                  list.push(image);
                 break;
               case ".png":
-                showType.png && list.push(image);
+                showType.png &&
+                  image.name.includes(searchValue) &&
+                  list.push(image);
                 break;
               case ".gif":
-                showType.gif && list.push(image);
+                showType.gif &&
+                  image.name.includes(searchValue) &&
+                  list.push(image);
                 break;
               case ".webp":
-                showType.webp && list.push(image);
+                showType.webp &&
+                  image.name.includes(searchValue) &&
+                  list.push(image);
                 break;
               case ".svg":
-                showType.svg && list.push(image);
+                showType.svg &&
+                  image.name.includes(searchValue) &&
+                  list.push(image);
                 break;
             }
           });
@@ -99,7 +109,7 @@ const App: React.FC = () => {
         }, [])
       );
     }
-  }, [showType]);
+  }, [showType, searchValue]);
 
   const expandAll = () => {
     document.querySelectorAll(`.imageCard`).forEach((item) => {
