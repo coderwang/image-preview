@@ -16,6 +16,8 @@ const App: React.FC = () => {
   const originDirListRef = React.useRef<DirInfo[]>([]);
   const [filteredDirList, setFilteredDirList] = React.useState<DirInfo[]>([]);
 
+  const [searchValue, setSearchValue] = React.useState<string>("");
+
   const [showType, updateShowType] = useImmer({
     jpg: true,
     png: true,
@@ -140,6 +142,15 @@ const App: React.FC = () => {
         the <i>{projectName}</i> project!
       </div>
       <div className="actionBar">
+        <div className="searchContainer">
+          <div className="searchTitle">Search:</div>
+          <input
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            type="text"
+            placeholder="Image name"
+          />
+        </div>
         <div className="numsContainer">
           <div className="numsTitle">
             Image count(

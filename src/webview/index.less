@@ -31,6 +31,42 @@ i {
     top: 0;
     background-color: #fff;
 
+    .searchContainer {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 12px;
+
+      .searchTitle {
+        flex-shrink: 0;
+        font-size: 14px;
+        color: #666;
+      }
+
+      input {
+        flex: 1;
+        max-width: 257px;
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        outline: none;
+        color: #333;
+
+        &:focus {
+          border-color: #4caf50;
+          box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+        }
+
+        &::placeholder {
+          font-weight: 400;
+          font-size: 14px;
+          color: #aaa;
+        }
+      }
+    }
+
     .numsContainer {
       display: flex;
       align-items: center;
