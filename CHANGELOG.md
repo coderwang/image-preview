@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.3.0] - 2025-02-13
+
+### Added
+
+- Obtain the height, width, and original size of the image.
+
 ## [1.2.0] - 2025-02-13
 
 ### Added

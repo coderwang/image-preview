@@ -13,6 +13,7 @@ Find the folder you want to preview, and right-click to select `Image Preview`.
 ## Features
 
 - Recursive preview of all images in the folder.
+- Obtain the height, width, and original size of the image.
 - Adjust the image size and background color.
 - Expand or collapse the folder.
 - Copy the image name to the clipboard.

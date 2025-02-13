@@ -26,6 +26,7 @@ const App: React.FC = () => {
     svg: true,
   });
 
+  const [currentImageUrl, setCurrentImageUrl] = React.useState<string>("");
   const [imageBasicInfo, setImageBasicInfo] = useImmer<
     Record<string, ImageBasicInfo>
   >({});
@@ -128,7 +129,6 @@ const App: React.FC = () => {
 
   const getImageBasicInfo = (image: ImageInfo) => {
     if (Object.keys(imageBasicInfo).includes(image.url)) {
-      console.log("already get info:", imageBasicInfo[image.url]);
       return;
     }
 
@@ -144,7 +144,6 @@ const App: React.FC = () => {
     img.onload = () => {
       basicInfo.width = img.width;
       basicInfo.height = img.height;
-      console.log("basicInfo:", basicInfo);
       setImageBasicInfo((draft) => {
         draft[image.url] = basicInfo;
       });
@@ -368,21 +367,34 @@ const App: React.FC = () => {
                 <div
                   className="imageBox"
                   style={{ height: imageSize, backgroundColor }}
+                  onMouseOver={() => {
+                    setCurrentImageUrl(image.url);
+                    getImageBasicInfo(image);
+                  }}
+                  onMouseLeave={() => {
+                    setCurrentImageUrl("");
+                  }}
                 >
-                  <img
-                    className="image"
-                    src={image.url}
-                    alt={image.name}
-                    onMouseOver={() => {
-                      getImageBasicInfo(image);
-                    }}
-                  />
+                  <img className="image" src={image.url} alt={image.name} />
+                  <div
+                    className={
+                      currentImageUrl === image.url && imageBasicInfo[image.url]
+                        ? "imageBasicInfo"
+                        : "imageBasicInfo hidden"
+                    }
+                  >
+                    {imageBasicInfo[image.url]?.size}
+                    <br />
+                    {`${imageBasicInfo[image.url]?.width} x ${
+                      imageBasicInfo[image.url]?.height
+                    }`}
+                  </div>
                 </div>
                 <div
                   className="imageName"
                   onClick={() => {
                     navigator.clipboard.writeText(image.name).then(() => {
-                      toast.success("copy to clipboard success!");
+                      toast.success("copy image name success!");
                     });
                   }}
                 >
