@@ -47,6 +47,10 @@ const App: React.FC = () => {
     svgNum: 0,
   });
 
+  const backgroundList = React.useMemo(() => {
+    return ["#fff", "#8eeed8", "#8ec6ee", "#ee8ead", "#eead8e"];
+  }, []);
+
   React.useEffect(() => {
     vscode.postMessage({
       command: "requestImages",
@@ -338,30 +342,19 @@ const App: React.FC = () => {
         </div>
         <div className="backgroundContainer">
           <div className="backgroundTitle">Background color: </div>
-          <div
-            className="backgroundBox"
-            onClick={() => setBackgroundColor("#fff")}
-          />
-          <div
-            className="backgroundBox"
-            style={{ backgroundColor: "#8eeed8" }}
-            onClick={() => setBackgroundColor("#8eeed8")}
-          />
-          <div
-            className="backgroundBox"
-            style={{ backgroundColor: "#8ec6ee" }}
-            onClick={() => setBackgroundColor("#8ec6ee")}
-          />
-          <div
-            className="backgroundBox"
-            style={{ backgroundColor: "#ee8ead" }}
-            onClick={() => setBackgroundColor("#ee8ead")}
-          />
-          <div
-            className="backgroundBox"
-            style={{ backgroundColor: "#eead8e" }}
-            onClick={() => setBackgroundColor("#eead8e")}
-          />
+          {backgroundList.map((item) => {
+            return (
+              <div
+                className="backgroundBox"
+                style={{
+                  backgroundColor: item,
+                  transform:
+                    backgroundColor === item ? "scale(1.2)" : "scale(1)",
+                }}
+                onClick={() => setBackgroundColor(item)}
+              />
+            );
+          })}
         </div>
         <div className="btnContainer">
           <div className="gradientBtn gradientStatic" onClick={expandAll}>
