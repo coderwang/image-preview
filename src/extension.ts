@@ -43,11 +43,13 @@ export function activate(context: vscode.ExtensionContext) {
       panel.webview.onDidReceiveMessage((message) => {
         switch (message.command) {
           case "requestImages":
-            let jpgNum = 0;
-            let pngNum = 0;
-            let gifNum = 0;
-            let webpNum = 0;
-            let svgNum = 0;
+            const nums: Record<ImageType, number> = {
+              jpg: 0,
+              png: 0,
+              gif: 0,
+              webp: 0,
+              svg: 0,
+            };
 
             const getImagesInDirectory = async (
               dirPath: string, // 当前目录
@@ -78,19 +80,19 @@ export function activate(context: vscode.ExtensionContext) {
                     switch (ext) {
                       case ".jpg":
                       case ".jpeg":
-                        jpgNum++;
+                        nums.jpg++;
                         break;
                       case ".png":
-                        pngNum++;
+                        nums.png++;
                         break;
                       case ".gif":
-                        gifNum++;
+                        nums.gif++;
                         break;
                       case ".webp":
-                        webpNum++;
+                        nums.webp++;
                         break;
                       case ".svg":
-                        svgNum++;
+                        nums.svg++;
                         break;
                     }
                     currentDirImages.push({
@@ -123,15 +125,9 @@ export function activate(context: vscode.ExtensionContext) {
                       command: "showImages",
                       projectName: folder.name,
                       dirPath: uri.path.replace(folder.uri.fsPath, ""),
-                      nums: {
-                        jpgNum,
-                        pngNum,
-                        gifNum,
-                        webpNum,
-                        svgNum,
-                      },
+                      nums,
                       dirList: results,
-                    });
+                    } as ShowImagesMessage);
                   }
                 );
               }

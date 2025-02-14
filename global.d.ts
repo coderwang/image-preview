@@ -63,6 +63,8 @@ declare module "*.module.less" {
   export default classes;
 }
 
+type ImageType = "jpg" | "png" | "gif" | "webp" | "svg";
+
 interface ImageInfo {
   url: string;
   name: string;
@@ -79,4 +81,12 @@ interface ImageBasicInfo {
   height: number;
   size: string;
   base64: string;
+}
+
+interface ShowImagesMessage {
+  command: "showImages";
+  projectName: string;
+  dirPath: string;
+  nums: Record<ImageType, number>;
+  dirList: DirInfo[];
 }

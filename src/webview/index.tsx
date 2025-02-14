@@ -18,7 +18,7 @@ const App: React.FC = () => {
 
   const [searchValue, setSearchValue] = React.useState<string>("");
 
-  const [showType, updateShowType] = useImmer({
+  const [showType, updateShowType] = useImmer<Record<ImageType, boolean>>({
     jpg: true,
     png: true,
     gif: true,
@@ -28,23 +28,17 @@ const App: React.FC = () => {
 
   const [currentImageUrl, setCurrentImageUrl] = React.useState<string>("");
   const [imageBasicInfo, setImageBasicInfo] = useImmer<
-    Record<string, ImageBasicInfo>
+    Record<ImageInfo["url"], ImageBasicInfo>
   >({});
 
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
-  const [nums, setNums] = React.useState<{
-    jpgNum: number;
-    pngNum: number;
-    gifNum: number;
-    webpNum: number;
-    svgNum: number;
-  }>({
-    jpgNum: 0,
-    pngNum: 0,
-    gifNum: 0,
-    webpNum: 0,
-    svgNum: 0,
+  const [nums, setNums] = React.useState<Record<ImageType, number>>({
+    jpg: 0,
+    png: 0,
+    gif: 0,
+    webp: 0,
+    svg: 0,
   });
 
   const backgroundList = React.useMemo(() => {
@@ -57,7 +51,7 @@ const App: React.FC = () => {
     });
 
     window.addEventListener("message", (event) => {
-      const message = event.data;
+      const message: ShowImagesMessage = event.data;
       if (message.command === "showImages") {
         originDirListRef.current = message.dirList;
         setFilteredDirList(message.dirList);
@@ -237,97 +231,31 @@ const App: React.FC = () => {
         <div className="numsContainer">
           <div className="numsTitle">
             Image count(
-            {nums.jpgNum +
-              nums.pngNum +
-              nums.gifNum +
-              nums.webpNum +
-              nums.svgNum}
-            ) :
+            {nums.jpg + nums.png + nums.gif + nums.webp + nums.svg}) :
           </div>
-          {nums.jpgNum > 0 && (
-            <div className="numsItem">
-              <input
-                id="jpg"
-                type="checkbox"
-                checked={showType.jpg}
-                onChange={() =>
-                  updateShowType((draft) => {
-                    draft.jpg = !draft.jpg;
-                  })
-                }
-              />
-              <label htmlFor="jpg">
-                JPG<i>({nums.jpgNum})</i>
-              </label>
-            </div>
-          )}
-          {nums.pngNum > 0 && (
-            <div className="numsItem">
-              <input
-                id="png"
-                type="checkbox"
-                checked={showType.png}
-                onChange={() =>
-                  updateShowType((draft) => {
-                    draft.png = !draft.png;
-                  })
-                }
-              />
-              <label htmlFor="png">
-                PNG<i>({nums.pngNum})</i>
-              </label>
-            </div>
-          )}
-          {nums.gifNum > 0 && (
-            <div className="numsItem">
-              <input
-                id="gif"
-                type="checkbox"
-                checked={showType.gif}
-                onChange={() =>
-                  updateShowType((draft) => {
-                    draft.gif = !draft.gif;
-                  })
-                }
-              />
-              <label htmlFor="gif">
-                GIF<i>({nums.gifNum})</i>
-              </label>
-            </div>
-          )}
-          {nums.webpNum > 0 && (
-            <div className="numsItem">
-              <input
-                id="webp"
-                type="checkbox"
-                checked={showType.webp}
-                onChange={() =>
-                  updateShowType((draft) => {
-                    draft.webp = !draft.webp;
-                  })
-                }
-              />
-              <label htmlFor="webp">
-                WebP<i>({nums.webpNum})</i>
-              </label>
-            </div>
-          )}
-          {nums.svgNum > 0 && (
-            <div className="numsItem">
-              <input
-                id="svg"
-                type="checkbox"
-                checked={showType.svg}
-                onChange={() =>
-                  updateShowType((draft) => {
-                    draft.svg = !draft.svg;
-                  })
-                }
-              />
-              <label htmlFor="svg">
-                SVG<i>({nums.svgNum})</i>
-              </label>
-            </div>
+          {(Object.entries(nums) as [ImageType, number][]).map(
+            ([item, count]) => {
+              return (
+                count > 0 && (
+                  <div className="numsItem" key={item}>
+                    <input
+                      id={item}
+                      type="checkbox"
+                      checked={showType[item]}
+                      onChange={() =>
+                        updateShowType((draft) => {
+                          draft[item] = !draft[item];
+                        })
+                      }
+                    />
+                    <label htmlFor={item}>
+                      {item.toUpperCase()}
+                      <i>({count})</i>
+                    </label>
+                  </div>
+                )
+              );
+            }
           )}
         </div>
         <div className="sliderContainer">
