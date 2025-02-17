@@ -375,7 +375,12 @@ const App: React.FC = () => {
                         });
                   }}
                 >
-                  <img className="image" src={image.url} alt={image.name} />
+                  <img
+                    className="image"
+                    src={image.url}
+                    alt={image.name}
+                    loading="lazy"
+                  />
                   <div
                     className={
                       currentImageUrl === image.url && imageBasicInfo[image.url]

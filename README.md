@@ -1,6 +1,6 @@
 ## Image Preview
 
-This is a powerful VSCode extension that allows you to preview all images in the folder, including `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`.
+This is a powerful VSCode extension that allows you to preview all images in the folder, including `ico`, `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`.
 
 ![image-preview](./assets/webview_ui.png)
 
@@ -13,12 +13,12 @@ Find the folder you want to preview, and right-click to select `Image Preview`.
 ## Features
 
 - Recursive preview of all images in the folder.
-- Obtain the height, width, and original size of the image.
-- Adjust the image size and background color.
+- Display the height, width, and original size of the image when hovering.
+- Support adjusting the image size and background color.
 - Support filtering by image type.
 - Support searching by image name.
-- Copy the image name to the clipboard.
-- Convert the image to base64, and copy to the clipboard.
+- Click the image name to copy it to the clipboard.
+- Click the image to convert it to base64, and copy to the clipboard.
 
 ## Contact me
 

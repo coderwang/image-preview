@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.3.2] - 2025-02-17
+
+### Optimized
+
+- Support previewing `ico` images.
+- Image type supports all selection and inverse selection.
+
 ## [1.3.1] - 2025-02-17
 
 ### Optimized
