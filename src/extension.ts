@@ -64,8 +64,7 @@ export function activate(context: vscode.ExtensionContext) {
             };
 
             const getImagesInDirectory = async (
-              dirPath: string, // 当前目录
-              folderPath: string // 当前工作区路径
+              dirPath: string // 当前目录
             ): Promise<DirInfo[]> => {
               const result: DirInfo[] = [];
               const currentDirImages: ImageInfo[] = [];
@@ -77,10 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
                 const fullPath = path.join(dirPath, name);
 
                 if (type === vscode.FileType.Directory) {
-                  const subResults = await getImagesInDirectory(
-                    fullPath,
-                    folderPath
-                  );
+                  const subResults = await getImagesInDirectory(fullPath);
                   result.push(...subResults);
                 } else if (type === vscode.FileType.File) {
                   const ext = path.extname(name).toLowerCase();
@@ -122,7 +118,7 @@ export function activate(context: vscode.ExtensionContext) {
 
               if (currentDirImages.length > 0) {
                 result.push({
-                  path: dirPath.replace(folderPath, ""),
+                  path: dirPath.replace(uri.path, "") || "/",
                   imageList: currentDirImages,
                 });
               }
@@ -133,17 +129,15 @@ export function activate(context: vscode.ExtensionContext) {
             vscode.workspace.workspaceFolders?.forEach((folder) => {
               if (uri.path.startsWith(folder.uri.fsPath)) {
                 // 获取当前目录及其子目录下的所有图片
-                getImagesInDirectory(uri.path, folder.uri.fsPath).then(
-                  (results) => {
-                    panel.webview.postMessage({
-                      command: "showImages",
-                      projectName: folder.name,
-                      dirPath: uri.path.replace(folder.uri.fsPath, ""),
-                      nums,
-                      dirList: results,
-                    } as ShowImagesMessage);
-                  }
-                );
+                getImagesInDirectory(uri.path).then((results) => {
+                  panel.webview.postMessage({
+                    command: "showImages",
+                    projectName: folder.name,
+                    dirPath: uri.path.replace(folder.uri.fsPath, ""),
+                    nums,
+                    dirList: results,
+                  } as ShowImagesMessage);
+                });
               }
             });
 
