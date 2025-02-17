@@ -2,6 +2,7 @@ html,
 body {
   padding: 0;
   margin: 0;
+  user-select: none;
 }
 
 i {
@@ -80,6 +81,27 @@ i {
       .numsTitle {
         flex-shrink: 0;
         font-size: 14px;
+      }
+
+      .btn {
+        color: #fff;
+        font-size: 10px;
+        font-weight: 500;
+        padding: 3px 8px;
+        border-radius: 4px;
+        line-height: 10px;
+        cursor: pointer;
+        background-color: #0073e6;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(0, 115, 230, 0.2);
+        }
+
+        &:active {
+          opacity: 0.8;
+        }
       }
 
       .numsItem {
@@ -170,23 +192,21 @@ i {
         color: white;
         cursor: pointer;
         transition: all 0.3s ease;
+
+        &:active {
+          opacity: 0.8;
+        }
       }
 
-      .gradientBtn:active {
-        opacity: 0.8;
-      }
-
-      /* 静态渐变 */
       .gradientStatic {
         background: linear-gradient(45deg, #6366f1, #ec4899);
+
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
       }
 
-      .gradientStatic:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-      }
-
-      /* 边框渐变 */
       .gradientBorder {
         background: white;
         color: #6366f1;
@@ -196,11 +216,11 @@ i {
           linear-gradient(45deg, #6366f1, #ec4899);
         background-origin: border-box;
         background-clip: padding-box, border-box;
-      }
 
-      .gradientBorder:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        &:hover {
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
       }
     }
   }

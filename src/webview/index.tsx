@@ -251,6 +251,30 @@ const App: React.FC = () => {
         </div>
         <div className="numsContainer">
           <div className="numsTitle">Image type:</div>
+          <div
+            className="btn"
+            onClick={() => {
+              updateShowType((draft) => {
+                Object.keys(draft).forEach((key) => {
+                  draft[key as ImageType] = true;
+                });
+              });
+            }}
+          >
+            All
+          </div>
+          <div
+            className="btn"
+            onClick={() => {
+              updateShowType((draft) => {
+                Object.keys(draft).forEach((key) => {
+                  draft[key as ImageType] = !draft[key as ImageType];
+                });
+              });
+            }}
+          >
+            Reversed
+          </div>
           {(Object.entries(nums) as [ImageType, number][]).map(
             ([item, count]) => {
               return (
