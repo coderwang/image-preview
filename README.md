@@ -20,11 +20,6 @@ Find the folder you want to preview, and right-click to select `Image Preview`.
 - Copy the image name to the clipboard.
 - Convert the image to base64, and copy to the clipboard.
 
-## Plan
-
-- Copy the image to the clipboard.
-- ...
-
 ## Contact me
 
 If you have any questions or suggestions, please feel free to contact me.

@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.3.1] - 2025-02-17
+
+### Optimized
+
+- Enlarge the selected background color block to 1.2 times.
+- Display the number of filtered images and the total number of images.
+
 ## [1.3.0] - 2025-02-13
 
 ### Added

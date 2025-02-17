@@ -10,7 +10,7 @@ i {
 
 .container {
   min-height: 100vh;
-  padding-bottom: 20px;
+  padding-bottom: 40px;
   background-color: #fff;
   box-sizing: border-box;
 
@@ -46,6 +46,7 @@ i {
 
       input {
         flex: 1;
+        min-width: 50px;
         max-width: 257px;
         padding: 6px 12px;
         border: 1px solid #ddd;
@@ -132,6 +133,7 @@ i {
     .backgroundContainer {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 12px;
       padding: 8px 12px;
 
@@ -154,15 +156,16 @@ i {
     .btnContainer {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 12px;
       padding: 8px 12px;
 
       .gradientBtn {
-        padding: 9px 24px;
+        padding: 8px 22px;
         border: none;
         border-radius: 6px;
         font-family: system-ui, -apple-system, sans-serif;
-        font-size: 16px;
+        font-size: 15px;
         font-weight: 500;
         color: white;
         cursor: pointer;
@@ -187,7 +190,7 @@ i {
       .gradientBorder {
         background: white;
         color: #6366f1;
-        padding: 7px 18px;
+        padding: 6px 16px;
         border: 2px solid transparent;
         background-image: linear-gradient(white, white),
           linear-gradient(45deg, #6366f1, #ec4899);
@@ -302,5 +305,22 @@ i {
         }
       }
     }
+  }
+
+  .selectedNums {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 18px;
+    padding: 4px 12px;
+    background-color: #fff;
+    font-size: 13px;
+    line-height: 18px;
+    color: #888;
+    background-color: #ece9e4;
   }
 }

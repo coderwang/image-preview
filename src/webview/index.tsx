@@ -40,6 +40,8 @@ const App: React.FC = () => {
     webp: 0,
     svg: 0,
   });
+  const [filteredCount, setFilteredCount] = React.useState<number>(0);
+  const [totalCount, setTotalCount] = React.useState<number>(0);
 
   const backgroundList = React.useMemo(() => {
     return ["#fff", "#8eeed8", "#8ec6ee", "#ee8ead", "#eead8e"];
@@ -58,6 +60,12 @@ const App: React.FC = () => {
         setProjectName(message.projectName);
         setDirPath(message.dirPath);
         setNums(message.nums);
+        const total = Object.values(message.nums).reduce(
+          (acc, count) => acc + count,
+          0
+        );
+        setTotalCount(total);
+        setFilteredCount(total);
       }
     });
   }, []);
@@ -65,9 +73,11 @@ const App: React.FC = () => {
   React.useEffect(() => {
     if (Object.values(showType).every((item) => item) && searchValue === "") {
       setFilteredDirList(originDirListRef.current);
+      setFilteredCount(totalCount);
     } else {
-      setFilteredDirList(
-        originDirListRef.current.reduce((acc: DirInfo[], dir) => {
+      let count = 0;
+      const filtered = originDirListRef.current.reduce(
+        (acc: DirInfo[], dir) => {
           let list: ImageInfo[] = [];
           dir.imageList.forEach((image) => {
             switch (image.ext) {
@@ -100,14 +110,18 @@ const App: React.FC = () => {
             }
           });
           if (list.length > 0) {
+            count += list.length;
             acc.push({
               path: dir.path,
               imageList: list,
             });
           }
           return acc;
-        }, [])
+        },
+        []
       );
+      setFilteredDirList(filtered);
+      setFilteredCount(count);
     }
   }, [showType, searchValue]);
 
@@ -229,10 +243,7 @@ const App: React.FC = () => {
           />
         </div>
         <div className="numsContainer">
-          <div className="numsTitle">
-            Image count(
-            {nums.jpg + nums.png + nums.gif + nums.webp + nums.svg}) :
-          </div>
+          <div className="numsTitle">Image type:</div>
           {(Object.entries(nums) as [ImageType, number][]).map(
             ([item, count]) => {
               return (
@@ -363,6 +374,10 @@ const App: React.FC = () => {
           </div>
         </div>
       ))}
+      <div className="selectedNums">
+        <div>result: {filteredCount}</div>
+        <div>total: {totalCount}</div>
+      </div>
     </div>
   );
 };
