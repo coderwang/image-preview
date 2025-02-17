@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.3.3] - 2025-02-17
+
+### Optimized
+
+- Support previewing `avif` images.
+
 ## [1.3.2] - 2025-02-17
 
 ### Optimized

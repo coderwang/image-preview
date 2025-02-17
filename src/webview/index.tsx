@@ -19,6 +19,7 @@ const App: React.FC = () => {
   const [searchValue, setSearchValue] = React.useState<string>("");
 
   const [showType, updateShowType] = useImmer<Record<ImageType, boolean>>({
+    avif: true,
     ico: true,
     jpg: true,
     png: true,
@@ -35,6 +36,7 @@ const App: React.FC = () => {
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
   const [nums, setNums] = React.useState<Record<ImageType, number>>({
+    avif: 0,
     ico: 0,
     jpg: 0,
     png: 0,
@@ -85,6 +87,11 @@ const App: React.FC = () => {
             switch (image.ext) {
               case ".ico":
                 showType.ico &&
+                  image.name.includes(searchValue) &&
+                  list.push(image);
+                break;
+              case ".avif":
+                showType.avif &&
                   image.name.includes(searchValue) &&
                   list.push(image);
                 break;
@@ -198,8 +205,16 @@ const App: React.FC = () => {
     };
 
     reader.onload = () => {
-      basicInfo.base64 = reader.result as string;
-      img.src = reader.result as string;
+      let base64String = reader.result as string;
+
+      // FileReader 无法正确读取 avif 文件类型，会变成 application/unknown，所以需要特殊处理
+      if (image.ext === ".avif") {
+        const base64Data = base64String.split(",")[1];
+        base64String = `data:image/avif;base64,${base64Data}`;
+      }
+
+      basicInfo.base64 = base64String;
+      img.src = base64String;
     };
 
     fetch(image.url)

@@ -44,6 +44,7 @@ export function activate(context: vscode.ExtensionContext) {
         switch (message.command) {
           case "requestImages":
             const suffix = [
+              ".avif",
               ".ico",
               ".jpg",
               ".jpeg",
@@ -53,6 +54,7 @@ export function activate(context: vscode.ExtensionContext) {
               ".svg",
             ];
             const nums: Record<ImageType, number> = {
+              avif: 0,
               ico: 0,
               jpg: 0,
               png: 0,
@@ -86,6 +88,9 @@ export function activate(context: vscode.ExtensionContext) {
                     switch (ext) {
                       case ".ico":
                         nums.ico++;
+                        break;
+                      case ".avif":
+                        nums.avif++;
                         break;
                       case ".jpg":
                       case ".jpeg":

@@ -63,7 +63,7 @@ declare module "*.module.less" {
   export default classes;
 }
 
-type ImageType = "ico" | "jpg" | "png" | "gif" | "webp" | "svg";
+type ImageType = "avif" | "ico" | "jpg" | "png" | "gif" | "webp" | "svg";
 
 interface ImageInfo {
   url: string;
