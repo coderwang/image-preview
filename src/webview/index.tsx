@@ -19,6 +19,7 @@ const App: React.FC = () => {
   const [searchValue, setSearchValue] = React.useState<string>("");
 
   const [showType, updateShowType] = useImmer<Record<ImageType, boolean>>({
+    ico: true,
     jpg: true,
     png: true,
     gif: true,
@@ -34,6 +35,7 @@ const App: React.FC = () => {
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
   const [nums, setNums] = React.useState<Record<ImageType, number>>({
+    ico: 0,
     jpg: 0,
     png: 0,
     gif: 0,
@@ -81,6 +83,11 @@ const App: React.FC = () => {
           let list: ImageInfo[] = [];
           dir.imageList.forEach((image) => {
             switch (image.ext) {
+              case ".ico":
+                showType.ico &&
+                  image.name.includes(searchValue) &&
+                  list.push(image);
+                break;
               case ".jpg":
               case ".jpeg":
                 showType.jpg &&
@@ -366,6 +373,7 @@ const App: React.FC = () => {
                       toast.success("copy image name success!");
                     });
                   }}
+                  title={image.name}
                 >
                   {image.name}
                 </div>

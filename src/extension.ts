@@ -43,7 +43,17 @@ export function activate(context: vscode.ExtensionContext) {
       panel.webview.onDidReceiveMessage((message) => {
         switch (message.command) {
           case "requestImages":
+            const suffix = [
+              ".ico",
+              ".jpg",
+              ".jpeg",
+              ".png",
+              ".gif",
+              ".webp",
+              ".svg",
+            ];
             const nums: Record<ImageType, number> = {
+              ico: 0,
               jpg: 0,
               png: 0,
               gif: 0,
@@ -72,12 +82,11 @@ export function activate(context: vscode.ExtensionContext) {
                   result.push(...subResults);
                 } else if (type === vscode.FileType.File) {
                   const ext = path.extname(name).toLowerCase();
-                  if (
-                    [".jpg", ".jpeg", ".png", ".gif", ".webp", ".svg"].includes(
-                      ext
-                    )
-                  ) {
+                  if (suffix.includes(ext)) {
                     switch (ext) {
+                      case ".ico":
+                        nums.ico++;
+                        break;
                       case ".jpg":
                       case ".jpeg":
                         nums.jpg++;
