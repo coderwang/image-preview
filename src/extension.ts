@@ -76,6 +76,15 @@ export function activate(context: vscode.ExtensionContext) {
                 const fullPath = path.join(dirPath, name);
 
                 if (type === vscode.FileType.Directory) {
+                  if (
+                    (
+                      vscode.workspace
+                        .getConfiguration("superImagePreview")
+                        .get("excludeDirectoryNames") as Array<string>
+                    ).some((item) => item === name)
+                  ) {
+                    continue;
+                  }
                   const subResults = await getImagesInDirectory(fullPath);
                   result.push(...subResults);
                 } else if (type === vscode.FileType.File) {

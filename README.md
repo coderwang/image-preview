@@ -20,6 +20,16 @@ Find the folder you want to preview, and right-click to select `Image Preview`.
 - Click the image name to copy it to the clipboard.
 - Click the image to convert it to base64, and copy to the clipboard.
 
+## Configuration
+
+Use `superImagePreview.excludeDirectoryNames` to exclude the directory name from the recursive preview (it is `["node_modules", "dist"]` by default):
+
+```json
+{
+  "superImagePreview.excludeDirectoryNames": ["node_modules", "dist"]
+}
+```
+
 ## Contact me
 
 If you have any questions or suggestions, please feel free to contact me.

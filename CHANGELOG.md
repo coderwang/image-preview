@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.4.0] - 2025-02-18
+
+### Added
+
+- Support excluding the directory name from the recursive preview.
+
 ## [1.3.3] - 2025-02-17
 
 ### Optimized

@@ -9,7 +9,7 @@
     "preview images",
     "图片预览"
   ],
-  "version": "1.3.3",
+  "version": "1.4.0",
   "publisher": "coderwsh",
   "icon": "assets/icon.png",
   "repository": {
@@ -25,6 +25,23 @@
   "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Super Image Preview",
+      "properties": {
+        "superImagePreview.excludeDirectoryNames": {
+          "type": "array",
+          "default": [
+            "node_modules",
+            "dist"
+          ],
+          "description": "Exclude the directory name from the preview.",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
     "commands": [
       {
         "command": "extension.imagePreview",
