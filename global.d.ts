@@ -90,3 +90,5 @@ interface ShowImagesMessage {
   nums: Record<ImageType, number>;
   dirList: DirInfo[];
 }
+
+type Theme = "light" | "dark";

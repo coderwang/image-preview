@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.5.0] - 2025-02-18
+
+### Added
+
+- Support dark mode.
+
 ## [1.4.0] - 2025-02-18
 
 ### Added

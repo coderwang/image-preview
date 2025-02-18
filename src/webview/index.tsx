@@ -10,6 +10,9 @@ import "./index.less";
 const vscode = acquireVsCodeApi();
 
 const App: React.FC = () => {
+  const [theme, setTheme] = React.useState(
+    document.documentElement.getAttribute("data-theme") as Theme
+  );
   const [imageSize, setImageSize] = React.useState(50);
   const [backgroundColor, setBackgroundColor] = React.useState("#fff");
 
@@ -139,6 +142,18 @@ const App: React.FC = () => {
     }
   }, [showType, searchValue]);
 
+  const handleThemeChange = () => {
+    setTheme((prev) => {
+      const newTheme = prev === "light" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", newTheme);
+      vscode.postMessage({
+        command: "setTheme",
+        theme: newTheme,
+      });
+      return newTheme;
+    });
+  };
+
   const expandAll = () => {
     document.querySelectorAll(`.imageCard`).forEach((item) => {
       item.setAttribute("data-expanded", "true");
@@ -235,7 +250,7 @@ const App: React.FC = () => {
   return (
     <div className="container">
       <Toaster
-        theme="light"
+        theme={theme}
         visibleToasts={2}
         richColors
         offset={{
@@ -250,9 +265,14 @@ const App: React.FC = () => {
           duration: 2000,
         }}
       />
-      <div className="title">
-        You are previewing the images in the <i>{dirPath}</i> directory under
-        the <i>{projectName}</i> project!
+      <div className="titleContainer">
+        <div className="title">
+          Previewing <i>{dirPath}</i> directory under <i>{projectName}</i>{" "}
+          project!
+        </div>
+        <div className="themeToggle" onClick={handleThemeChange}>
+          {theme === "light" ? "🌙" : "☀️"}
+        </div>
       </div>
       <div className="actionBar">
         <div className="searchContainer">

@@ -19,6 +19,7 @@ Find the folder you want to preview, and right-click to select `Image Preview`.
 - Support searching by image name.
 - Click the image name to copy it to the clipboard.
 - Click the image to convert it to base64, and copy to the clipboard.
+- Support dark mode.
 
 ## Configuration
 
@@ -27,6 +28,14 @@ Use `superImagePreview.excludeDirectoryNames` to exclude the directory name from
 ```json
 {
   "superImagePreview.excludeDirectoryNames": ["node_modules", "dist"]
+}
+```
+
+Use `superImagePreview.theme` to set the theme for image preview (it is `light` by default):
+
+```json
+{
+  "superImagePreview.theme": "dark"
 }
 ```
 

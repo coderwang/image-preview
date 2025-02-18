@@ -9,7 +9,7 @@
     "preview images",
     "图片预览"
   ],
-  "version": "1.4.0",
+  "version": "1.5.0",
   "publisher": "coderwsh",
   "icon": "assets/icon.png",
   "repository": {
@@ -39,6 +39,19 @@
           "items": {
             "type": "string"
           }
+        },
+        "superImagePreview.theme": {
+          "type": "string",
+          "enum": [
+            "light",
+            "dark"
+          ],
+          "default": "light",
+          "description": "Set the theme for image preview",
+          "enumDescriptions": [
+            "Light theme",
+            "Dark theme"
+          ]
         }
       }
     },
