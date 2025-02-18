@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { Toaster, toast } from "sonner";
 import { useImmer } from "use-immer";
 import { ReactComponent as ArrowDown } from "../../assets/arrow_down.svg";
+import empty from "../../assets/empty.png";
 import "./index.less";
 
 const vscode = acquireVsCodeApi();
@@ -370,83 +371,91 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
-      {filteredDirList.map((dir, index) => (
-        <div className="imageCard" key={dir.path} data-expanded={true}>
-          <div
-            className="dirPathContainer"
-            onClick={() => {
-              const target = document.querySelectorAll(`.imageCard`)[index];
-              target.getAttribute("data-expanded") === "true"
-                ? target.setAttribute("data-expanded", "false")
-                : target.setAttribute("data-expanded", "true");
-            }}
-          >
-            <div className="dirPath">{dir.path}</div>
-            <ArrowDown className="arrowDown" color="#fff" />
-          </div>
-          <div className="imageContainer">
-            {dir.imageList.map((image) => (
-              <div
-                className="imageItem"
-                key={image.name}
-                style={{ width: imageSize }}
-              >
+      {filteredCount > 0 ? (
+        filteredDirList.map((dir, index) => (
+          <div className="imageCard" key={dir.path} data-expanded={true}>
+            <div
+              className="dirPathContainer"
+              onClick={() => {
+                const target = document.querySelectorAll(`.imageCard`)[index];
+                target.getAttribute("data-expanded") === "true"
+                  ? target.setAttribute("data-expanded", "false")
+                  : target.setAttribute("data-expanded", "true");
+              }}
+            >
+              <div className="dirPath">{dir.path}</div>
+              <ArrowDown className="arrowDown" color="#fff" />
+            </div>
+            <div className="imageContainer">
+              {dir.imageList.map((image) => (
                 <div
-                  className="imageBox"
-                  style={{ height: imageSize, backgroundColor }}
-                  onMouseOver={() => {
-                    setCurrentImageUrl(image.url);
-                    getImageBasicInfo(image);
-                  }}
-                  onMouseLeave={() => {
-                    setCurrentImageUrl("");
-                  }}
-                  onClick={() => {
-                    imageBasicInfo[image.url] &&
-                      navigator.clipboard
-                        .writeText(imageBasicInfo[image.url].base64)
-                        .then(() => {
-                          toast.success("copy base64 success!");
-                        });
-                  }}
+                  className="imageItem"
+                  key={image.name}
+                  style={{ width: imageSize }}
                 >
-                  <img
-                    className="image"
-                    src={image.url}
-                    alt={image.name}
-                    loading="lazy"
-                  />
                   <div
-                    className={
-                      currentImageUrl === image.url && imageBasicInfo[image.url]
-                        ? "imageBasicInfo"
-                        : "imageBasicInfo hidden"
-                    }
+                    className="imageBox"
+                    style={{ height: imageSize, backgroundColor }}
+                    onMouseOver={() => {
+                      setCurrentImageUrl(image.url);
+                      getImageBasicInfo(image);
+                    }}
+                    onMouseLeave={() => {
+                      setCurrentImageUrl("");
+                    }}
+                    onClick={() => {
+                      imageBasicInfo[image.url] &&
+                        navigator.clipboard
+                          .writeText(imageBasicInfo[image.url].base64)
+                          .then(() => {
+                            toast.success("copy base64 success!");
+                          });
+                    }}
                   >
-                    {imageBasicInfo[image.url]?.size}
-                    <br />
-                    {`${imageBasicInfo[image.url]?.width} x ${
-                      imageBasicInfo[image.url]?.height
-                    }`}
+                    <img
+                      className="image"
+                      src={image.url}
+                      alt={image.name}
+                      loading="lazy"
+                    />
+                    <div
+                      className={
+                        currentImageUrl === image.url &&
+                        imageBasicInfo[image.url]
+                          ? "imageBasicInfo"
+                          : "imageBasicInfo hidden"
+                      }
+                    >
+                      {imageBasicInfo[image.url]?.size}
+                      <br />
+                      {`${imageBasicInfo[image.url]?.width} x ${
+                        imageBasicInfo[image.url]?.height
+                      }`}
+                    </div>
+                  </div>
+                  <div
+                    className="imageName"
+                    onClick={() => {
+                      navigator.clipboard.writeText(image.name).then(() => {
+                        toast.success("copy image name success!");
+                      });
+                    }}
+                    title={image.name}
+                  >
+                    {image.name}
                   </div>
                 </div>
-                <div
-                  className="imageName"
-                  onClick={() => {
-                    navigator.clipboard.writeText(image.name).then(() => {
-                      toast.success("copy image name success!");
-                    });
-                  }}
-                  title={image.name}
-                >
-                  {image.name}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
+        ))
+      ) : (
+        <div className="emptyBox">
+          <img className="emptyImg" src={empty} alt="" />
+          <div className="emptyText">No images found</div>
         </div>
-      ))}
-      <div className="selectedNums">
+      )}
+      <div className="countContainer">
         <div>result: {filteredCount}</div>
         <div>total: {totalCount}</div>
       </div>
