@@ -6,11 +6,15 @@ import { Toaster, toast } from "sonner";
 import { useImmer } from "use-immer";
 import { ReactComponent as ArrowDown } from "../../assets/arrow_down.svg";
 import empty from "../../assets/empty.png";
+import { ReactComponent as Loading } from "../../assets/loading.svg";
 import "./index.less";
 
 const vscode = acquireVsCodeApi();
 
 const App: React.FC = () => {
+  const [pageStatus, setPageStatus] = React.useState<"loading" | "ready">(
+    "loading"
+  );
   const [theme, setTheme] = React.useState(
     document.documentElement.getAttribute("data-theme") as Theme
   );
@@ -74,6 +78,7 @@ const App: React.FC = () => {
         );
         setTotalCount(total);
         setFilteredCount(total);
+        setPageStatus("ready");
       }
     });
   }, []);
@@ -275,6 +280,7 @@ const App: React.FC = () => {
           {theme === "light" ? "🌙" : "☀️"}
         </div>
       </div>
+
       <div className="actionBar">
         <div className="searchContainer">
           <div className="searchTitle">Search:</div>
@@ -371,7 +377,11 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
-      {filteredCount > 0 ? (
+      {pageStatus === "loading" ? (
+        <div className="loadingBox">
+          <Loading className="loadingIcon" />
+        </div>
+      ) : filteredCount > 0 ? (
         filteredDirList.map((dir, index) => (
           <div className="imageCard" key={dir.path} data-expanded={true}>
             <div
@@ -455,6 +465,7 @@ const App: React.FC = () => {
           <div className="emptyText">No images found</div>
         </div>
       )}
+
       <div className="countContainer">
         <div>result: {filteredCount}</div>
         <div>total: {totalCount}</div>

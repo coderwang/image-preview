@@ -86,7 +86,7 @@ i {
     position: sticky;
     top: 0;
     background-color: var(--bg-color);
-    z-index: 999;
+    z-index: 10;
     transition: all 0.3s ease;
 
     .searchContainer {
@@ -387,6 +387,34 @@ i {
           cursor: pointer;
         }
       }
+    }
+  }
+
+  .loadingBox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    @keyframes rotate {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loadingIcon {
+      position: absolute;
+      top: 55%;
+      left: calc(50% - 16px);
+      width: 32px;
+      height: 32px;
+      animation: rotate 1.5s linear infinite;
     }
   }
 
