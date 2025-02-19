@@ -7,6 +7,7 @@ import { useImmer } from "use-immer";
 import { ReactComponent as ArrowDown } from "../../assets/arrow_down.svg";
 import empty from "../../assets/empty.png";
 import { ReactComponent as Loading } from "../../assets/loading.svg";
+import { ReactComponent as Top } from "../../assets/top.svg";
 import "./index.less";
 
 const vscode = acquireVsCodeApi();
@@ -289,6 +290,16 @@ const App: React.FC = () => {
             onChange={(e) => setSearchValue(e.target.value)}
             type="text"
             placeholder="Image name"
+          />
+          <Top
+            className="backTop"
+            color={theme === "light" ? "#0073e6" : "#999"}
+            onClick={() => {
+              window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+              });
+            }}
           />
         </div>
         <div className="numsContainer">
