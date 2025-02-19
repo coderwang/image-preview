@@ -4,12 +4,6 @@ This is a powerful VSCode extension that allows you to preview all images in the
 
 ![image-preview](./assets/webview_ui.png)
 
-## Usage
-
-Find the folder you want to preview, and right-click to select `Image Preview`.
-
-<img src="./assets/usage_example.png" alt="image-preview" width="60%" />
-
 ## Features
 
 - Recursive preview of all images in the folder.
@@ -20,6 +14,12 @@ Find the folder you want to preview, and right-click to select `Image Preview`.
 - Click the image name to copy it to the clipboard.
 - Click the image to convert it to base64, and copy to the clipboard.
 - Support dark mode.
+
+## Usage
+
+Find the folder you want to preview, and right-click to select `Image Preview`.
+
+<img src="./assets/usage_example.png" alt="image-preview" width="60%" />
 
 ## Configuration
 
