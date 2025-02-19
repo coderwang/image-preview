@@ -25,7 +25,7 @@
   --border-color: #3d3d3d;
   --title-bg: #004a94;
   --title-color: #fff;
-  --search-border: #3d3d3d;
+  --search-border: #666;
   --search-focus: #2d7a30;
   --search-placeholder: #6e6e6e;
   --dir-path-bg: #484848;
@@ -342,7 +342,7 @@ i {
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-bottom: 2px;
+          margin-bottom: 4px;
           cursor: pointer;
 
           .image {
@@ -373,6 +373,7 @@ i {
         }
 
         .imageName {
+          height: 30px;
           color: var(--text-tertiary);
           font-size: 13px;
           line-height: 15px;
@@ -420,7 +421,7 @@ i {
 
   .emptyBox {
     text-align: center;
-    padding-top: 40px;
+    padding: 40px 0;
 
     .emptyImg {
       width: 40%;
