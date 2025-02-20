@@ -446,6 +446,12 @@ const App: React.FC = () => {
                           ? "imageBasicInfo"
                           : "imageBasicInfo hidden"
                       }
+                      style={{
+                        fontSize:
+                          imageSize <= 60 ? `${imageSize / 4}px` : "15px",
+                        lineHeight:
+                          imageSize <= 60 ? `${imageSize / 4 + 2}px` : "17px",
+                      }}
                     >
                       {imageBasicInfo[image.url]?.size}
                       <br />
