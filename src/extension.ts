@@ -155,7 +155,7 @@ export function activate(context: vscode.ExtensionContext) {
             });
 
             break;
-          case "setTheme":
+          case "updateThemeConfig":
             vscode.workspace
               .getConfiguration("superImagePreview")
               .update(

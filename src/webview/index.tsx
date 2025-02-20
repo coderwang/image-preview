@@ -155,7 +155,7 @@ const App: React.FC = () => {
       const newTheme = prev === "light" ? "dark" : "light";
       document.documentElement.setAttribute("data-theme", newTheme);
       vscode.postMessage({
-        command: "setTheme",
+        command: "updateThemeConfig",
         theme: newTheme,
       });
       return newTheme;
