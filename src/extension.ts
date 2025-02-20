@@ -130,6 +130,7 @@ export function activate(context: vscode.ExtensionContext) {
 
               if (currentDirImages.length > 0) {
                 result.push({
+                  completePath: dirPath,
                   path: dirPath.replace(uri.path, "") || "/",
                   imageList: currentDirImages,
                 });

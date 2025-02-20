@@ -72,6 +72,7 @@ interface ImageInfo {
 }
 
 interface DirInfo {
+  completePath: string;
   path: string;
   imageList: ImageInfo[];
 }

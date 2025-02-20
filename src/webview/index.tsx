@@ -136,6 +136,7 @@ const App: React.FC = () => {
           if (list.length > 0) {
             count += list.length;
             acc.push({
+              completePath: dir.completePath,
               path: dir.path,
               imageList: list,
             });
