@@ -11,6 +11,7 @@ This is a powerful VSCode extension that allows you to preview all images in the
 - Support adjusting the image size and background color.
 - Support filtering by image type.
 - Support searching by image name.
+- Allow opening the folder using the system file manager.
 - Click the image name to copy it to the clipboard.
 - Click the image to convert it to base64, and copy to the clipboard.
 - Support dark mode.

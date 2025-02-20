@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.6.0] - 2025-02-20
+
+### 🚀 Added
+
+- Support opening the folder with the system file manager.
+
 ## [1.5.2] - 2025-02-19
 
 ### 🌊 Optimized
