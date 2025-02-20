@@ -164,6 +164,9 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.ConfigurationTarget.Global
               );
             break;
+          case "openFolder":
+            vscode.env.openExternal(vscode.Uri.file(message.completePath));
+            break;
         }
       });
     }

@@ -6,6 +6,7 @@ import { Toaster, toast } from "sonner";
 import { useImmer } from "use-immer";
 import { ReactComponent as ArrowDown } from "../../assets/arrow_down.svg";
 import empty from "../../assets/empty.png";
+import { ReactComponent as Folder } from "../../assets/folder.svg";
 import { ReactComponent as Loading } from "../../assets/loading.svg";
 import { ReactComponent as Top } from "../../assets/top.svg";
 import "./index.less";
@@ -406,6 +407,19 @@ const App: React.FC = () => {
               }}
             >
               <div className="dirPath">{dir.path}</div>
+
+              <div
+                className="folderIconBox"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  vscode.postMessage({
+                    command: "openFolder",
+                    completePath: dir.completePath,
+                  });
+                }}
+              >
+                <Folder className="folderIcon" />
+              </div>
               <ArrowDown className="arrowDown" color="#fff" />
             </div>
             <div className="imageContainer">

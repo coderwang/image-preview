@@ -317,22 +317,59 @@ i {
 
     .dirPathContainer {
       display: flex;
-      justify-content: space-between;
       align-items: center;
       background-color: var(--dir-path-bg);
       padding: 8px 12px;
       cursor: pointer;
 
+      &:hover {
+        @keyframes showFolderIcon {
+          from {
+            opacity: 0;
+          }
+          to {
+            opacity: 1;
+          }
+        }
+
+        .folderIconBox {
+          display: block;
+          animation: showFolderIcon 0.2s linear;
+        }
+      }
+
       .dirPath {
+        margin-right: 8px;
         color: #fff;
         font-size: 18px;
+        line-height: 18px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
       }
 
+      .folderIconBox {
+        flex-shrink: 0;
+        display: none;
+        width: 22px;
+        height: 22px;
+        margin-right: 8px;
+
+        .folderIcon {
+          width: 20px;
+          height: 20px;
+          transform: translate(1px, 1px);
+          transition: all 0.15s ease;
+
+          &:hover {
+            transform: translate(1px, 0px);
+          }
+        }
+      }
+
       .arrowDown {
         flex-shrink: 0;
+        margin-left: auto;
         transition: all 0.1s linear;
       }
     }
