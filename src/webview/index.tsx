@@ -4,11 +4,11 @@ import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { Toaster, toast } from "sonner";
 import { useImmer } from "use-immer";
-import { ReactComponent as ArrowDown } from "../../assets/arrow_down.svg";
-import empty from "../../assets/empty.png";
-import { ReactComponent as Folder } from "../../assets/folder.svg";
-import { ReactComponent as Loading } from "../../assets/loading.svg";
-import { ReactComponent as Top } from "../../assets/top.svg";
+import empty from "../assets/images/empty.png";
+import { ReactComponent as ArrowDown } from "../assets/svg/arrow_down.svg";
+import { ReactComponent as Folder } from "../assets/svg/folder.svg";
+import { ReactComponent as Loading } from "../assets/svg/loading.svg";
+import { ReactComponent as Top } from "../assets/svg/top.svg";
 import "./index.less";
 
 const vscode = acquireVsCodeApi();
