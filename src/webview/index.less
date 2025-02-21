@@ -126,12 +126,24 @@ i {
         }
       }
 
-      .backTop {
+      .iconContainer {
         flex-shrink: 0;
-        width: 20px;
-        height: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
         margin-left: auto;
-        cursor: pointer;
+
+        .themeIcon {
+          cursor: pointer;
+          font-size: 18px;
+          line-height: 18px;
+        }
+
+        .backTop {
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+        }
       }
     }
 

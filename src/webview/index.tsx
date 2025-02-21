@@ -63,6 +63,23 @@ const App: React.FC = () => {
     return ["#fff", "#8eeed8", "#8ec6ee", "#ee8ead", "#eead8e"];
   }, []);
 
+  const [isThemeToggleIntersecting, setIsThemeToggleIntersecting] =
+    React.useState(true);
+  const themeToggleRef = React.useCallback((node: HTMLDivElement) => {
+    if (node) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsThemeToggleIntersecting(true);
+          } else {
+            setIsThemeToggleIntersecting(false);
+          }
+        });
+      });
+      observer.observe(node);
+    }
+  }, []);
+
   React.useEffect(() => {
     vscode.postMessage({
       command: "requestImages",
@@ -281,7 +298,11 @@ const App: React.FC = () => {
           Previewing <i>{dirPath}</i> directory under <i>{projectName}</i>{" "}
           project!
         </div>
-        <div className="themeToggle" onClick={handleThemeChange}>
+        <div
+          ref={themeToggleRef}
+          className="themeToggle"
+          onClick={handleThemeChange}
+        >
           {theme === "light" ? "🌙" : "☀️"}
         </div>
       </div>
@@ -295,16 +316,23 @@ const App: React.FC = () => {
             type="text"
             placeholder="Image name"
           />
-          <Top
-            className="backTop"
-            color={theme === "light" ? "#0073e6" : "#999"}
-            onClick={() => {
-              window.scrollTo({
-                top: 0,
-                behavior: "smooth",
-              });
-            }}
-          />
+          <div className="iconContainer">
+            {!isThemeToggleIntersecting && (
+              <div className="themeIcon" onClick={handleThemeChange}>
+                {theme === "light" ? "🌙" : "☀️"}
+              </div>
+            )}
+            <Top
+              className="backTop"
+              color={theme === "light" ? "#0073e6" : "#999"}
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            />
+          </div>
         </div>
         <div className="numsContainer">
           <div className="numsTitle">Image type:</div>
