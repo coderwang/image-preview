@@ -23,6 +23,10 @@ Find the folder you want to preview, and right-click to select `Image Preview`.
 
 <img src="./src/assets/readme/usage_example.png" alt="image-preview" width="60%" />
 
+If you want to preview the whole project, you can use the command palette to open the image preview.
+
+<img src="./src/assets/readme/command_palette.png" alt="image-preview" width="80%" />
+
 ## Configuration
 
 Use `superImagePreview.excludeDirectoryNames` to exclude the directory name from the recursive preview (it is `["node_modules", "dist"]` by default):

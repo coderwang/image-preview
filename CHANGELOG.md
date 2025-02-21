@@ -5,6 +5,7 @@
 ### 🚀 Added
 
 - Long-pressing an image reveals it in the sidebar.
+- Now you can use the command palette to open the image preview (if there are multiple projects in the workspace, it will use the first project).
 
 ## [1.6.1] - 2025-02-21
 

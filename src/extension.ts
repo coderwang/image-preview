@@ -4,7 +4,18 @@ import * as vscode from "vscode";
 export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand(
     "extension.imagePreview",
-    (uri) => {
+    (uri: vscode.Uri | undefined) => {
+      // uri 为 undefined，代表是点击的命令面板
+      // uri 为 {}，代表工作区打开了多个项目时点击了空白处
+      if (!uri?.path) {
+        // 工作区没有文件夹则什么都不做
+        if (!vscode.workspace.workspaceFolders) {
+          return;
+        }
+        // 默认用第一个项目
+        uri = vscode.workspace.workspaceFolders[0].uri;
+      }
+
       const panel = vscode.window.createWebviewPanel(
         "imagePreview",
         "Image Preview",
