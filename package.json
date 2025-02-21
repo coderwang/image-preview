@@ -78,7 +78,7 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run build & npm run compile",
+    "vscode:prepublish": "npm run build && npm run compile",
     "compile": "tsc -p ./tsconfig.extension.json",
     "watch": "tsc -watch -p ./tsconfig.extension.json",
     "pretest": "npm run compile && npm run lint",
