@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.6.1] - 2025-02-20
+
+### ⚙️ Chore
+
+- Significantly reduce the size of the extension.
+
 ## [1.6.0] - 2025-02-20
 
 ### 🚀 Added
