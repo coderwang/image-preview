@@ -57,6 +57,8 @@ const App: React.FC = () => {
   const [filteredCount, setFilteredCount] = React.useState<number>(0);
   const [totalCount, setTotalCount] = React.useState<number>(0);
 
+  const timer = React.useRef<number>(Infinity);
+
   const backgroundList = React.useMemo(() => {
     return ["#fff", "#8eeed8", "#8ec6ee", "#ee8ead", "#eead8e"];
   }, []);
@@ -439,13 +441,29 @@ const App: React.FC = () => {
                     onMouseLeave={() => {
                       setCurrentImageUrl("");
                     }}
-                    onClick={() => {
-                      imageBasicInfo[image.url] &&
+                    onMouseDown={() => {
+                      window.clearTimeout(timer.current);
+                      timer.current = window.setTimeout(() => {
+                        timer.current = Infinity;
+                        vscode.postMessage({
+                          command: "revealInSideBar",
+                          completeImagePath:
+                            dir.completePath + "/" + image.name,
+                        });
+                      }, 50);
+                    }}
+                    onMouseUp={() => {
+                      window.clearTimeout(timer.current);
+                      if (
+                        imageBasicInfo[image.url] &&
+                        timer.current !== Infinity
+                      ) {
                         navigator.clipboard
                           .writeText(imageBasicInfo[image.url].base64)
                           .then(() => {
                             toast.success("copy base64 success!");
                           });
+                      }
                     }}
                   >
                     <img

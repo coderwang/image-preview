@@ -14,6 +14,7 @@ This is a powerful VSCode extension that allows you to preview all images in the
 - Allow opening the folder using the system file manager.
 - Click the image name to copy it to the clipboard.
 - Click the image to convert it to base64, and copy to the clipboard.
+- Long-pressing an image reveals it in the sidebar, and the tap duration is usually between 50 and 1000 ms (it depends on your device performance).
 - Support dark mode.
 
 ## Usage

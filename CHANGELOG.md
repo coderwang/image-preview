@@ -1,6 +1,12 @@
 # Change Log
 
-## [1.6.1] - 2025-02-20
+## [1.7.0] - 2025-02-21
+
+### 🚀 Added
+
+- Long-pressing an image reveals it in the sidebar.
+
+## [1.6.1] - 2025-02-21
 
 ### ⚙️ Chore
 

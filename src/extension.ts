@@ -167,6 +167,12 @@ export function activate(context: vscode.ExtensionContext) {
           case "openFolder":
             vscode.env.openExternal(vscode.Uri.file(message.completePath));
             break;
+          case "revealInSideBar":
+            vscode.commands.executeCommand(
+              "revealInExplorer",
+              vscode.Uri.file(message.completeImagePath)
+            );
+            break;
         }
       });
     }
