@@ -478,7 +478,7 @@ const App: React.FC = () => {
                           completeImagePath:
                             dir.completePath + "/" + image.name,
                         });
-                      }, 50);
+                      }, 100);
                     }}
                     onMouseUp={() => {
                       window.clearTimeout(timer.current);

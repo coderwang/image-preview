@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.7.1] - 2025-02-24
+
+### 🔧 Fixed
+
+- Fix the issue of not able to use normally on Windows.
+
 ## [1.7.0] - 2025-02-21
 
 ### 🚀 Added

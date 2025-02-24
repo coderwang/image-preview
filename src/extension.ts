@@ -7,7 +7,7 @@ export function activate(context: vscode.ExtensionContext) {
     (uri: vscode.Uri | undefined) => {
       // uri 为 undefined，代表是点击的命令面板
       // uri 为 {}，代表工作区打开了多个项目时点击了空白处
-      if (!uri?.path) {
+      if (!uri?.fsPath) {
         // 工作区没有文件夹则什么都不做
         if (!vscode.workspace.workspaceFolders) {
           return;
@@ -25,7 +25,7 @@ export function activate(context: vscode.ExtensionContext) {
           retainContextWhenHidden: true,
           localResourceRoots: [
             vscode.Uri.file(path.join(context.extensionPath, "out")),
-            vscode.Uri.file(path.dirname(uri.path)),
+            vscode.Uri.file(path.dirname(uri.fsPath)),
           ],
         }
       );
@@ -142,7 +142,9 @@ export function activate(context: vscode.ExtensionContext) {
               if (currentDirImages.length > 0) {
                 result.push({
                   completePath: dirPath,
-                  path: dirPath.replace(uri.path, "") || "/",
+                  path:
+                    dirPath.replace(uri.fsPath, "") ||
+                    (process.platform === "win32" ? "\\" : "/"),
                   imageList: currentDirImages,
                 });
               }
@@ -151,13 +153,13 @@ export function activate(context: vscode.ExtensionContext) {
             };
 
             vscode.workspace.workspaceFolders?.forEach((folder) => {
-              if (uri.path.startsWith(folder.uri.fsPath)) {
+              if (uri.fsPath.startsWith(folder.uri.fsPath)) {
                 // 获取当前目录及其子目录下的所有图片
-                getImagesInDirectory(uri.path).then((results) => {
+                getImagesInDirectory(uri.fsPath).then((results) => {
                   panel.webview.postMessage({
                     command: "showImages",
                     projectName: folder.name,
-                    dirPath: uri.path.replace(folder.uri.fsPath, ""),
+                    dirPath: uri.fsPath.replace(folder.uri.fsPath, ""),
                     nums,
                     dirList: results,
                   } as ShowImagesMessage);
