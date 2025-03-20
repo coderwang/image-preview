@@ -28,7 +28,7 @@ module.exports = {
                 exportLocalsConvention: "as-is",
                 localIdentName: "[path][name]__[local]--[hash:base64:5]",
               },
-              importLoaders: 2,
+              importLoaders: 1,
             },
           },
           "less-loader",
@@ -43,7 +43,7 @@ module.exports = {
             loader: "css-loader",
             options: {
               modules: false,
-              importLoaders: 2,
+              importLoaders: 1,
             },
           },
           "less-loader",
