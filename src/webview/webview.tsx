@@ -1,5 +1,4 @@
 import BackgroundContainer from "@/components/BackgroundContainer";
-import CustomToaster from "@/components/CustomToaster";
 import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
 import SliderContainer from "@/components/SliderContainer";
@@ -229,7 +228,6 @@ const Webview: FC = () => {
 
   return (
     <div className="container">
-      <CustomToaster />
       <div className="titleContainer">
         <div className="title">
           Previewing <i>{dirPath}</i> directory under <i>{projectName}</i>{" "}

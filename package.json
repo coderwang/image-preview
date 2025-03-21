@@ -9,7 +9,7 @@
     "preview images",
     "图片预览"
   ],
-  "version": "1.7.2",
+  "version": "1.8.0",
   "publisher": "coderwsh",
   "icon": "assets/icon.png",
   "repository": {
@@ -101,6 +101,7 @@
     "webpack-cli": "^5.1.4"
   },
   "dependencies": {
+    "antd": "^5.24.4",
     "jotai": "^2.12.2",
     "jotai-immer": "^0.4.1",
     "rc-slider": "^11.1.8",
