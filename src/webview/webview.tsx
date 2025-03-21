@@ -291,7 +291,13 @@ const Webview: FC = () => {
                 >
                   <div
                     className="imageBox"
-                    style={{ height: imageSize, backgroundColor }}
+                    style={{
+                      height: imageSize,
+                      backgroundColor:
+                        typeof backgroundColor === "string"
+                          ? backgroundColor
+                          : backgroundColor?.toRgbString(),
+                    }}
                     onMouseOver={() => {
                       setCurrentImageUrl(image.url);
                       getImageBasicInfo(image);

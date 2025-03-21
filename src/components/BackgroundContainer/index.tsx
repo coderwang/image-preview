@@ -1,4 +1,5 @@
 import { backgroundColorAtom } from "@/store/bgc";
+import { ColorPicker } from "antd";
 import { useAtom } from "jotai";
 import React, { useMemo } from "react";
 import styles from "./index.module.less";
@@ -25,6 +26,10 @@ const BackgroundContainer = () => {
           />
         );
       })}
+      <ColorPicker
+        value={backgroundColor}
+        onChangeComplete={setBackgroundColor}
+      />
     </div>
   );
 };
