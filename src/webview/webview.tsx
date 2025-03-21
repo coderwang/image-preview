@@ -1,7 +1,7 @@
+import CustomToaster from "@/components/CustomToaster";
 import SearchContainer from "@/components/SearchContainer";
 import ThemeToggle from "@/components/ThemeToggle";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
-import { themeAtom } from "@/store/theme";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
@@ -9,7 +9,7 @@ import { useAtom } from "jotai";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import * as React from "react";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { useImmer } from "use-immer";
 import CounterContainer from "../components/CounterContainer";
 import EmptyBox from "../components/EmptyBox";
@@ -19,7 +19,7 @@ const Webview: React.FC = () => {
   const [pageStatus, setPageStatus] = React.useState<"loading" | "ready">(
     "loading"
   );
-  const [theme, setTheme] = useAtom(themeAtom);
+
   const [imageSize, setImageSize] = React.useState(50);
   const [backgroundColor, setBackgroundColor] = React.useState("#fff");
 
@@ -248,22 +248,7 @@ const Webview: React.FC = () => {
 
   return (
     <div className="container">
-      <Toaster
-        theme={theme}
-        visibleToasts={2}
-        richColors
-        offset={{
-          right: 16,
-          bottom: 8,
-        }}
-        mobileOffset={{
-          right: 16,
-          bottom: 8,
-        }}
-        toastOptions={{
-          duration: 2000,
-        }}
-      />
+      <CustomToaster />
       <div className="titleContainer">
         <div className="title">
           Previewing <i>{dirPath}</i> directory under <i>{projectName}</i>{" "}
