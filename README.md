@@ -1,3 +1,5 @@
+[中文文档](./README_ZH.md)
+
 ## Image Preview
 
 This is a powerful VSCode extension that allows you to preview all images in the folder, including `avif`, `ico`, `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`.

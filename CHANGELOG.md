@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.7.2] - 2025-03-21
+
+### 📖 Documentation
+
+- Add Chinese document.
+
 ## [1.7.1] - 2025-02-24
 
 ### 🔧 Fixed
