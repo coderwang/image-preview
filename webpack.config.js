@@ -7,7 +7,11 @@ module.exports = {
     filename: "bundle.js",
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js"],
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      assets: path.resolve(__dirname, "./src/assets"),
+    },
   },
   module: {
     rules: [

@@ -1,13 +1,13 @@
+import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
+import { ReactComponent as Folder } from "assets/svg/folder.svg";
+import { ReactComponent as Loading } from "assets/svg/loading.svg";
+import { ReactComponent as Top } from "assets/svg/top.svg";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import * as React from "react";
 import { Toaster, toast } from "sonner";
 import { useImmer } from "use-immer";
-import empty from "../assets/images/empty.png";
-import { ReactComponent as ArrowDown } from "../assets/svg/arrow_down.svg";
-import { ReactComponent as Folder } from "../assets/svg/folder.svg";
-import { ReactComponent as Loading } from "../assets/svg/loading.svg";
-import { ReactComponent as Top } from "../assets/svg/top.svg";
+import EmptyBox from "./components/EmptyBox";
 import "./webview.less";
 
 const Webview: React.FC = () => {
@@ -535,10 +535,7 @@ const Webview: React.FC = () => {
           </div>
         ))
       ) : (
-        <div className="emptyBox">
-          <img className="emptyImg" src={empty} alt="" />
-          <div className="emptyText">No images found</div>
-        </div>
+        <EmptyBox />
       )}
 
       <div className="countContainer">
