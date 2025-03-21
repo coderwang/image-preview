@@ -1,8 +1,10 @@
+import BackgroundContainer from "@/components/BackgroundContainer";
 import CustomToaster from "@/components/CustomToaster";
 import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
 import SliderContainer from "@/components/SliderContainer";
 import ThemeToggle from "@/components/ThemeToggle";
+import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
 import { numsAtom, showTypeAtom } from "@/store/typeAndNums";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
@@ -22,7 +24,7 @@ const Webview: React.FC = () => {
   );
 
   const [imageSize, setImageSize] = React.useState(50);
-  const [backgroundColor, setBackgroundColor] = React.useState("#fff");
+  const backgroundColor = useAtomValue(backgroundColorAtom);
 
   const originDirListRef = React.useRef<DirInfo[]>([]);
   const [filteredDirList, setFilteredDirList] = React.useState<DirInfo[]>([]);
@@ -44,10 +46,6 @@ const Webview: React.FC = () => {
   const [totalCount, setTotalCount] = useAtom(totalCountAtom);
 
   const timer = React.useRef<number>(Infinity);
-
-  const backgroundList = React.useMemo(() => {
-    return ["#fff", "#8eeed8", "#8ec6ee", "#ee8ead", "#eead8e"];
-  }, []);
 
   React.useEffect(() => {
     VsCodeApi.postMessage({
@@ -255,22 +253,7 @@ const Webview: React.FC = () => {
           value={imageSize}
           onChange={(value) => setImageSize(value as number)}
         />
-        <div className="backgroundContainer">
-          <div className="backgroundTitle">Background color: </div>
-          {backgroundList.map((item) => {
-            return (
-              <div
-                className="backgroundBox"
-                style={{
-                  backgroundColor: item,
-                  transform:
-                    backgroundColor === item ? "scale(1.2)" : "scale(1)",
-                }}
-                onClick={() => setBackgroundColor(item)}
-              />
-            );
-          })}
-        </div>
+        <BackgroundContainer />
         <div className="btnContainer">
           <div className="gradientBtn gradientStatic" onClick={expandAll}>
             Expand All
