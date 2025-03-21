@@ -1,4 +1,4 @@
-import { numsAtom, showTypeAtom } from "@/store/typeAndNums";
+import { numsAtom, showTypeAtom } from "@/store/imageType";
 import { useAtom, useAtomValue } from "jotai";
 import React from "react";
 import styles from "./index.module.less";

@@ -6,48 +6,45 @@ import SliderContainer from "@/components/SliderContainer";
 import ThemeToggle from "@/components/ThemeToggle";
 import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
-import { numsAtom, showTypeAtom } from "@/store/typeAndNums";
+import { imageSizeAtom } from "@/store/imageSize";
+import { numsAtom, showTypeAtom } from "@/store/imageType";
+import { searchValueAtom } from "@/store/searchValue";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import * as React from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useImmer } from "use-immer";
 import CounterContainer from "../components/CounterContainer";
 import EmptyBox from "../components/EmptyBox";
 import "./webview.less";
 
-const Webview: React.FC = () => {
-  const [pageStatus, setPageStatus] = React.useState<"loading" | "ready">(
-    "loading"
-  );
+const Webview: FC = () => {
+  const [pageStatus, setPageStatus] = useState<"loading" | "ready">("loading");
 
-  const [imageSize, setImageSize] = React.useState(50);
-  const backgroundColor = useAtomValue(backgroundColorAtom);
-
-  const originDirListRef = React.useRef<DirInfo[]>([]);
-  const [filteredDirList, setFilteredDirList] = React.useState<DirInfo[]>([]);
-
-  const [searchValue, setSearchValue] = React.useState<string>("");
-
+  const searchValue = useAtomValue(searchValueAtom);
   const showType = useAtomValue(showTypeAtom);
+  const imageSize = useAtomValue(imageSizeAtom);
+  const backgroundColor = useAtomValue(backgroundColorAtom);
   const setNums = useSetAtom(numsAtom);
+  const [filteredCount, setFilteredCount] = useAtom(filteredCountAtom);
+  const [totalCount, setTotalCount] = useAtom(totalCountAtom);
 
-  const [currentImageUrl, setCurrentImageUrl] = React.useState<string>("");
+  const originDirListRef = useRef<DirInfo[]>([]);
+  const [filteredDirList, setFilteredDirList] = useState<DirInfo[]>([]);
+
+  const [currentImageUrl, setCurrentImageUrl] = useState<string>("");
   const [imageBasicInfo, setImageBasicInfo] = useImmer<
     Record<ImageInfo["url"], ImageBasicInfo>
   >({});
 
-  const [projectName, setProjectName] = React.useState<string>("");
-  const [dirPath, setDirPath] = React.useState<string>("");
+  const [projectName, setProjectName] = useState<string>("");
+  const [dirPath, setDirPath] = useState<string>("");
 
-  const [filteredCount, setFilteredCount] = useAtom(filteredCountAtom);
-  const [totalCount, setTotalCount] = useAtom(totalCountAtom);
+  const timer = useRef<number>(Infinity);
 
-  const timer = React.useRef<number>(Infinity);
-
-  React.useEffect(() => {
+  useEffect(() => {
     VsCodeApi.postMessage({
       command: "requestImages",
     });
@@ -71,7 +68,7 @@ const Webview: React.FC = () => {
     });
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (Object.values(showType).every((item) => item) && searchValue === "") {
       setFilteredDirList(originDirListRef.current);
       setFilteredCount(totalCount);
@@ -242,17 +239,9 @@ const Webview: React.FC = () => {
       </div>
 
       <div className="actionBar">
-        <SearchContainer
-          value={searchValue}
-          onChange={(e) => {
-            setSearchValue(e.target.value);
-          }}
-        />
+        <SearchContainer />
         <ImageTypeContainer />
-        <SliderContainer
-          value={imageSize}
-          onChange={(value) => setImageSize(value as number)}
-        />
+        <SliderContainer />
         <BackgroundContainer />
         <div className="btnContainer">
           <div className="gradientBtn gradientStatic" onClick={expandAll}>

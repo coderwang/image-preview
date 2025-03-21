@@ -1,28 +1,22 @@
 import { Theme } from "@/consts/enum";
+import { searchValueAtom } from "@/store/searchValue";
 import { isThemeToggleIntersectingAtom, themeAtom } from "@/store/theme";
 import { ReactComponent as Top } from "assets/svg/top.svg";
 import { useAtom, useAtomValue } from "jotai";
 import React from "react";
 import styles from "./index.module.less";
 
-interface SearchContainerProps {
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
-const SearchContainer: React.FC<SearchContainerProps> = ({
-  value,
-  onChange,
-}) => {
+const SearchContainer: React.FC = () => {
   const isThemeToggleIntersecting = useAtomValue(isThemeToggleIntersectingAtom);
   const [theme, setTheme] = useAtom(themeAtom);
+  const [searchValue, setSearchValue] = useAtom(searchValueAtom);
 
   return (
     <div className={styles.searchContainer}>
       <div className="searchTitle">Search:</div>
       <input
-        value={value}
-        onChange={onChange}
+        value={searchValue}
+        onChange={(e) => setSearchValue(e.target.value)}
         type="text"
         placeholder="Image name"
       />
