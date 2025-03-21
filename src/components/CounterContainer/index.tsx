@@ -1,4 +1,4 @@
-import { filteredCountAtom, totalCountAtom } from "@/webview/store/count";
+import { filteredCountAtom, totalCountAtom } from "@/store/count";
 import { useAtomValue } from "jotai";
 import React from "react";
 import styles from "./index.module.less";

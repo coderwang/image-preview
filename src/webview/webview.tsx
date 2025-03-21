@@ -1,3 +1,4 @@
+import { filteredCountAtom, totalCountAtom } from "@/store/count";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
@@ -8,9 +9,8 @@ import "rc-slider/assets/index.css";
 import * as React from "react";
 import { Toaster, toast } from "sonner";
 import { useImmer } from "use-immer";
-import CounterContainer from "./components/CounterContainer";
-import EmptyBox from "./components/EmptyBox";
-import { filteredCountAtom, totalCountAtom } from "./store/count";
+import CounterContainer from "../components/CounterContainer";
+import EmptyBox from "../components/EmptyBox";
 import "./webview.less";
 
 const Webview: React.FC = () => {
