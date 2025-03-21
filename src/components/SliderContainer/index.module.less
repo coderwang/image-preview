@@ -1,0 +1,35 @@
+.sliderContainer {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+
+  :global {
+    .sliderTitle {
+      flex-shrink: 0;
+      width: 140px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .slider {
+      max-width: 200px;
+      cursor: pointer;
+
+      .rc-slider-track {
+        background-color: var(--slider-color);
+      }
+
+      .rc-slider-handle {
+        border: 2px solid var(--slider-color);
+
+        &:focus-visible {
+          box-shadow: none;
+        }
+
+        &:hover {
+          box-shadow: 0 0 0 5px var(--slider-shadow);
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import CustomToaster from "@/components/CustomToaster";
 import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
+import SliderContainer from "@/components/SliderContainer";
 import ThemeToggle from "@/components/ThemeToggle";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
 import { numsAtom, showTypeAtom } from "@/store/typeAndNums";
@@ -8,8 +9,6 @@ import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import Slider from "rc-slider";
-import "rc-slider/assets/index.css";
 import * as React from "react";
 import { toast } from "sonner";
 import { useImmer } from "use-immer";
@@ -252,16 +251,10 @@ const Webview: React.FC = () => {
           }}
         />
         <ImageTypeContainer />
-        <div className="sliderContainer">
-          <div className="sliderTitle">Image size({imageSize}px):</div>
-          <Slider
-            className="slider"
-            min={30}
-            max={200}
-            value={imageSize}
-            onChange={(value) => setImageSize(value as number)}
-          />
-        </div>
+        <SliderContainer
+          value={imageSize}
+          onChange={(value) => setImageSize(value as number)}
+        />
         <div className="backgroundContainer">
           <div className="backgroundTitle">Background color: </div>
           {backgroundList.map((item) => {

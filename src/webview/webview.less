@@ -32,39 +32,6 @@
     z-index: 10;
     transition: all 0.3s ease;
 
-    .sliderContainer {
-      display: flex;
-      align-items: center;
-      padding: 8px 12px;
-
-      .sliderTitle {
-        flex-shrink: 0;
-        width: 140px;
-        font-size: 14px;
-        color: var(--text-secondary);
-      }
-
-      .slider {
-        max-width: 200px;
-
-        .rc-slider-track {
-          background-color: var(--slider-color);
-        }
-
-        .rc-slider-handle {
-          border: 2px solid var(--slider-color);
-
-          &:focus-visible {
-            box-shadow: 0 0 0 5px var(--slider-shadow);
-          }
-        }
-
-        .rc-slider-handle-dragging {
-          box-shadow: 0 0 0 5px var(--slider-shadow);
-        }
-      }
-    }
-
     .backgroundContainer {
       display: flex;
       align-items: center;
