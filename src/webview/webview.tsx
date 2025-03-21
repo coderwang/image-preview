@@ -1,4 +1,5 @@
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
+import { themeAtom } from "@/store/theme";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
@@ -17,9 +18,7 @@ const Webview: React.FC = () => {
   const [pageStatus, setPageStatus] = React.useState<"loading" | "ready">(
     "loading"
   );
-  const [theme, setTheme] = React.useState(
-    document.documentElement.getAttribute("data-theme") as Theme
-  );
+  const [theme, setTheme] = useAtom(themeAtom);
   const [imageSize, setImageSize] = React.useState(50);
   const [backgroundColor, setBackgroundColor] = React.useState("#fff");
 
@@ -173,11 +172,6 @@ const Webview: React.FC = () => {
   const handleThemeChange = () => {
     setTheme((prev) => {
       const newTheme = prev === "light" ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", newTheme);
-      VsCodeApi.postMessage({
-        command: "updateThemeConfig",
-        theme: newTheme,
-      });
       return newTheme;
     });
   };
