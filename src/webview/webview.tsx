@@ -1,10 +1,12 @@
+import ThemeToggle from "@/components/ThemeToggle";
+import { Theme } from "@/consts/enum";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
-import { themeAtom } from "@/store/theme";
+import { isThemeToggleIntersectingAtom, themeAtom } from "@/store/theme";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
 import { ReactComponent as Top } from "assets/svg/top.svg";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import * as React from "react";
@@ -62,22 +64,7 @@ const Webview: React.FC = () => {
     return ["#fff", "#8eeed8", "#8ec6ee", "#ee8ead", "#eead8e"];
   }, []);
 
-  const [isThemeToggleIntersecting, setIsThemeToggleIntersecting] =
-    React.useState(true);
-  const themeToggleRef = React.useCallback((node: HTMLDivElement) => {
-    if (node) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsThemeToggleIntersecting(true);
-          } else {
-            setIsThemeToggleIntersecting(false);
-          }
-        });
-      });
-      observer.observe(node);
-    }
-  }, []);
+  const isThemeToggleIntersecting = useAtomValue(isThemeToggleIntersectingAtom);
 
   React.useEffect(() => {
     VsCodeApi.postMessage({
@@ -168,13 +155,6 @@ const Webview: React.FC = () => {
       setFilteredCount(count);
     }
   }, [showType, searchValue]);
-
-  const handleThemeChange = () => {
-    setTheme((prev) => {
-      const newTheme = prev === "light" ? "dark" : "light";
-      return newTheme;
-    });
-  };
 
   const expandAll = () => {
     document.querySelectorAll(`.imageCard`).forEach((item) => {
@@ -292,13 +272,7 @@ const Webview: React.FC = () => {
           Previewing <i>{dirPath}</i> directory under <i>{projectName}</i>{" "}
           project!
         </div>
-        <div
-          ref={themeToggleRef}
-          className="themeToggle"
-          onClick={handleThemeChange}
-        >
-          {theme === "light" ? "🌙" : "☀️"}
-        </div>
+        <ThemeToggle />
       </div>
 
       <div className="actionBar">
@@ -312,13 +286,22 @@ const Webview: React.FC = () => {
           />
           <div className="iconContainer">
             {!isThemeToggleIntersecting && (
-              <div className="themeIcon" onClick={handleThemeChange}>
-                {theme === "light" ? "🌙" : "☀️"}
+              <div
+                className="themeIcon"
+                onClick={() => {
+                  setTheme((prev) => {
+                    const newTheme =
+                      prev === Theme.Light ? Theme.Dark : Theme.Light;
+                    return newTheme;
+                  });
+                }}
+              >
+                {theme === Theme.Light ? "🌙" : "☀️"}
               </div>
             )}
             <Top
               className="backTop"
-              color={theme === "light" ? "#0073e6" : "#999"}
+              color={theme === Theme.Light ? "#0073e6" : "#999"}
               onClick={() => {
                 window.scrollTo({
                   top: 0,
