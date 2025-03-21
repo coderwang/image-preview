@@ -2,12 +2,15 @@ import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
 import { ReactComponent as Top } from "assets/svg/top.svg";
+import { useAtom } from "jotai";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import * as React from "react";
 import { Toaster, toast } from "sonner";
 import { useImmer } from "use-immer";
+import CounterContainer from "./components/CounterContainer";
 import EmptyBox from "./components/EmptyBox";
+import { filteredCountAtom, totalCountAtom } from "./store/count";
 import "./webview.less";
 
 const Webview: React.FC = () => {
@@ -51,8 +54,8 @@ const Webview: React.FC = () => {
     webp: 0,
     svg: 0,
   });
-  const [filteredCount, setFilteredCount] = React.useState<number>(0);
-  const [totalCount, setTotalCount] = React.useState<number>(0);
+  const [filteredCount, setFilteredCount] = useAtom(filteredCountAtom);
+  const [totalCount, setTotalCount] = useAtom(totalCountAtom);
 
   const timer = React.useRef<number>(Infinity);
 
@@ -538,10 +541,7 @@ const Webview: React.FC = () => {
         <EmptyBox />
       )}
 
-      <div className="countContainer">
-        <div>result: {filteredCount}</div>
-        <div>total: {totalCount}</div>
-      </div>
+      <CounterContainer />
     </div>
   );
 };
