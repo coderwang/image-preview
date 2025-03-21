@@ -1,12 +1,11 @@
+import SearchContainer from "@/components/SearchContainer";
 import ThemeToggle from "@/components/ThemeToggle";
-import { Theme } from "@/consts/enum";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
-import { isThemeToggleIntersectingAtom, themeAtom } from "@/store/theme";
+import { themeAtom } from "@/store/theme";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
-import { ReactComponent as Top } from "assets/svg/top.svg";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import * as React from "react";
@@ -63,8 +62,6 @@ const Webview: React.FC = () => {
   const backgroundList = React.useMemo(() => {
     return ["#fff", "#8eeed8", "#8ec6ee", "#ee8ead", "#eead8e"];
   }, []);
-
-  const isThemeToggleIntersecting = useAtomValue(isThemeToggleIntersectingAtom);
 
   React.useEffect(() => {
     VsCodeApi.postMessage({
@@ -276,41 +273,12 @@ const Webview: React.FC = () => {
       </div>
 
       <div className="actionBar">
-        <div className="searchContainer">
-          <div className="searchTitle">Search:</div>
-          <input
-            value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            type="text"
-            placeholder="Image name"
-          />
-          <div className="iconContainer">
-            {!isThemeToggleIntersecting && (
-              <div
-                className="themeIcon"
-                onClick={() => {
-                  setTheme((prev) => {
-                    const newTheme =
-                      prev === Theme.Light ? Theme.Dark : Theme.Light;
-                    return newTheme;
-                  });
-                }}
-              >
-                {theme === Theme.Light ? "🌙" : "☀️"}
-              </div>
-            )}
-            <Top
-              className="backTop"
-              color={theme === Theme.Light ? "#0073e6" : "#999"}
-              onClick={() => {
-                window.scrollTo({
-                  top: 0,
-                  behavior: "smooth",
-                });
-              }}
-            />
-          </div>
-        </div>
+        <SearchContainer
+          value={searchValue}
+          onChange={(e) => {
+            setSearchValue(e.target.value);
+          }}
+        />
         <div className="numsContainer">
           <div className="numsTitle">Image type:</div>
           <div

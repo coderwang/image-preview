@@ -1,0 +1,59 @@
+import { Theme } from "@/consts/enum";
+import { isThemeToggleIntersectingAtom, themeAtom } from "@/store/theme";
+import { ReactComponent as Top } from "assets/svg/top.svg";
+import { useAtom, useAtomValue } from "jotai";
+import React from "react";
+import styles from "./index.module.less";
+
+interface SearchContainerProps {
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+const SearchContainer: React.FC<SearchContainerProps> = ({
+  value,
+  onChange,
+}) => {
+  const isThemeToggleIntersecting = useAtomValue(isThemeToggleIntersectingAtom);
+  const [theme, setTheme] = useAtom(themeAtom);
+
+  return (
+    <div className={styles.searchContainer}>
+      <div className="searchTitle">Search:</div>
+      <input
+        value={value}
+        onChange={onChange}
+        type="text"
+        placeholder="Image name"
+      />
+      <div className="iconContainer">
+        {!isThemeToggleIntersecting && (
+          <div
+            className="themeIcon"
+            onClick={() => {
+              setTheme((prev) => {
+                const newTheme =
+                  prev === Theme.Light ? Theme.Dark : Theme.Light;
+                return newTheme;
+              });
+            }}
+          >
+            {theme === Theme.Light ? "🌙" : "☀️"}
+          </div>
+        )}
+        <Top
+          className="backTop"
+          color={theme === Theme.Light ? "#0073e6" : "#999"}
+          onClick={() => {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+export default SearchContainer;
