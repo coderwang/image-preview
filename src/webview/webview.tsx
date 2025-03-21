@@ -1,11 +1,13 @@
 import CustomToaster from "@/components/CustomToaster";
+import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
 import ThemeToggle from "@/components/ThemeToggle";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
+import { numsAtom, showTypeAtom } from "@/store/typeAndNums";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 import * as React from "react";
@@ -28,15 +30,8 @@ const Webview: React.FC = () => {
 
   const [searchValue, setSearchValue] = React.useState<string>("");
 
-  const [showType, updateShowType] = useImmer<Record<ImageType, boolean>>({
-    avif: true,
-    ico: true,
-    jpg: true,
-    png: true,
-    gif: true,
-    webp: true,
-    svg: true,
-  });
+  const showType = useAtomValue(showTypeAtom);
+  const setNums = useSetAtom(numsAtom);
 
   const [currentImageUrl, setCurrentImageUrl] = React.useState<string>("");
   const [imageBasicInfo, setImageBasicInfo] = useImmer<
@@ -45,15 +40,7 @@ const Webview: React.FC = () => {
 
   const [projectName, setProjectName] = React.useState<string>("");
   const [dirPath, setDirPath] = React.useState<string>("");
-  const [nums, setNums] = React.useState<Record<ImageType, number>>({
-    avif: 0,
-    ico: 0,
-    jpg: 0,
-    png: 0,
-    gif: 0,
-    webp: 0,
-    svg: 0,
-  });
+
   const [filteredCount, setFilteredCount] = useAtom(filteredCountAtom);
   const [totalCount, setTotalCount] = useAtom(totalCountAtom);
 
@@ -264,57 +251,7 @@ const Webview: React.FC = () => {
             setSearchValue(e.target.value);
           }}
         />
-        <div className="numsContainer">
-          <div className="numsTitle">Image type:</div>
-          <div
-            className="btn"
-            onClick={() => {
-              updateShowType((draft) => {
-                Object.keys(draft).forEach((key) => {
-                  draft[key as ImageType] = true;
-                });
-              });
-            }}
-          >
-            All
-          </div>
-          <div
-            className="btn"
-            onClick={() => {
-              updateShowType((draft) => {
-                Object.keys(draft).forEach((key) => {
-                  draft[key as ImageType] = !draft[key as ImageType];
-                });
-              });
-            }}
-          >
-            Reversed
-          </div>
-          {(Object.entries(nums) as [ImageType, number][]).map(
-            ([item, count]) => {
-              return (
-                count > 0 && (
-                  <div className="numsItem" key={item}>
-                    <input
-                      id={item}
-                      type="checkbox"
-                      checked={showType[item]}
-                      onChange={() =>
-                        updateShowType((draft) => {
-                          draft[item] = !draft[item];
-                        })
-                      }
-                    />
-                    <label htmlFor={item}>
-                      {item.toUpperCase()}
-                      <i>({count})</i>
-                    </label>
-                  </div>
-                )
-              );
-            }
-          )}
-        </div>
+        <ImageTypeContainer />
         <div className="sliderContainer">
           <div className="sliderTitle">Image size({imageSize}px):</div>
           <Slider

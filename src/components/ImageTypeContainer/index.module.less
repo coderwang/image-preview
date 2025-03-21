@@ -1,0 +1,55 @@
+.imageTypeContainer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  gap: 12px;
+  color: var(--text-secondary);
+
+  :global {
+    .imageTypeTitle {
+      flex-shrink: 0;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .imageTypeItemBtn {
+      color: #fff;
+      font-size: 10px;
+      font-weight: 500;
+      padding: 3px 8px;
+      border-radius: 4px;
+      line-height: 10px;
+      cursor: pointer;
+      background-color: var(--title-bg);
+      transition: all 0.3s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 115, 230, 0.2);
+      }
+
+      &:active {
+        opacity: 0.8;
+      }
+    }
+
+    .imageTypeItem {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+
+      input {
+        cursor: pointer;
+        outline: none;
+      }
+
+      label {
+        cursor: pointer;
+        i {
+          color: #0078d4;
+        }
+      }
+    }
+  }
+}
