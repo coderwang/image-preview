@@ -1,13 +1,14 @@
+import { ReactComponent as SettingIcon } from "@/assets/svg/settings.svg";
 import { Theme } from "@/consts/enum";
 import { searchValueAtom } from "@/store/searchValue";
-import { isThemeToggleIntersectingAtom, themeAtom } from "@/store/theme";
+import { isSettingIconIntersectingAtom, themeAtom } from "@/store/theme";
 import { ReactComponent as Top } from "assets/svg/top.svg";
 import { useAtom, useAtomValue } from "jotai";
 import React from "react";
 import styles from "./index.module.less";
 
 const SearchContainer: React.FC = () => {
-  const isThemeToggleIntersecting = useAtomValue(isThemeToggleIntersectingAtom);
+  const isSettingIconIntersecting = useAtomValue(isSettingIconIntersectingAtom);
   const [theme, setTheme] = useAtom(themeAtom);
   const [searchValue, setSearchValue] = useAtom(searchValueAtom);
 
@@ -21,7 +22,7 @@ const SearchContainer: React.FC = () => {
         placeholder="Image name"
       />
       <div className="iconContainer">
-        {!isThemeToggleIntersecting && (
+        {!isSettingIconIntersecting && (
           <div
             className="themeIcon"
             onClick={() => {
@@ -32,12 +33,15 @@ const SearchContainer: React.FC = () => {
               });
             }}
           >
-            {theme === Theme.Light ? "🌙" : "☀️"}
+            <SettingIcon
+              className="settingIcon"
+              color={theme === Theme.Light ? "#4CB6EC" : "#999"}
+            />
           </div>
         )}
         <Top
           className="backTop"
-          color={theme === Theme.Light ? "#0073e6" : "#999"}
+          color={theme === Theme.Light ? "#4CB6EC" : "#999"}
           onClick={() => {
             window.scrollTo({
               top: 0,

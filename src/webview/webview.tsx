@@ -1,8 +1,8 @@
 import BackgroundContainer from "@/components/BackgroundContainer";
 import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
+import Settings from "@/components/Settings";
 import SliderContainer from "@/components/SliderContainer";
-import ThemeToggle from "@/components/ThemeToggle";
 import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
 import { imageSizeAtom } from "@/store/imageSize";
@@ -233,7 +233,7 @@ const Webview: FC = () => {
           Previewing <i>{dirPath}</i> directory under <i>{projectName}</i>{" "}
           project!
         </div>
-        <ThemeToggle />
+        <Settings />
       </div>
 
       <div className="actionBar">
