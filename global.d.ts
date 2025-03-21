@@ -63,6 +63,12 @@ declare module "*.module.less" {
   export default classes;
 }
 
+declare namespace VsCodeApi {
+  export const postMessage: (message: any) => void;
+  export const getState: () => any;
+  export const setState: (state: any) => void;
+}
+
 type ImageType = "avif" | "ico" | "jpg" | "png" | "gif" | "webp" | "svg";
 
 interface ImageInfo {
