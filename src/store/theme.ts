@@ -1,8 +1,6 @@
 import { Theme } from "@/consts/enum";
 import { atom } from "jotai";
 
-const isSettingIconIntersectingAtom = atom(true);
-
 const baseThemeAtom = atom<Theme>(
   document.documentElement.getAttribute("data-theme") as Theme
 );
@@ -22,4 +20,4 @@ const themeAtom = atom(
   }
 );
 
-export { isSettingIconIntersectingAtom, themeAtom };
+export { themeAtom };

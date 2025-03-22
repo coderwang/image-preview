@@ -1,7 +1,7 @@
 import BackgroundContainer from "@/components/BackgroundContainer";
 import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
-import Settings from "@/components/Settings";
+import SettingButton from "@/components/SettingButton";
 import SliderContainer from "@/components/SliderContainer";
 import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
@@ -243,7 +243,7 @@ const Webview: FC = () => {
             }}
           ></Trans>
         </div>
-        <Settings />
+        <SettingButton />
       </div>
 
       <div className="actionBar">

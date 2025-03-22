@@ -1,19 +1,20 @@
 import { ReactComponent as SettingIcon } from "@/assets/svg/settings.svg";
 import { Theme } from "@/consts/enum";
 import useSettingModal from "@/hooks/useSettingModal";
-import { isSettingIconIntersectingAtom, themeAtom } from "@/store/theme";
+import { isSettingIconIntersectingAtom } from "@/store/settings";
+import { themeAtom } from "@/store/theme";
 import { useAtomValue, useSetAtom } from "jotai";
 import React from "react";
 import styles from "./index.module.less";
 
-const Settings = () => {
+const SettingButton = () => {
   const theme = useAtomValue(themeAtom);
   const setIsSettingIconIntersecting = useSetAtom(
     isSettingIconIntersectingAtom
   );
   const { showSettingModal } = useSettingModal();
 
-  const settingRef = React.useCallback((node: HTMLDivElement) => {
+  const settingButtonRef = React.useCallback((node: HTMLDivElement) => {
     if (node) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
@@ -30,8 +31,8 @@ const Settings = () => {
 
   return (
     <div
-      ref={settingRef}
-      className={styles.settings}
+      ref={settingButtonRef}
+      className={styles.settingButton}
       onClick={showSettingModal}
     >
       <SettingIcon
@@ -42,4 +43,4 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+export default SettingButton;
