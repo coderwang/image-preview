@@ -1,6 +1,7 @@
 import { Language } from "@/consts/enum";
-import i18n from "i18next";
+import store from "@/store";
+import { languageAtom } from "@/store/language";
 
 export const isChinese = () => {
-  return i18n.language === Language.Chinese;
+  return store.get(languageAtom) === Language.Chinese;
 };
