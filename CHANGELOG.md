@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.0.0] - 2025-03-22
+
+### 🎉 New Version
+
+- Import Ant Design components library to improve the UI.
+- Support i18n.
+
 ## [1.7.2] - 2025-03-21
 
 ### 📖 Documentation
@@ -96,7 +103,7 @@
 
 ## [1.0.0] - 2025-02-11
 
-### 🚀 Added
+### 🎉 First Release
 
 - Recursive preview of all images in the folder, including `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`.
 - Adjustable image size.

@@ -4,7 +4,7 @@
 
 这是一个强大的 VSCode 插件，允许你预览文件夹中的所有图片，包括`avif`, `ico`, `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`。
 
-![image-preview](./src/assets/readme/webview_ui.png)
+![image-preview](./src/assets/readme/webview_ui_zh.png)
 
 ## 功能
 
@@ -17,7 +17,8 @@
 - 点击图片名称，将名称复制到剪贴板。
 - 点击图片，将图片转换为 base64，并复制到剪贴板。
 - 长按图片在侧边栏中显示，长按时间通常在 100 到 1000ms 之间（取决于设备性能）。
-- 支持暗黑模式。
+- 支持主题切换（亮色 / 暗色）。
+- 支持语言切换（中文 / 英文）。
 
 ## 使用方式
 

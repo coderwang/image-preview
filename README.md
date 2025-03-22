@@ -4,7 +4,7 @@
 
 This is a powerful VSCode extension that allows you to preview all images in the folder, including `avif`, `ico`, `jpg`, `jpeg`, `png`, `gif`, `webp`, `svg`.
 
-![image-preview](./src/assets/readme/webview_ui.png)
+![image-preview](./src/assets/readme/webview_ui_en.png)
 
 ## Features
 
@@ -17,7 +17,8 @@ This is a powerful VSCode extension that allows you to preview all images in the
 - Click the image name to copy it to the clipboard.
 - Click the image to convert it to base64, and copy to the clipboard.
 - Long-pressing an image reveals it in the sidebar, and the tap duration is usually between 100 and 1000 ms (it depends on your device performance).
-- Support dark mode.
+- Support setting theme (light / dark).
+- Support setting language (en / zh).
 
 ## Usage
 
