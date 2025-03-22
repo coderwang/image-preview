@@ -3,11 +3,13 @@ import { themeAtom } from "@/store/theme";
 import { App, Radio } from "antd";
 import { useAtom } from "jotai";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 
 const useSettingModal = () => {
   const [theme, setTheme] = useAtom(themeAtom);
   const { modal } = App.useApp();
+  const { t } = useTranslation();
 
   const showSettingModal = () => {
     modal.info({
@@ -35,6 +37,7 @@ const useSettingModal = () => {
         </div>
       ),
       icon: null,
+      okText: t("ok"),
     });
   };
 
