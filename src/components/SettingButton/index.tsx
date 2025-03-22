@@ -1,7 +1,9 @@
 import { ReactComponent as SettingIcon } from "@/assets/svg/settings.svg";
 import { Theme } from "@/consts/enum";
-import useSettingModal from "@/hooks/useSettingModal";
-import { isSettingIconIntersectingAtom } from "@/store/settings";
+import {
+  isSettingIconIntersectingAtom,
+  isSettingModalOpenAtom,
+} from "@/store/settings";
 import { themeAtom } from "@/store/theme";
 import { useAtomValue, useSetAtom } from "jotai";
 import React from "react";
@@ -12,7 +14,7 @@ const SettingButton = () => {
   const setIsSettingIconIntersecting = useSetAtom(
     isSettingIconIntersectingAtom
   );
-  const { showSettingModal } = useSettingModal();
+  const setIsSettingModalOpen = useSetAtom(isSettingModalOpenAtom);
 
   const settingButtonRef = React.useCallback((node: HTMLDivElement) => {
     if (node) {
@@ -33,7 +35,7 @@ const SettingButton = () => {
     <div
       ref={settingButtonRef}
       className={styles.settingButton}
-      onClick={showSettingModal}
+      onClick={() => setIsSettingModalOpen(true)}
     >
       <SettingIcon
         className="settingIcon"

@@ -1,11 +1,13 @@
 import { ReactComponent as SettingIcon } from "@/assets/svg/settings.svg";
 import { Theme } from "@/consts/enum";
-import useSettingModal from "@/hooks/useSettingModal";
 import { searchValueAtom } from "@/store/searchValue";
-import { isSettingIconIntersectingAtom } from "@/store/settings";
+import {
+  isSettingIconIntersectingAtom,
+  isSettingModalOpenAtom,
+} from "@/store/settings";
 import { themeAtom } from "@/store/theme";
 import { ReactComponent as Top } from "assets/svg/top.svg";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
@@ -14,8 +16,8 @@ const SearchContainer: React.FC = () => {
   const isSettingIconIntersecting = useAtomValue(isSettingIconIntersectingAtom);
   const theme = useAtomValue(themeAtom);
   const [searchValue, setSearchValue] = useAtom(searchValueAtom);
-  const { showSettingModal } = useSettingModal();
   const { t } = useTranslation();
+  const setIsSettingModalOpen = useSetAtom(isSettingModalOpenAtom);
 
   return (
     <div className={styles.searchContainer}>
@@ -28,7 +30,10 @@ const SearchContainer: React.FC = () => {
       />
       <div className="iconContainer">
         {!isSettingIconIntersecting && (
-          <div className="themeIcon" onClick={showSettingModal}>
+          <div
+            className="themeIcon"
+            onClick={() => setIsSettingModalOpen(true)}
+          >
             <SettingIcon
               className="settingIcon"
               color={theme === Theme.Light ? "#4CB6EC" : "#999"}

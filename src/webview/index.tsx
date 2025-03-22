@@ -1,3 +1,4 @@
+import SettingModal from "@/components/SettingModal";
 import { Theme } from "@/consts/enum";
 import { themeAtom } from "@/store/theme";
 import { isChinese } from "@/utils";
@@ -46,6 +47,7 @@ const App: React.FC = () => {
           }}
         />
         <Webview />
+        <SettingModal />
       </AntdApp>
     </ConfigProvider>
   );
