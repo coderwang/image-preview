@@ -10,13 +10,18 @@ const BackgroundContainer = () => {
 
   useEffect(() => {
     if (isPickerOpen) {
-      document.body.style.overflow = "hidden";
+      const style = document.createElement("style");
+      style.id = "bgc-overflow-style";
+      style.innerHTML = "html body { overflow-y: hidden }";
+      document.head.appendChild(style);
     } else {
-      document.body.style.overflow = "unset";
+      const style = document.getElementById("bgc-overflow-style");
+      style?.remove();
     }
 
     return () => {
-      document.body.style.overflow = "unset";
+      const style = document.getElementById("bgc-overflow-style");
+      style?.remove();
     };
   }, [isPickerOpen]);
 
