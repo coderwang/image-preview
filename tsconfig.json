@@ -9,6 +9,7 @@
     "rootDir": "src",
     "strict": true,
     "jsx": "react",
+    "resolveJsonModule": true,
     "paths": {
       "@/*": ["src/*"],
       "assets/*": ["src/assets/*"]

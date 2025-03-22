@@ -5,6 +5,7 @@ import { Provider as JotaiProvider, useAtomValue } from "jotai";
 import React, { FC, ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { Toaster } from "sonner";
+import "../i18n";
 import store from "../store";
 import "./index.less";
 import Webview from "./webview";

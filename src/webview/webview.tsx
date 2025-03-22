@@ -13,6 +13,7 @@ import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React, { FC, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useImmer } from "use-immer";
 import CounterContainer from "../components/CounterContainer";
@@ -20,6 +21,7 @@ import EmptyBox from "../components/EmptyBox";
 import "./webview.less";
 
 const Webview: FC = () => {
+  const { t } = useTranslation();
   const [pageStatus, setPageStatus] = useState<"loading" | "ready">("loading");
 
   const searchValue = useAtomValue(searchValueAtom);
@@ -243,10 +245,10 @@ const Webview: FC = () => {
         <BackgroundContainer />
         <div className="btnContainer">
           <div className="gradientBtn gradientStatic" onClick={expandAll}>
-            Expand All
+            {t("expand_all")}
           </div>
           <div className="gradientBtn gradientBorder" onClick={collapseAll}>
-            Collapse All
+            {t("collapse_all")}
           </div>
         </div>
       </div>

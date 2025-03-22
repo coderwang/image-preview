@@ -102,11 +102,13 @@
   },
   "dependencies": {
     "antd": "^5.24.4",
+    "i18next": "^24.2.3",
     "jotai": "^2.12.2",
     "jotai-immer": "^0.4.1",
     "rc-slider": "^11.1.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^15.4.1",
     "sonner": "^1.7.4",
     "use-immer": "^0.11.0"
   }
