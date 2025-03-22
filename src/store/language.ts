@@ -1,4 +1,5 @@
 import { Language } from "@/consts/enum";
+import i18n from "i18next";
 import { atom } from "jotai";
 
 const baseLanguageAtom = atom<Language>(
@@ -13,6 +14,7 @@ const languageAtom = atom(
 
     set(baseLanguageAtom, newLanguage);
     document.documentElement.setAttribute("lang", newLanguage);
+    i18n.changeLanguage(newLanguage);
     VsCodeApi.postMessage({
       command: "updateLanguageConfig",
       language: newLanguage,

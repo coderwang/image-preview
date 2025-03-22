@@ -1,4 +1,5 @@
-import { Theme } from "@/consts/enum";
+import { Language, Theme } from "@/consts/enum";
+import { languageAtom } from "@/store/language";
 import { themeAtom } from "@/store/theme";
 import { App, Radio } from "antd";
 import { useAtom } from "jotai";
@@ -8,6 +9,7 @@ import styles from "./index.module.less";
 
 const useSettingModal = () => {
   const [theme, setTheme] = useAtom(themeAtom);
+  const [language, setLanguage] = useAtom(languageAtom);
   const { modal } = App.useApp();
   const { t } = useTranslation();
 
@@ -18,9 +20,9 @@ const useSettingModal = () => {
       content: (
         <div className={styles.settingsContent}>
           <div className={styles.themeContainer}>
-            <div className={styles.themeTitle}>{t("theme")}:</div>
+            <div className={styles.title}>{t("theme")}</div>
             <Radio.Group
-              className={styles.themeRadioGroup}
+              className={styles.radioGroup}
               block
               options={[
                 { label: `☀️ ${t("light")}`, value: Theme.Light },
@@ -31,6 +33,23 @@ const useSettingModal = () => {
               buttonStyle="solid"
               onChange={(e) => {
                 setTheme(e.target.value);
+              }}
+            />
+          </div>
+          <div className={styles.languageContainer}>
+            <div className={styles.title}>{t("language")}</div>
+            <Radio.Group
+              className={styles.radioGroup}
+              block
+              options={[
+                { label: "🇨🇳 简体中文", value: Language.Chinese },
+                { label: "🇺🇸 English", value: Language.English },
+              ]}
+              defaultValue={language}
+              optionType="button"
+              buttonStyle="solid"
+              onChange={(e) => {
+                setLanguage(e.target.value);
               }}
             />
           </div>

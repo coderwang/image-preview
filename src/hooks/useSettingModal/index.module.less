@@ -8,17 +8,22 @@
   }
 
   .settingsContent {
-    .themeContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .themeContainer,
+    .languageContainer {
       display: flex;
       align-items: center;
       gap: 10px;
 
-      .themeTitle {
+      .title {
         flex-shrink: 0;
-        width: 60px;
+        width: 64px;
       }
 
-      .themeRadioGroup {
+      .radioGroup {
         flex: 1;
       }
     }
