@@ -11,3 +11,30 @@
     }
   }
 }
+
+.settingsModal {
+  min-width: 350px;
+
+  :global {
+    .ant-modal-confirm-paragraph {
+      max-width: unset !important;
+    }
+  }
+
+  .settingsContent {
+    .themeContainer {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .themeTitle {
+        flex-shrink: 0;
+        width: 60px;
+      }
+
+      .themeRadioGroup {
+        flex: 1;
+      }
+    }
+  }
+}

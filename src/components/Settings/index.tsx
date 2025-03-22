@@ -1,7 +1,7 @@
 import { ReactComponent as SettingIcon } from "@/assets/svg/settings.svg";
 import { Theme } from "@/consts/enum";
 import { isSettingIconIntersectingAtom, themeAtom } from "@/store/theme";
-import { App } from "antd";
+import { App, Radio } from "antd";
 import { useAtom, useSetAtom } from "jotai";
 import React from "react";
 import styles from "./index.module.less";
@@ -31,8 +31,30 @@ const Settings = () => {
 
   const handleSettingClick = () => {
     modal.info({
+      className: styles.settingsModal,
       title: "Settings",
-      content: <div>Settings</div>,
+      content: (
+        <div className={styles.settingsContent}>
+          <div className={styles.themeContainer}>
+            <div className={styles.themeTitle}>Theme:</div>
+            <Radio.Group
+              className={styles.themeRadioGroup}
+              block
+              options={[
+                { label: "☀️ Light", value: Theme.Light },
+                { label: "🌙 Dark", value: Theme.Dark },
+              ]}
+              defaultValue={theme}
+              optionType="button"
+              buttonStyle="solid"
+              onChange={(e) => {
+                setTheme(e.target.value);
+              }}
+            />
+          </div>
+        </div>
+      ),
+      icon: null,
     });
   };
 
