@@ -1,5 +1,23 @@
 {
   "expand_all": "展开全部",
   "collapse_all": "折叠全部",
-  "ok": "好了"
+  "ok": "好了",
+  "search": "搜索",
+  "search_placeholder": "图片名称",
+  "image_type": "图片类型",
+  "all": "全选",
+  "reverse": "反选",
+  "image_size": "图片尺寸",
+  "bg_color": "背景颜色",
+  "result": "结果",
+  "total": "总数",
+  "settings": "设置",
+  "theme": "主题",
+  "language": "语言",
+  "light": "亮色",
+  "dark": "暗色",
+  "copy_image_name_success": "复制图片名称成功!",
+  "copy_base64_success": "复制base64成功!",
+  "empty_text": "未找到图片",
+  "preview_title": "正在预览<italic>{{projectName}}</italic>项目<italic>{{dirPath}}</italic>中的图片！"
 }

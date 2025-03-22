@@ -1,15 +1,17 @@
 import { numsAtom, showTypeAtom } from "@/store/imageType";
 import { useAtom, useAtomValue } from "jotai";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 
 const ImageTypeContainer = () => {
   const [showType, updateShowType] = useAtom(showTypeAtom);
   const nums = useAtomValue(numsAtom);
+  const { t } = useTranslation();
 
   return (
     <div className={styles.imageTypeContainer}>
-      <div className="imageTypeTitle">Image type:</div>
+      <div className="imageTypeTitle">{t("image_type")}:</div>
       <div
         className="imageTypeItemBtn"
         onClick={() => {
@@ -20,7 +22,7 @@ const ImageTypeContainer = () => {
           });
         }}
       >
-        All
+        {t("all")}
       </div>
       <div
         className="imageTypeItemBtn"
@@ -32,7 +34,7 @@ const ImageTypeContainer = () => {
           });
         }}
       >
-        Reversed
+        {t("reverse")}
       </div>
       {(Object.entries(nums) as [ImageType, number][]).map(([item, count]) => {
         return (

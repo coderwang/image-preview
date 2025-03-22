@@ -1,12 +1,12 @@
-import { Language, Theme } from "@/consts/enum";
+import { Theme } from "@/consts/enum";
 import { themeAtom } from "@/store/theme";
+import { isChinese } from "@/utils";
 import { App as AntdApp, theme as AntdTheme, ConfigProvider } from "antd";
 import enUS from "antd/locale/en_US";
 import zhCN from "antd/locale/zh_CN";
 import { Provider as JotaiProvider, useAtomValue } from "jotai";
 import React, { FC, ReactNode } from "react";
 import { createRoot } from "react-dom/client";
-import { useTranslation } from "react-i18next";
 import { Toaster } from "sonner";
 import "../i18n";
 import store from "../store";
@@ -17,7 +17,6 @@ window.VsCodeApi = acquireVsCodeApi();
 
 const App: React.FC = () => {
   const theme = useAtomValue(themeAtom);
-  const { i18n } = useTranslation();
 
   return (
     <ConfigProvider
@@ -27,7 +26,7 @@ const App: React.FC = () => {
             ? AntdTheme.darkAlgorithm
             : AntdTheme.defaultAlgorithm,
       }}
-      locale={i18n.language === Language.Chinese ? zhCN : enUS}
+      locale={isChinese() ? zhCN : enUS}
     >
       <AntdApp>
         <Toaster

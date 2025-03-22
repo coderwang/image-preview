@@ -2,9 +2,11 @@ import { backgroundColorAtom } from "@/store/bgc";
 import { ColorPicker } from "antd";
 import { useAtom } from "jotai";
 import React, { useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 
 const BackgroundContainer = () => {
+  const { t } = useTranslation();
   const [backgroundColor, setBackgroundColor] = useAtom(backgroundColorAtom);
   const [isPickerOpen, setIsPickerOpen] = React.useState(false);
 
@@ -31,7 +33,7 @@ const BackgroundContainer = () => {
 
   return (
     <div className={styles.backgroundContainer}>
-      <div className="backgroundTitle">Background color: </div>
+      <div className="backgroundTitle">{t("bg_color")}: </div>
       {backgroundList.map((item) => {
         return (
           <div

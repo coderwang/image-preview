@@ -1,5 +1,23 @@
 {
   "expand_all": "Expand All",
   "collapse_all": "Collapse All",
-  "ok": "OK"
+  "ok": "OK",
+  "search": "Search",
+  "search_placeholder": "Image name",
+  "image_type": "Image type",
+  "all": "All",
+  "reverse": "Reverse",
+  "image_size": "Image size",
+  "bg_color": "Background color",
+  "result": "result",
+  "total": "total",
+  "settings": "Settings",
+  "theme": "Theme",
+  "language": "Language",
+  "light": "Light",
+  "dark": "Dark",
+  "copy_image_name_success": "copy image name success!",
+  "copy_base64_success": "copy base64 success!",
+  "empty_text": "No images found",
+  "preview_title": "Previewing <italic>{{dirPath}}</italic> in <italic>{{projectName}}</italic> project!"
 }

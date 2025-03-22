@@ -13,7 +13,7 @@ import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React, { FC, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { useImmer } from "use-immer";
 import CounterContainer from "../components/CounterContainer";
@@ -232,8 +232,16 @@ const Webview: FC = () => {
     <div className="container">
       <div className="titleContainer">
         <div className="title">
-          Previewing <i>{dirPath}</i> directory under <i>{projectName}</i>{" "}
-          project!
+          <Trans
+            i18nKey="preview_title"
+            values={{
+              dirPath,
+              projectName,
+            }}
+            components={{
+              italic: <i />,
+            }}
+          ></Trans>
         </div>
         <Settings />
       </div>
@@ -327,7 +335,7 @@ const Webview: FC = () => {
                         navigator.clipboard
                           .writeText(imageBasicInfo[image.url].base64)
                           .then(() => {
-                            toast.success("copy base64 success!");
+                            toast.success(t("copy_base64_success"));
                           });
                       }
                     }}
@@ -363,7 +371,7 @@ const Webview: FC = () => {
                     className="imageName"
                     onClick={() => {
                       navigator.clipboard.writeText(image.name).then(() => {
-                        toast.success("copy image name success!");
+                        toast.success(t("copy_image_name_success"));
                       });
                     }}
                     title={image.name}

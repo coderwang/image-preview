@@ -14,17 +14,17 @@ const useSettingModal = () => {
   const showSettingModal = () => {
     modal.info({
       className: styles.settingsModal,
-      title: "Settings",
+      title: t("settings"),
       content: (
         <div className={styles.settingsContent}>
           <div className={styles.themeContainer}>
-            <div className={styles.themeTitle}>Theme:</div>
+            <div className={styles.themeTitle}>{t("theme")}:</div>
             <Radio.Group
               className={styles.themeRadioGroup}
               block
               options={[
-                { label: "☀️ Light", value: Theme.Light },
-                { label: "🌙 Dark", value: Theme.Dark },
+                { label: `☀️ ${t("light")}`, value: Theme.Light },
+                { label: `🌙 ${t("dark")}`, value: Theme.Dark },
               ]}
               defaultValue={theme}
               optionType="button"
