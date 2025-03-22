@@ -47,6 +47,14 @@
 }
 ```
 
+使用 `superImagePreview.language` 设置图片预览的语言（默认是 `en`）：
+
+```json
+{
+  "superImagePreview.language": "zh"
+}
+```
+
 ## 联系我
 
 如果你有任何问题或建议，请随时联系我。

@@ -38,11 +38,14 @@ export function activate(context: vscode.ExtensionContext) {
       const theme = vscode.workspace
         .getConfiguration("superImagePreview")
         .get("theme");
+      const language = vscode.workspace
+        .getConfiguration("superImagePreview")
+        .get("language");
 
       // 直接设置HTML内容
       panel.webview.html = `
       <!DOCTYPE html>
-      <html lang="en" data-theme="${theme}">
+      <html lang="${language}" data-theme="${theme}">
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">

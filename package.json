@@ -47,10 +47,23 @@
             "dark"
           ],
           "default": "light",
-          "description": "Set the theme for image preview",
+          "description": "Set the default theme for image preview",
           "enumDescriptions": [
             "Light theme",
             "Dark theme"
+          ]
+        },
+        "superImagePreview.language": {
+          "type": "string",
+          "enum": [
+            "en",
+            "zh"
+          ],
+          "default": "en",
+          "description": "Set the default language for image preview",
+          "enumDescriptions": [
+            "English",
+            "简体中文"
           ]
         }
       }

@@ -47,6 +47,14 @@ Use `superImagePreview.theme` to set the theme for image preview (it is `light` 
 }
 ```
 
+Use `superImagePreview.language` to set the language for image preview (it is `en` by default):
+
+```json
+{
+  "superImagePreview.language": "zh"
+}
+```
+
 ## Contact me
 
 If you have any questions or suggestions, please feel free to contact me.
