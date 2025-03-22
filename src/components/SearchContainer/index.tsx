@@ -1,5 +1,6 @@
 import { ReactComponent as SettingIcon } from "@/assets/svg/settings.svg";
 import { Theme } from "@/consts/enum";
+import useSettingModal from "@/hooks/useSettingModal";
 import { searchValueAtom } from "@/store/searchValue";
 import { isSettingIconIntersectingAtom, themeAtom } from "@/store/theme";
 import { ReactComponent as Top } from "assets/svg/top.svg";
@@ -9,8 +10,9 @@ import styles from "./index.module.less";
 
 const SearchContainer: React.FC = () => {
   const isSettingIconIntersecting = useAtomValue(isSettingIconIntersectingAtom);
-  const [theme, setTheme] = useAtom(themeAtom);
+  const theme = useAtomValue(themeAtom);
   const [searchValue, setSearchValue] = useAtom(searchValueAtom);
+  const { showSettingModal } = useSettingModal();
 
   return (
     <div className={styles.searchContainer}>
@@ -23,16 +25,7 @@ const SearchContainer: React.FC = () => {
       />
       <div className="iconContainer">
         {!isSettingIconIntersecting && (
-          <div
-            className="themeIcon"
-            onClick={() => {
-              setTheme((prev) => {
-                const newTheme =
-                  prev === Theme.Light ? Theme.Dark : Theme.Light;
-                return newTheme;
-              });
-            }}
-          >
+          <div className="themeIcon" onClick={showSettingModal}>
             <SettingIcon
               className="settingIcon"
               color={theme === Theme.Light ? "#4CB6EC" : "#999"}

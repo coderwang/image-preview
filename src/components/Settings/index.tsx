@@ -1,16 +1,17 @@
 import { ReactComponent as SettingIcon } from "@/assets/svg/settings.svg";
 import { Theme } from "@/consts/enum";
+import useSettingModal from "@/hooks/useSettingModal";
 import { isSettingIconIntersectingAtom, themeAtom } from "@/store/theme";
-import { App, Radio } from "antd";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import React from "react";
 import styles from "./index.module.less";
 
 const Settings = () => {
-  const [theme, setTheme] = useAtom(themeAtom);
+  const theme = useAtomValue(themeAtom);
   const setIsSettingIconIntersecting = useSetAtom(
     isSettingIconIntersectingAtom
   );
+  const { showSettingModal } = useSettingModal();
 
   const settingRef = React.useCallback((node: HTMLDivElement) => {
     if (node) {
@@ -27,42 +28,11 @@ const Settings = () => {
     }
   }, []);
 
-  const { modal } = App.useApp();
-
-  const handleSettingClick = () => {
-    modal.info({
-      className: styles.settingsModal,
-      title: "Settings",
-      content: (
-        <div className={styles.settingsContent}>
-          <div className={styles.themeContainer}>
-            <div className={styles.themeTitle}>Theme:</div>
-            <Radio.Group
-              className={styles.themeRadioGroup}
-              block
-              options={[
-                { label: "☀️ Light", value: Theme.Light },
-                { label: "🌙 Dark", value: Theme.Dark },
-              ]}
-              defaultValue={theme}
-              optionType="button"
-              buttonStyle="solid"
-              onChange={(e) => {
-                setTheme(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-      ),
-      icon: null,
-    });
-  };
-
   return (
     <div
       ref={settingRef}
       className={styles.settings}
-      onClick={handleSettingClick}
+      onClick={showSettingModal}
     >
       <SettingIcon
         className="settingIcon"
