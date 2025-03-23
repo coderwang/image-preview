@@ -8,6 +8,7 @@ import { filteredCountAtom, totalCountAtom } from "@/store/count";
 import { imageSizeAtom } from "@/store/imageSize";
 import { numsAtom, showTypeAtom } from "@/store/imageType";
 import { searchValueAtom } from "@/store/searchValue";
+import { Dropdown } from "antd";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
@@ -42,8 +43,6 @@ const Webview: FC = () => {
 
   const [projectName, setProjectName] = useState<string>("");
   const [dirPath, setDirPath] = useState<string>("");
-
-  const timer = useRef<number>(Infinity);
 
   useEffect(() => {
     VsCodeApi.postMessage({
@@ -294,91 +293,89 @@ const Webview: FC = () => {
             </div>
             <div className="imageContainer">
               {dir.imageList.map((image) => (
-                <div
-                  className="imageItem"
+                <Dropdown
                   key={image.name}
-                  style={{ width: imageSize }}
-                >
-                  <div
-                    className="imageBox"
-                    style={{
-                      height: imageSize,
-                      backgroundColor:
-                        typeof backgroundColor === "string"
-                          ? backgroundColor
-                          : backgroundColor?.toRgbString(),
-                    }}
-                    onMouseOver={() => {
-                      setCurrentImageUrl(image.url);
-                      getImageBasicInfo(image);
-                    }}
-                    onMouseLeave={() => {
-                      setCurrentImageUrl("");
-                    }}
-                    onMouseDown={() => {
-                      window.clearTimeout(timer.current);
-                      timer.current = window.setTimeout(() => {
-                        timer.current = Infinity;
-                        VsCodeApi.postMessage({
-                          command: "revealInSideBar",
-                          completeImagePath:
-                            dir.completePath + "/" + image.name,
-                        });
-                      }, 100);
-                    }}
-                    onMouseUp={() => {
-                      window.clearTimeout(timer.current);
-                      if (
-                        imageBasicInfo[image.url] &&
-                        timer.current !== Infinity
-                      ) {
-                        navigator.clipboard
-                          .writeText(imageBasicInfo[image.url].base64)
-                          .then(() => {
-                            toast.success(t("copy_base64_success"));
+                  menu={{
+                    items: [
+                      { label: "在侧边栏中打开", key: "1" },
+                      { label: "复制图片名称", key: "2" },
+                      { label: "复制base64", key: "3" },
+                    ],
+                    onClick: ({ key }) => {
+                      switch (key) {
+                        case "1":
+                          VsCodeApi.postMessage({
+                            command: "revealInSideBar",
+                            completeImagePath:
+                              dir.completePath + "/" + image.name,
                           });
+                          break;
+                        case "2":
+                          navigator.clipboard.writeText(image.name).then(() => {
+                            toast.success(t("copy_image_name_success"));
+                          });
+                          break;
+                        case "3":
+                          if (imageBasicInfo[image.url]) {
+                            navigator.clipboard
+                              .writeText(imageBasicInfo[image.url].base64)
+                              .then(() => {
+                                toast.success(t("copy_base64_success"));
+                              });
+                          }
+                          break;
                       }
-                    }}
-                  >
-                    <img
-                      className="image"
-                      src={image.url}
-                      alt={image.name}
-                      loading="lazy"
-                    />
+                    },
+                  }}
+                  trigger={["contextMenu"]}
+                >
+                  <div className="imageItem" style={{ width: imageSize }}>
                     <div
-                      className={
-                        currentImageUrl === image.url &&
-                        imageBasicInfo[image.url]
-                          ? "imageBasicInfo"
-                          : "imageBasicInfo hidden"
-                      }
+                      className="imageBox"
                       style={{
-                        fontSize:
-                          imageSize <= 60 ? `${imageSize / 4}px` : "15px",
-                        lineHeight:
-                          imageSize <= 60 ? `${imageSize / 4 + 2}px` : "17px",
+                        height: imageSize,
+                        backgroundColor:
+                          typeof backgroundColor === "string"
+                            ? backgroundColor
+                            : backgroundColor?.toRgbString(),
+                      }}
+                      onMouseOver={() => {
+                        setCurrentImageUrl(image.url);
+                        getImageBasicInfo(image);
                       }}
                     >
-                      {imageBasicInfo[image.url]?.size}
-                      <br />
-                      {`${imageBasicInfo[image.url]?.width} x ${
-                        imageBasicInfo[image.url]?.height
-                      }`}
+                      <img
+                        className="image"
+                        src={image.url}
+                        alt={image.name}
+                        loading="lazy"
+                      />
+                      <div
+                        className={
+                          currentImageUrl === image.url &&
+                          imageBasicInfo[image.url]
+                            ? "imageBasicInfo"
+                            : "imageBasicInfo hidden"
+                        }
+                        style={{
+                          fontSize:
+                            imageSize <= 60 ? `${imageSize / 4}px` : "15px",
+                          lineHeight:
+                            imageSize <= 60 ? `${imageSize / 4 + 2}px` : "17px",
+                        }}
+                      >
+                        {imageBasicInfo[image.url]?.size}
+                        <br />
+                        {`${imageBasicInfo[image.url]?.width} x ${
+                          imageBasicInfo[image.url]?.height
+                        }`}
+                      </div>
+                    </div>
+                    <div className="imageName" title={image.name}>
+                      {image.name}
                     </div>
                   </div>
-                  <div
-                    className="imageName"
-                    onClick={() => {
-                      navigator.clipboard.writeText(image.name).then(() => {
-                        toast.success(t("copy_image_name_success"));
-                      });
-                    }}
-                    title={image.name}
-                  >
-                    {image.name}
-                  </div>
-                </div>
+                </Dropdown>
               ))}
             </div>
           </div>
