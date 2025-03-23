@@ -13,7 +13,7 @@ const SliderContainer: React.FC = () => {
   return (
     <div className={styles.sliderContainer}>
       <div className="sliderTitle">
-        {t("image_size")}({imageSize}px):
+        {t("image_size")}(<i>{imageSize}px</i>):
       </div>
       <Slider
         className="slider"
