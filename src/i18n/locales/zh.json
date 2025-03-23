@@ -19,5 +19,8 @@
   "copy_image_name_success": "复制图片名称成功!",
   "copy_base64_success": "复制base64成功!",
   "empty_text": "未找到图片",
-  "preview_title": "正在预览<italic>{{projectName}}</italic>项目<italic>{{dirPath}}</italic>中的图片！"
+  "preview_title": "正在预览<italic>{{projectName}}</italic>项目<italic>{{dirPath}}</italic>中的图片！",
+  "reveal_in_side_bar": "在侧边栏中打开",
+  "copy_image_name": "复制图片名称",
+  "copy_base64": "复制 base64"
 }

@@ -36,7 +36,6 @@ const Webview: FC = () => {
   const originDirListRef = useRef<DirInfo[]>([]);
   const [filteredDirList, setFilteredDirList] = useState<DirInfo[]>([]);
 
-  const [currentImageUrl, setCurrentImageUrl] = useState<string>("");
   const [imageBasicInfo, setImageBasicInfo] = useImmer<
     Record<ImageInfo["url"], ImageBasicInfo>
   >({});
@@ -297,9 +296,9 @@ const Webview: FC = () => {
                   key={image.name}
                   menu={{
                     items: [
-                      { label: "在侧边栏中打开", key: "1" },
-                      { label: "复制图片名称", key: "2" },
-                      { label: "复制base64", key: "3" },
+                      { label: t("reveal_in_side_bar"), key: "1" },
+                      { label: t("copy_image_name"), key: "2" },
+                      { label: t("copy_base64"), key: "3" },
                     ],
                     onClick: ({ key }) => {
                       switch (key) {
@@ -329,7 +328,13 @@ const Webview: FC = () => {
                   }}
                   trigger={["contextMenu"]}
                 >
-                  <div className="imageItem" style={{ width: imageSize }}>
+                  <div
+                    className="imageItem"
+                    style={{ width: imageSize }}
+                    onMouseOver={() => {
+                      getImageBasicInfo(image);
+                    }}
+                  >
                     <div
                       className="imageBox"
                       style={{
@@ -339,38 +344,36 @@ const Webview: FC = () => {
                             ? backgroundColor
                             : backgroundColor?.toRgbString(),
                       }}
-                      onMouseOver={() => {
-                        setCurrentImageUrl(image.url);
-                        getImageBasicInfo(image);
-                      }}
                     >
+                      {/* 图片本体 */}
                       <img
                         className="image"
                         src={image.url}
                         alt={image.name}
                         loading="lazy"
                       />
-                      <div
-                        className={
-                          currentImageUrl === image.url &&
-                          imageBasicInfo[image.url]
-                            ? "imageBasicInfo"
-                            : "imageBasicInfo hidden"
-                        }
-                        style={{
-                          fontSize:
-                            imageSize <= 60 ? `${imageSize / 4}px` : "15px",
-                          lineHeight:
-                            imageSize <= 60 ? `${imageSize / 4 + 2}px` : "17px",
-                        }}
-                      >
-                        {imageBasicInfo[image.url]?.size}
-                        <br />
-                        {`${imageBasicInfo[image.url]?.width} x ${
-                          imageBasicInfo[image.url]?.height
-                        }`}
-                      </div>
+                      {/* 图片大小和尺寸 */}
+                      {imageBasicInfo[image.url] && (
+                        <div
+                          className="imageBasicInfo"
+                          style={{
+                            fontSize:
+                              imageSize <= 60 ? `${imageSize / 4}px` : "15px",
+                            lineHeight:
+                              imageSize <= 60
+                                ? `${imageSize / 4 + 2}px`
+                                : "17px",
+                          }}
+                        >
+                          {imageBasicInfo[image.url].size}
+                          <br />
+                          {`${imageBasicInfo[image.url].width} x ${
+                            imageBasicInfo[image.url].height
+                          }`}
+                        </div>
+                      )}
                     </div>
+                    {/* 图片名称 */}
                     <div className="imageName" title={image.name}>
                       {image.name}
                     </div>

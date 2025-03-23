@@ -19,5 +19,8 @@
   "copy_image_name_success": "copy image name success!",
   "copy_base64_success": "copy base64 success!",
   "empty_text": "No images found",
-  "preview_title": "Previewing <italic>{{dirPath}}</italic> in <italic>{{projectName}}</italic> project!"
+  "preview_title": "Previewing <italic>{{dirPath}}</italic> in <italic>{{projectName}}</italic> project!",
+  "reveal_in_side_bar": "Reveal in Side Bar",
+  "copy_image_name": "Copy Image Name",
+  "copy_base64": "Copy Base64"
 }
