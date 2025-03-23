@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.0.1] - 2025-03-23
+
+### 🌊 Optimized
+
+- Modified the interaction method with images and put some operations in the right-click menu.
+
 ## [2.0.0] - 2025-03-22
 
 ### 🎉 New Version
