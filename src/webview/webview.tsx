@@ -4,6 +4,7 @@ import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
 import SettingButton from "@/components/SettingButton";
 import SliderContainer from "@/components/SliderContainer";
+import { MenuEnum } from "@/consts/enum";
 import { ImagePreviewRef } from "@/consts/interface";
 import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
@@ -307,25 +308,45 @@ const Webview: FC = () => {
                   key={image.name}
                   menu={{
                     items: [
-                      { label: t("reveal_in_side_bar"), key: "1" },
-                      { label: t("copy_image_name"), key: "2" },
-                      { label: t("copy_base64"), key: "3" },
+                      {
+                        label: t("reveal_in_side_bar"),
+                        key: MenuEnum.RevealInSideBar,
+                      },
+                      {
+                        label: t("open_containing_folder"),
+                        key: MenuEnum.RevealFileInOS,
+                      },
+                      {
+                        type: "divider",
+                      },
+                      {
+                        label: t("copy_image_name"),
+                        key: MenuEnum.CopyImageName,
+                      },
+                      { label: t("copy_base64"), key: MenuEnum.CopyBase64 },
                     ],
                     onClick: ({ key }) => {
                       switch (key) {
-                        case "1":
+                        case MenuEnum.RevealInSideBar:
                           VsCodeApi.postMessage({
                             command: "revealInSideBar",
                             completeImagePath:
                               dir.completePath + "/" + image.name,
                           });
                           break;
-                        case "2":
+                        case MenuEnum.RevealFileInOS:
+                          VsCodeApi.postMessage({
+                            command: MenuEnum.RevealFileInOS,
+                            completeImagePath:
+                              dir.completePath + "/" + image.name,
+                          });
+                          break;
+                        case MenuEnum.CopyImageName:
                           navigator.clipboard.writeText(image.name).then(() => {
                             toast.success(t("copy_image_name_success"));
                           });
                           break;
-                        case "3":
+                        case MenuEnum.CopyBase64:
                           if (imageBasicInfo[image.url]) {
                             navigator.clipboard
                               .writeText(imageBasicInfo[image.url].base64)

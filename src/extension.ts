@@ -192,6 +192,12 @@ export function activate(context: vscode.ExtensionContext) {
           case "openFolder":
             vscode.env.openExternal(vscode.Uri.file(message.completePath));
             break;
+          case "revealFileInOS":
+            vscode.commands.executeCommand(
+              "revealFileInOS",
+              vscode.Uri.file(message.completeImagePath)
+            );
+            break;
           case "revealInSideBar":
             vscode.commands.executeCommand(
               "revealInExplorer",
