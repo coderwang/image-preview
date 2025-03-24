@@ -1,10 +1,16 @@
 import BackgroundContainer from "@/components/BackgroundContainer";
+import ImagePreview from "@/components/ImagePreview";
 import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
 import SettingButton from "@/components/SettingButton";
 import SliderContainer from "@/components/SliderContainer";
+import { ImagePreviewRef } from "@/consts/interface";
 import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
+import {
+  currentPreviewImageIndexAtom,
+  previewImageListAtom,
+} from "@/store/image";
 import { imageSizeAtom } from "@/store/imageSize";
 import { numsAtom, showTypeAtom } from "@/store/imageType";
 import { searchValueAtom } from "@/store/searchValue";
@@ -42,6 +48,10 @@ const Webview: FC = () => {
 
   const [projectName, setProjectName] = useState<string>("");
   const [dirPath, setDirPath] = useState<string>("");
+
+  const imagePreviewRef = useRef<ImagePreviewRef>(null);
+  const setPreviewImageList = useSetAtom(previewImageListAtom);
+  const setCurrentPreviewImageIndex = useSetAtom(currentPreviewImageIndexAtom);
 
   useEffect(() => {
     VsCodeApi.postMessage({
@@ -263,12 +273,13 @@ const Webview: FC = () => {
           <Loading className="loadingIcon" />
         </div>
       ) : filteredCount > 0 ? (
-        filteredDirList.map((dir, index) => (
+        filteredDirList.map((dir, dirIndex) => (
           <div className="imageCard" key={dir.path} data-expanded={true}>
             <div
               className="dirPathContainer"
               onClick={() => {
-                const target = document.querySelectorAll(`.imageCard`)[index];
+                const target =
+                  document.querySelectorAll(`.imageCard`)[dirIndex];
                 target.getAttribute("data-expanded") === "true"
                   ? target.setAttribute("data-expanded", "false")
                   : target.setAttribute("data-expanded", "true");
@@ -291,7 +302,7 @@ const Webview: FC = () => {
               <ArrowDown className="arrowDown" color="#fff" />
             </div>
             <div className="imageContainer">
-              {dir.imageList.map((image) => (
+              {dir.imageList.map((image, imageIndex) => (
                 <Dropdown
                   key={image.name}
                   menu={{
@@ -331,6 +342,13 @@ const Webview: FC = () => {
                   <div
                     className="imageItem"
                     style={{ width: imageSize }}
+                    onClick={() => {
+                      setPreviewImageList(
+                        dir.imageList.map((item) => item.url)
+                      );
+                      setCurrentPreviewImageIndex(imageIndex);
+                      imagePreviewRef.current?.show();
+                    }}
                     onMouseOver={() => {
                       getImageBasicInfo(image);
                     }}
@@ -388,6 +406,7 @@ const Webview: FC = () => {
       )}
 
       <CounterContainer />
+      <ImagePreview ref={imagePreviewRef} />
     </div>
   );
 };

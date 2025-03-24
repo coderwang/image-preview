@@ -9,7 +9,7 @@
     "preview images",
     "图片预览"
   ],
-  "version": "2.0.1",
+  "version": "2.1.0",
   "publisher": "coderwsh",
   "icon": "assets/icon.png",
   "repository": {
@@ -115,6 +115,7 @@
   },
   "dependencies": {
     "antd": "^5.24.4",
+    "clsx": "^2.1.1",
     "i18next": "^24.2.3",
     "jotai": "^2.12.2",
     "jotai-immer": "^0.4.1",

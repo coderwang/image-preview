@@ -1,0 +1,42 @@
+.imagePreview {
+  .imageName {
+    position: fixed;
+    top: 32px;
+    left: 0;
+    right: 0;
+    max-width: calc(100vw - 148px);
+    height: 42px;
+    margin: 0 auto;
+    text-align: center;
+    color: #eee;
+    font-size: 14px;
+    line-height: 42px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    z-index: 1001;
+  }
+}
+
+.toolbarWrapper {
+  padding: 6px 24px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 100px;
+
+  .toolbarIcon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    color: #eee;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  .disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
