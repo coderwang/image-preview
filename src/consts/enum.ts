@@ -8,8 +8,12 @@ export const enum Language {
   Chinese = "zh",
 }
 
-export const enum MenuEnum {
-  RevealInSideBar = "revealInSideBar",
+export const enum OperationEnum {
+  RequestImages = "requestImages",
+  UpdateLanguageConfig = "updateLanguageConfig",
+  UpdateThemeConfig = "updateThemeConfig",
+  OpenExternal = "openExternal",
+  RevealInExplorer = "revealInExplorer",
   RevealFileInOS = "revealFileInOS",
   CopyImageName = "copyImageName",
   CopyBase64 = "copyBase64",

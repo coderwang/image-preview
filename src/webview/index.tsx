@@ -58,7 +58,9 @@ const WrapperApp: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 createRoot(document.getElementById("root")!).render(
-  <WrapperApp>
-    <App />
-  </WrapperApp>
+  <div onContextMenu={(e) => e.preventDefault()}>
+    <WrapperApp>
+      <App />
+    </WrapperApp>
+  </div>
 );

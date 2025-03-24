@@ -4,7 +4,7 @@ import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
 import SettingButton from "@/components/SettingButton";
 import SliderContainer from "@/components/SliderContainer";
-import { MenuEnum } from "@/consts/enum";
+import { OperationEnum } from "@/consts/enum";
 import { ImagePreviewRef } from "@/consts/interface";
 import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
@@ -56,7 +56,7 @@ const Webview: FC = () => {
 
   useEffect(() => {
     VsCodeApi.postMessage({
-      command: "requestImages",
+      command: OperationEnum.RequestImages,
     });
 
     window.addEventListener("message", (event) => {
@@ -293,7 +293,7 @@ const Webview: FC = () => {
                 onClick={(e) => {
                   e.stopPropagation();
                   VsCodeApi.postMessage({
-                    command: "openFolder",
+                    command: OperationEnum.OpenExternal,
                     completePath: dir.completePath,
                   });
                 }}
@@ -307,46 +307,50 @@ const Webview: FC = () => {
                 <Dropdown
                   key={image.name}
                   menu={{
+                    className: "customDropdown",
                     items: [
                       {
                         label: t("reveal_in_side_bar"),
-                        key: MenuEnum.RevealInSideBar,
+                        key: OperationEnum.RevealInExplorer,
                       },
                       {
                         label: t("open_containing_folder"),
-                        key: MenuEnum.RevealFileInOS,
+                        key: OperationEnum.RevealFileInOS,
                       },
                       {
                         type: "divider",
                       },
                       {
                         label: t("copy_image_name"),
-                        key: MenuEnum.CopyImageName,
+                        key: OperationEnum.CopyImageName,
                       },
-                      { label: t("copy_base64"), key: MenuEnum.CopyBase64 },
+                      {
+                        label: t("copy_base64"),
+                        key: OperationEnum.CopyBase64,
+                      },
                     ],
                     onClick: ({ key }) => {
                       switch (key) {
-                        case MenuEnum.RevealInSideBar:
+                        case OperationEnum.RevealInExplorer:
                           VsCodeApi.postMessage({
-                            command: "revealInSideBar",
+                            command: OperationEnum.RevealInExplorer,
                             completeImagePath:
                               dir.completePath + "/" + image.name,
                           });
                           break;
-                        case MenuEnum.RevealFileInOS:
+                        case OperationEnum.RevealFileInOS:
                           VsCodeApi.postMessage({
-                            command: MenuEnum.RevealFileInOS,
+                            command: OperationEnum.RevealFileInOS,
                             completeImagePath:
                               dir.completePath + "/" + image.name,
                           });
                           break;
-                        case MenuEnum.CopyImageName:
+                        case OperationEnum.CopyImageName:
                           navigator.clipboard.writeText(image.name).then(() => {
                             toast.success(t("copy_image_name_success"));
                           });
                           break;
-                        case MenuEnum.CopyBase64:
+                        case OperationEnum.CopyBase64:
                           if (imageBasicInfo[image.url]) {
                             navigator.clipboard
                               .writeText(imageBasicInfo[image.url].base64)

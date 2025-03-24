@@ -59,6 +59,7 @@ export function activate(context: vscode.ExtensionContext) {
 
       panel.webview.onDidReceiveMessage((message) => {
         switch (message.command) {
+          // 请求图片
           case "requestImages":
             const suffix = [
               ".avif",
@@ -171,6 +172,7 @@ export function activate(context: vscode.ExtensionContext) {
             });
 
             break;
+          // 更新主题
           case "updateThemeConfig":
             vscode.workspace
               .getConfiguration("superImagePreview")
@@ -180,6 +182,7 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.ConfigurationTarget.Global
               );
             break;
+          // 更新语言
           case "updateLanguageConfig":
             vscode.workspace
               .getConfiguration("superImagePreview")
@@ -189,16 +192,19 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.ConfigurationTarget.Global
               );
             break;
-          case "openFolder":
+          // 打开文件夹
+          case "openExternal":
             vscode.env.openExternal(vscode.Uri.file(message.completePath));
             break;
+          // 在操作系统中显示文件
           case "revealFileInOS":
             vscode.commands.executeCommand(
               "revealFileInOS",
               vscode.Uri.file(message.completeImagePath)
             );
             break;
-          case "revealInSideBar":
+          // 在侧边栏中显示文件
+          case "revealInExplorer":
             vscode.commands.executeCommand(
               "revealInExplorer",
               vscode.Uri.file(message.completeImagePath)

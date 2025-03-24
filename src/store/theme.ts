@@ -1,4 +1,4 @@
-import { Theme } from "@/consts/enum";
+import { OperationEnum, Theme } from "@/consts/enum";
 import { atom } from "jotai";
 
 const baseThemeAtom = atom<Theme>(
@@ -14,7 +14,7 @@ const themeAtom = atom(
     set(baseThemeAtom, newTheme);
     document.documentElement.setAttribute("data-theme", newTheme);
     VsCodeApi.postMessage({
-      command: "updateThemeConfig",
+      command: OperationEnum.UpdateThemeConfig,
       theme: newTheme,
     });
   }

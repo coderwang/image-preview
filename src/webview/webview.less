@@ -15,7 +15,7 @@
     .title {
       color: var(--title-color);
       font-size: 16px;
-      line-height: 18px;
+      line-height: 20px;
       margin-right: 8px;
 
       i {
@@ -40,14 +40,15 @@
       padding: 8px 12px;
 
       .gradientBtn {
-        padding: 8px 22px;
-        border: none;
+        width: 118px;
+        height: 38px;
         border-radius: 6px;
-        font-family: system-ui, -apple-system, sans-serif;
         font-size: 15px;
         font-weight: 500;
+        text-align: center;
         color: #fff;
         cursor: pointer;
+        box-sizing: border-box;
         transition: all 0.3s ease;
 
         &:active {
@@ -56,6 +57,7 @@
       }
 
       .gradientStatic {
+        line-height: 38px;
         background: linear-gradient(45deg, #6366f1, #ec4899);
 
         &:hover {
@@ -67,7 +69,7 @@
       .gradientBorder {
         background: white;
         color: #6366f1;
-        padding: 6px 16px;
+        line-height: 34px;
         border: 2px solid transparent;
         background-image: linear-gradient(white, white),
           linear-gradient(45deg, #6366f1, #ec4899);
@@ -258,5 +260,19 @@
       height: 32px;
       animation: rotate 1.5s linear infinite;
     }
+  }
+}
+
+.customDropdown {
+  .ant-dropdown-menu-item {
+    padding: 4px 8px !important;
+
+    .ant-dropdown-menu-title-content {
+      font-size: 12px;
+    }
+  }
+
+  .ant-dropdown-menu-item-divider {
+    margin: 4px 8px !important;
   }
 }
