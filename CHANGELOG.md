@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.1.0] - 2025-03-24
+
+### 🚀 Added
+
+- Add large image preview.
+
 ## [2.0.1] - 2025-03-23
 
 ### 🌊 Optimized

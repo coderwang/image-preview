@@ -14,7 +14,8 @@ This is a powerful VSCode extension that allows you to preview all images in the
 - Support filtering by image type.
 - Support searching by image name.
 - Allow opening the folder using the system file manager.
-- Right click on the image to open the operation menu, which includes revealing in the sidebar, copying image name, and copying base64.
+- Click on the image to preview it in a large window.
+- Right click on the image to open the operation menu, which includes revealing in the sidebar, revealing in the file folder, copying image name, and copying base64.
 - Support setting theme (light / dark).
 - Support setting language (en / zh).
 
