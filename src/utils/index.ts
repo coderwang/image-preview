@@ -57,24 +57,39 @@ export const getImageBasicInfo = (
 
         const width = svgElement.getAttribute("width");
         const height = svgElement.getAttribute("height");
+        const viewBox = svgElement
+          .getAttribute("viewBox")
+          ?.split(" ")
+          .map((n) => parseInt(n));
 
         if (width && height) {
           basicInfo.width = parseInt(width);
           basicInfo.height = parseInt(height);
-        } else {
-          const viewBox = svgElement
-            .getAttribute("viewBox")
-            ?.split(" ")
-            .map(Number);
-          if (viewBox && viewBox.length === 4) {
+        } else if (
+          viewBox &&
+          viewBox.length === 4 &&
+          viewBox[2] &&
+          viewBox[3]
+        ) {
+          if (width && !height) {
+            basicInfo.width = parseInt(width);
+            basicInfo.height = Math.floor(
+              (parseInt(width) / viewBox[2]) * viewBox[3]
+            );
+          } else if (!width && height) {
+            basicInfo.height = parseInt(height);
+            basicInfo.width = Math.floor(
+              (parseInt(height) / viewBox[3]) * viewBox[2]
+            );
+          } else {
             basicInfo.width = viewBox[2];
             basicInfo.height = viewBox[3];
-          } else {
-            // 暂时用300/150代替，后续优化
-            basicInfo.width = 300;
-            basicInfo.height = 150;
           }
+        } else {
+          basicInfo.width = width ? parseInt(width) : 300;
+          basicInfo.height = height ? parseInt(height) : 150;
         }
+
         resolve(basicInfo);
       })
       .catch((error) => {
