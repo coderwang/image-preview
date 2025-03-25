@@ -82,3 +82,34 @@ export const getImageBasicInfo = (
       });
   });
 };
+
+export const getImageBase64 = (image: ImageInfo): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      let base64String = reader.result as string;
+
+      // FileReader 无法正确读取 avif 文件类型，会变成 application/unknown，所以需要特殊处理
+      if (image.ext === ".avif") {
+        const base64Data = base64String.split(",")[1];
+        base64String = `data:image/avif;base64,${base64Data}`;
+      }
+
+      resolve(base64String);
+    };
+
+    reader.onerror = () => {
+      reject(new Error("Failed to read image"));
+    };
+
+    fetch(image.url)
+      .then((res) => res.blob())
+      .then((blob) => {
+        reader.readAsDataURL(blob);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

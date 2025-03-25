@@ -18,6 +18,8 @@
   "dark": "Dark",
   "copy_image_name_success": "copy image name success!",
   "copy_base64_success": "copy base64 success!",
+  "copy_base64_failed": "copy base64 failed!",
+  "copy_base64_loading": "copying base64...",
   "empty_text": "No images found",
   "preview_title": "Previewing <italic>{{dirPath}}</italic> in <italic>{{projectName}}</italic> project!",
   "reveal_in_side_bar": "Reveal in Side Bar",

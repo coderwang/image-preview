@@ -15,7 +15,7 @@ import {
 import { imageSizeAtom } from "@/store/imageSize";
 import { numsAtom, showTypeAtom } from "@/store/imageType";
 import { searchValueAtom } from "@/store/searchValue";
-import { getImageBasicInfo } from "@/utils";
+import { getImageBase64, getImageBasicInfo } from "@/utils";
 import { Dropdown } from "antd";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
@@ -271,13 +271,14 @@ const Webview: FC = () => {
                           });
                           break;
                         case OperationEnum.CopyBase64:
-                          // if (imageBasicInfo[image.url]) {
-                          //   navigator.clipboard
-                          //     .writeText(imageBasicInfo[image.url].base64)
-                          //     .then(() => {
-                          //       toast.success(t("copy_base64_success"));
-                          //     });
-                          // }
+                          toast.promise(getImageBase64(image), {
+                            loading: t("copy_base64_loading"),
+                            success: async (data: string) => {
+                              await navigator.clipboard.writeText(data);
+                              return t("copy_base64_success");
+                            },
+                            error: t("copy_base64_failed"),
+                          });
                           break;
                       }
                     },

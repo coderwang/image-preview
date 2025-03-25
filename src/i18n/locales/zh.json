@@ -18,6 +18,8 @@
   "dark": "暗色",
   "copy_image_name_success": "复制图片名称成功!",
   "copy_base64_success": "复制base64成功!",
+  "copy_base64_failed": "复制base64失败!",
+  "copy_base64_loading": "正在复制base64...",
   "empty_text": "未找到图片",
   "preview_title": "正在预览<italic>{{projectName}}</italic>项目<italic>{{dirPath}}</italic>中的图片！",
   "reveal_in_side_bar": "在侧边栏中打开",
