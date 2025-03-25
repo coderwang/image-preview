@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.1.1] - 2025-03-25
+
+### 🔧 Fixed
+
+- Fix the issue of not able to open system file manager when the folder path contains Chinese characters on Windows.
+
 ## [2.1.0] - 2025-03-24
 
 ### 🚀 Added
