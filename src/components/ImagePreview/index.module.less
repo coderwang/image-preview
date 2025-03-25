@@ -1,20 +1,49 @@
 .imagePreview {
   .imageName {
     position: fixed;
-    top: 32px;
-    left: 0;
-    right: 0;
-    max-width: calc(100vw - 148px);
-    height: 42px;
+    top: 37px;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: calc(100vw - 160px);
+    height: 32px;
     margin: 0 auto;
+    padding: 9px 16px;
     text-align: center;
     color: #eee;
     font-size: 14px;
-    line-height: 42px;
+    line-height: 14px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 100px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    box-sizing: border-box;
     z-index: 1001;
+  }
+}
+
+.rootPreviewWrapper {
+  :global {
+    .ant-image-preview-mask {
+      background-color: #000;
+    }
+
+    .ant-image-preview-close {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .ant-image-preview-switch-left,
+    .ant-image-preview-switch-right {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+
+    .ant-image-preview-progress {
+      padding: 4px 10px;
+      font-size: 12px;
+      line-height: 12px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 100px;
+    }
   }
 }
 

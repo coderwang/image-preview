@@ -37,11 +37,9 @@ const ImagePreview = forwardRef<ImagePreviewRef, ImagePreviewProps>(
       <div className={styles.imagePreview}>
         <Image.PreviewGroup
           preview={{
+            rootClassName: styles.rootPreviewWrapper,
             visible,
             maskClosable: false,
-            maskStyle: {
-              backgroundColor: "#000",
-            },
             scaleStep: 1,
             minScale: 0.5,
             maxScale: 16,
