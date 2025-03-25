@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.1.2] - 2025-03-25
+
+### 🌊 Optimized
+
+- Optimized some small details.
+
 ## [2.1.1] - 2025-03-25
 
 ### 🔧 Fixed
