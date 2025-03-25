@@ -15,6 +15,7 @@ import {
 import { imageSizeAtom } from "@/store/imageSize";
 import { numsAtom, showTypeAtom } from "@/store/imageType";
 import { searchValueAtom } from "@/store/searchValue";
+import { getImageBasicInfo } from "@/utils";
 import { Dropdown } from "antd";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
@@ -156,87 +157,6 @@ const Webview: FC = () => {
     });
   };
 
-  const getImageBasicInfo = (image: ImageInfo) => {
-    if (Object.keys(imageBasicInfo).includes(image.url)) {
-      return;
-    }
-
-    const reader = new FileReader();
-    let img = new Image();
-    let basicInfo: ImageBasicInfo = {
-      width: 0,
-      height: 0,
-      size: "",
-      base64: "",
-    };
-
-    img.onload = () => {
-      // svg 没有明确设置高宽时，浏览器会使用默认值 150x150，所以需特殊处理
-      if (image.ext === ".svg") {
-        const svgContent = atob(basicInfo.base64.split(",")[1]);
-        const svgDoc = new DOMParser().parseFromString(
-          svgContent,
-          "image/svg+xml"
-        );
-        const svgElement = svgDoc.documentElement;
-
-        const width = svgElement.getAttribute("width");
-        const height = svgElement.getAttribute("height");
-
-        if (width && height) {
-          basicInfo.width = parseInt(width);
-          basicInfo.height = parseInt(height);
-        } else {
-          const viewBox = svgElement
-            .getAttribute("viewBox")
-            ?.split(" ")
-            .map(Number);
-          if (viewBox && viewBox.length === 4) {
-            basicInfo.width = viewBox[2];
-            basicInfo.height = viewBox[3];
-          } else {
-            basicInfo.width = img.width;
-            basicInfo.height = img.height;
-          }
-        }
-      } else {
-        basicInfo.width = img.width;
-        basicInfo.height = img.height;
-      }
-
-      setImageBasicInfo((draft) => {
-        draft[image.url] = basicInfo;
-      });
-    };
-
-    reader.onload = () => {
-      let base64String = reader.result as string;
-
-      // FileReader 无法正确读取 avif 文件类型，会变成 application/unknown，所以需要特殊处理
-      if (image.ext === ".avif") {
-        const base64Data = base64String.split(",")[1];
-        base64String = `data:image/avif;base64,${base64Data}`;
-      }
-
-      basicInfo.base64 = base64String;
-      img.src = base64String;
-    };
-
-    fetch(image.url)
-      .then((res) => res.blob())
-      .then((blob) => {
-        if (blob.size < 1024) {
-          basicInfo.size = `${blob.size}B`;
-        } else if (blob.size < 1024 * 1024) {
-          basicInfo.size = `${(blob.size / 1024).toFixed(2)}KB`;
-        } else {
-          basicInfo.size = `${(blob.size / 1024 / 1024).toFixed(2)}MB`;
-        }
-
-        reader.readAsDataURL(blob);
-      });
-  };
-
   return (
     <div className="container">
       <div className="titleContainer">
@@ -351,13 +271,13 @@ const Webview: FC = () => {
                           });
                           break;
                         case OperationEnum.CopyBase64:
-                          if (imageBasicInfo[image.url]) {
-                            navigator.clipboard
-                              .writeText(imageBasicInfo[image.url].base64)
-                              .then(() => {
-                                toast.success(t("copy_base64_success"));
-                              });
-                          }
+                          // if (imageBasicInfo[image.url]) {
+                          //   navigator.clipboard
+                          //     .writeText(imageBasicInfo[image.url].base64)
+                          //     .then(() => {
+                          //       toast.success(t("copy_base64_success"));
+                          //     });
+                          // }
                           break;
                       }
                     },
@@ -374,8 +294,22 @@ const Webview: FC = () => {
                       setCurrentPreviewImageIndex(imageIndex);
                       imagePreviewRef.current?.show();
                     }}
-                    onMouseOver={() => {
-                      getImageBasicInfo(image);
+                    onMouseEnter={() => {
+                      if (Object.keys(imageBasicInfo).includes(image.url)) {
+                        return;
+                      }
+                      getImageBasicInfo(image)
+                        .then((basicInfo) => {
+                          setImageBasicInfo((draft) => {
+                            draft[image.url] = basicInfo;
+                          });
+                        })
+                        .catch((error) => {
+                          console.error(
+                            "Failed to get image basic info",
+                            error
+                          );
+                        });
                     }}
                   >
                     <div

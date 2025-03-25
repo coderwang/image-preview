@@ -87,7 +87,6 @@ interface ImageBasicInfo {
   width: number;
   height: number;
   size: string;
-  base64: string;
 }
 
 interface ShowImagesMessage {
