@@ -1,3 +1,4 @@
+import * as childProcess from "child_process";
 import * as path from "path";
 import * as vscode from "vscode";
 
@@ -194,7 +195,12 @@ export function activate(context: vscode.ExtensionContext) {
             break;
           // 打开文件夹
           case "openExternal":
-            vscode.env.openExternal(vscode.Uri.file(message.completePath));
+            // 优先使用系统命令，避免windows在中文路径下打不开文件夹的问题
+            childProcess.exec(`start "" "${message.completePath}"`, (error) => {
+              if (error) {
+                vscode.env.openExternal(vscode.Uri.file(message.completePath));
+              }
+            });
             break;
           // 在操作系统中显示文件
           case "revealFileInOS":
