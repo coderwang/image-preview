@@ -4,6 +4,7 @@
   "description": "Preview and manage all images in any folder",
   "keywords": [
     "svg",
+    "image",
     "copy base64",
     "compress image",
     "image viewer",
@@ -22,7 +23,8 @@
     "vscode": "^1.80.0"
   },
   "categories": [
-    "Visualization"
+    "Visualization",
+    "Other"
   ],
   "activationEvents": [],
   "main": "./out/extension.js",
@@ -127,5 +129,8 @@
     "react-i18next": "^15.4.1",
     "sonner": "^1.7.4",
     "use-immer": "^0.11.0"
+  },
+  "optionalDependencies": {
+    "sharp": "0.33.5"
   }
 }

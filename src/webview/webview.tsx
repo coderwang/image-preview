@@ -5,7 +5,11 @@ import SearchContainer from "@/components/SearchContainer";
 import SettingButton from "@/components/SettingButton";
 import SliderContainer from "@/components/SliderContainer";
 import { OperationEnum } from "@/consts/enum";
-import { ImagePreviewRef } from "@/consts/interface";
+import {
+  CompressImageCallbackMessage,
+  ImagePreviewRef,
+  ShowImagesMessage,
+} from "@/consts/interface";
 import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
 import {
@@ -61,20 +65,37 @@ const Webview: FC = () => {
     });
 
     window.addEventListener("message", (event) => {
-      const message: ShowImagesMessage = event.data;
-      if (message.command === "showImages") {
-        originDirListRef.current = message.dirList;
-        setFilteredDirList(message.dirList);
-        setProjectName(message.projectName);
-        setDirPath(message.dirPath);
-        setNums(message.nums);
-        const total = Object.values(message.nums).reduce(
-          (acc, count) => acc + count,
-          0
-        );
-        setTotalCount(total);
-        setFilteredCount(total);
-        setPageStatus("ready");
+      const message: ShowImagesMessage | CompressImageCallbackMessage =
+        event.data;
+      switch (message.command) {
+        case "showImages": {
+          originDirListRef.current = message.dirList;
+          setFilteredDirList(message.dirList);
+          setProjectName(message.projectName);
+          setDirPath(message.dirPath);
+          setNums(message.nums);
+          const total = Object.values(message.nums).reduce(
+            (acc, count) => acc + count,
+            0
+          );
+          setTotalCount(total);
+          setFilteredCount(total);
+          setPageStatus("ready");
+          break;
+        }
+        case "compressImageCallback": {
+          if (message.status === "success") {
+            const percent = (
+              ((message.originalSize - message.compressedSize) /
+                message.originalSize) *
+              100
+            ).toFixed(2);
+            toast.success(t("compress_success", { percent: `${percent}%` }));
+          } else if (message.status === "fail") {
+            toast.info(t("compress_fail"));
+          }
+          break;
+        }
       }
     });
   }, []);
@@ -248,6 +269,14 @@ const Webview: FC = () => {
                         label: t("copy_base64"),
                         key: OperationEnum.CopyBase64,
                       },
+                      {
+                        type: "divider",
+                      },
+                      {
+                        label: t("compress_image"),
+                        key: OperationEnum.CompressImage,
+                        disabled: image.ext === ".ico",
+                      },
                     ],
                     onClick: ({ key }) => {
                       switch (key) {
@@ -278,6 +307,13 @@ const Webview: FC = () => {
                               return t("copy_base64_success");
                             },
                             error: t("copy_base64_failed"),
+                          });
+                          break;
+                        case OperationEnum.CompressImage:
+                          VsCodeApi.postMessage({
+                            command: OperationEnum.CompressImage,
+                            completeImagePath:
+                              dir.completePath + "/" + image.name,
                           });
                           break;
                       }
