@@ -1,6 +1,7 @@
 import * as childProcess from "child_process";
 import * as path from "path";
 import * as vscode from "vscode";
+import { OperationEnum } from "./consts/enum";
 
 export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand(
@@ -60,8 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
 
       panel.webview.onDidReceiveMessage((message) => {
         switch (message.command) {
-          // 请求图片
-          case "requestImages":
+          case OperationEnum.RequestImages:
             const suffix = [
               ".avif",
               ".ico",
@@ -173,8 +173,7 @@ export function activate(context: vscode.ExtensionContext) {
             });
 
             break;
-          // 更新主题
-          case "updateThemeConfig":
+          case OperationEnum.UpdateThemeConfig:
             vscode.workspace
               .getConfiguration("superImagePreview")
               .update(
@@ -183,8 +182,7 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.ConfigurationTarget.Global
               );
             break;
-          // 更新语言
-          case "updateLanguageConfig":
+          case OperationEnum.UpdateLanguageConfig:
             vscode.workspace
               .getConfiguration("superImagePreview")
               .update(
@@ -193,8 +191,7 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.ConfigurationTarget.Global
               );
             break;
-          // 打开文件夹
-          case "openExternal":
+          case OperationEnum.OpenExternal:
             // 优先使用系统命令，避免windows在中文路径下打不开文件夹的问题
             childProcess.exec(`start "" "${message.completePath}"`, (error) => {
               if (error) {
@@ -202,15 +199,13 @@ export function activate(context: vscode.ExtensionContext) {
               }
             });
             break;
-          // 在操作系统中显示文件
-          case "revealFileInOS":
+          case OperationEnum.RevealFileInOS:
             vscode.commands.executeCommand(
               "revealFileInOS",
               vscode.Uri.file(message.completeImagePath)
             );
             break;
-          // 在侧边栏中显示文件
-          case "revealInExplorer":
+          case OperationEnum.RevealInExplorer:
             vscode.commands.executeCommand(
               "revealInExplorer",
               vscode.Uri.file(message.completeImagePath)

@@ -2,6 +2,7 @@ const path = require("path");
 
 module.exports = {
   entry: "./src/webview/index.tsx",
+  mode: "production",
   output: {
     path: path.resolve(__dirname, "out", "webview"),
     filename: "bundle.js",

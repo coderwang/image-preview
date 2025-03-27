@@ -19,7 +19,20 @@
         "panel": "new",
         "group": "watcher"
       },
-      "problemMatcher": ["$tsc-watch"]
+      "problemMatcher": {
+        "owner": "webpack",
+        "severity": "error",
+        "fileLocation": "absolute",
+        "pattern": {
+          "regexp": "^([^\\s].*)$",
+          "message": 1
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": ".",
+          "endsPattern": "compiled|failed"
+        }
+      }
     },
     {
       "label": "watch-webview",
