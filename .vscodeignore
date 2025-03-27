@@ -11,3 +11,5 @@ vsc-extension-quickstart.md
 **/*.ts
 **/.vscode-test.*
 node_modules/**
+webpack.*
+README_ZH.md

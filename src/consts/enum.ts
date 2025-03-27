@@ -25,4 +25,6 @@ export const enum OperationEnum {
   CopyImageName = "copyImageName",
   /** 复制图片 base64 */
   CopyBase64 = "copyBase64",
+  /** 压缩图片 */
+  CompressImage = "compressImage",
 }

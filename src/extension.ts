@@ -1,12 +1,27 @@
 import * as childProcess from "child_process";
+import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
 import { OperationEnum } from "./consts/enum";
+import { installSharp } from "./utils/sharp-installer";
 
-export function activate(context: vscode.ExtensionContext) {
+let panel: vscode.WebviewPanel;
+
+export async function activate(context: vscode.ExtensionContext) {
+  // 在正常环境下，这里的代码会在插件安装和启用时调用，在命令执行时不会调用
+  // 在扩展开发宿主环境下，由于没有安装和启用的过程，所以只会在命令首次执行时调用
+  // 所以，在开发环境和生产环境，由于执行时机的不同，表现可能会不同~~
+
+  // 尝试安装Sharp
+  try {
+    await installSharp(context);
+  } catch (error) {
+    // never come here
+  }
+
   const disposable = vscode.commands.registerCommand(
     "extension.imagePreview",
-    (uri: vscode.Uri | undefined) => {
+    async (uri: vscode.Uri | undefined) => {
       // uri 为 undefined，代表是点击的命令面板
       // uri 为 {}，代表工作区打开了多个项目时点击了空白处
       if (!uri?.fsPath) {
@@ -18,7 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
         uri = vscode.workspace.workspaceFolders[0].uri;
       }
 
-      const panel = vscode.window.createWebviewPanel(
+      panel = vscode.window.createWebviewPanel(
         "imagePreview",
         "Image Preview",
         vscode.ViewColumn.Two,
@@ -167,7 +182,7 @@ export function activate(context: vscode.ExtensionContext) {
                     dirPath: uri.fsPath.replace(folder.uri.fsPath, ""),
                     nums,
                     dirList: results,
-                  } as ShowImagesMessage);
+                  });
                 });
               }
             });
@@ -211,12 +226,71 @@ export function activate(context: vscode.ExtensionContext) {
               vscode.Uri.file(message.completeImagePath)
             );
             break;
+          case OperationEnum.CompressImage:
+            compressImage(message.completeImagePath);
+            break;
         }
       });
     }
   );
 
   context.subscriptions.push(disposable);
+}
+
+// 图片压缩函数
+async function compressImage(imagePath: string) {
+  try {
+    // 动态导入sharp，确保它已经安装
+    const sharp = require("sharp") as typeof import("sharp");
+
+    // 获取原图信息
+    const originalStats = fs.statSync(imagePath);
+    const originalSize = originalStats.size;
+
+    // 确定输出路径
+    const extname = path.extname(imagePath);
+    const basename = path.basename(imagePath, extname);
+    const dirname = path.dirname(imagePath);
+    const outputPath = path.join(dirname, `${basename}-compressed${extname}`);
+
+    // 根据图片类型选择合适的压缩参数
+    let compressedBuffer;
+    const imageBuffer = fs.readFileSync(imagePath);
+    const image = sharp(imageBuffer);
+
+    switch (extname.toLowerCase()) {
+      case ".jpg":
+      case ".jpeg":
+        compressedBuffer = await image.jpeg({ quality: 75 }).toBuffer();
+        break;
+      case ".png":
+        compressedBuffer = await image.png({ compressionLevel: 9 }).toBuffer();
+        break;
+      case ".webp":
+        compressedBuffer = await image.webp({ quality: 75 }).toBuffer();
+        break;
+      default:
+        // 对于其他格式，尝试转换为更高效的webp格式
+        compressedBuffer = await image.webp({ quality: 75 }).toBuffer();
+    }
+
+    if (compressedBuffer.byteLength < originalSize) {
+      fs.writeFileSync(outputPath, compressedBuffer);
+      panel.webview.postMessage({
+        command: "compressImageCallback",
+        status: "success",
+        originalSize,
+        compressedSize: compressedBuffer.byteLength,
+      });
+    } else {
+      panel.webview.postMessage({
+        command: "compressImageCallback",
+        status: "fail",
+      });
+    }
+  } catch (error) {
+    console.log("error", error);
+  }
 }
 
 export function deactivate() {}

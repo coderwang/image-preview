@@ -11,6 +11,7 @@ module.exports = {
   },
   externals: {
     vscode: "commonjs vscode",
+    sharp: "commonjs sharp",
   },
   resolve: {
     extensions: [".ts", ".js"],

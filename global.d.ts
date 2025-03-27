@@ -88,11 +88,3 @@ interface ImageBasicInfo {
   height: number;
   size: string;
 }
-
-interface ShowImagesMessage {
-  command: "showImages";
-  projectName: string;
-  dirPath: string;
-  nums: Record<ImageType, number>;
-  dirList: DirInfo[];
-}

@@ -16,14 +16,17 @@
   "language": "Language",
   "light": "Light",
   "dark": "Dark",
-  "copy_image_name_success": "copy image name success!",
-  "copy_base64_success": "copy base64 success!",
-  "copy_base64_failed": "copy base64 failed!",
-  "copy_base64_loading": "copying base64...",
+  "copy_image_name_success": "Copy image name successfully!",
+  "copy_base64_success": "Copy base64 successfully!",
+  "copy_base64_failed": "Failed to copy base64.",
+  "copy_base64_loading": "Copying base64...",
   "empty_text": "No images found",
   "preview_title": "Previewing <italic>{{dirPath}}</italic> in <italic>{{projectName}}</italic> project!",
   "reveal_in_side_bar": "Reveal in Side Bar",
   "copy_image_name": "Copy Image Name",
   "copy_base64": "Copy Base64",
-  "open_containing_folder": "Open Containing Folder"
+  "open_containing_folder": "Open Containing Folder",
+  "compress_image": "Compress",
+  "compress_success": "Compression successful, size reduced by {{percent}}",
+  "compress_fail": "Can't compress anymore."
 }
