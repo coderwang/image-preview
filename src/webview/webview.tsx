@@ -91,6 +91,7 @@ const Webview: FC = () => {
           if (message.reducedPercent === 0) {
             toast.info(t("compress_fail"));
           } else {
+            // todo 压缩成功后，刷新图片列表
             toast.success(
               t("compress_success", { percent: `${message.reducedPercent}%` })
             );

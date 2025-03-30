@@ -21,8 +21,7 @@ export async function installSharp(
       require("sharp");
       return;
     } catch (error) {
-      // 加载失败了再清理一次缓存，避免安装好之后也无法正常使用
-      delete require.cache[require.resolve("sharp")];
+      // 加载失败了什么都不用做，接着走下面的npm install流程
     }
 
     await vscode.window.withProgress(
@@ -59,6 +58,9 @@ export async function installSharp(
         if (stderr && !stderr.includes("npm WARN")) {
           throw new Error(stderr);
         }
+
+        // 到这儿sharp应该是安装成功了，再清一次缓存
+        delete require.cache[require.resolve("sharp")];
 
         // sharp涉及的所有模块
         const sourceModulesPath = path.join(tempDir, "node_modules");
@@ -102,7 +104,7 @@ export async function installSharp(
       }
     );
   } catch (error) {
-    // 安装sharp出错，提示用户
+    // sharp安装失败，提示用户手动安装
     vscode.window
       .showErrorMessage(
         "Installation of sharp failed, compression function is not available.",

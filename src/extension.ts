@@ -8,14 +8,14 @@ import { installSharp } from "./utils/sharp-installer";
 
 let panel: vscode.WebviewPanel;
 
-export async function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext) {
   // 在正常环境下，这里的代码会在插件安装和启用时调用，在命令执行时不会调用
   // 在扩展开发宿主环境下，由于没有安装和启用的过程，所以只会在命令首次执行时调用
   // 所以，在开发环境和生产环境，由于执行时机的不同，表现可能会不同~~
 
-  // todo  放这里会阻塞用户  考虑不阻塞，用一个全局状态管理  如果没装好就不让用户压缩  尝试安装Sharp
+  // 尝试安装sharp，但不阻塞用户使用基本功能
   try {
-    await installSharp(context);
+    installSharp(context);
   } catch (error) {
     // never come here
   }
@@ -304,7 +304,18 @@ async function compressImage(imagePath: string) {
       });
     }
   } catch (error) {
-    // todo 提示手动安装sharp
+    // sharp还没安装好用户就点了压缩，提示用户等待自动安装或手动安装
+    vscode.window
+      .showWarningMessage(
+        "Sharp is not ready yet. Please wait for the automatic installation to complete or install manually.",
+        "Install manually"
+      )
+      .then((selection) => {
+        if (selection === "Install manually") {
+          // todo 文档
+          vscode.env.openExternal(vscode.Uri.parse("https://www.baidu.com"));
+        }
+      });
   }
 }
 
@@ -355,7 +366,7 @@ function compressSVG(svgPath: string) {
       }
     }
   } catch (error) {
-    // todo 提示用户svg源文件有问题
+    // todo 在webview中提示用户svg源文件有问题
   }
 }
 
