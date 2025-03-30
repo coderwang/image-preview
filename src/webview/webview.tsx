@@ -4,7 +4,11 @@ import ImageTypeContainer from "@/components/ImageTypeContainer";
 import SearchContainer from "@/components/SearchContainer";
 import SettingButton from "@/components/SettingButton";
 import SliderContainer from "@/components/SliderContainer";
-import { OperationEnum } from "@/consts/enum";
+import {
+  ExtensionMessageEnum,
+  OperationEnum,
+  WebviewMessageEnum,
+} from "@/consts/enum";
 import {
   CompressImageCallbackMessage,
   ImagePreviewRef,
@@ -61,14 +65,15 @@ const Webview: FC = () => {
 
   useEffect(() => {
     VsCodeApi.postMessage({
-      command: OperationEnum.RequestImages,
+      command: WebviewMessageEnum.RequestImages,
     });
 
     window.addEventListener("message", (event) => {
       const message: ShowImagesMessage | CompressImageCallbackMessage =
         event.data;
       switch (message.command) {
-        case "showImages": {
+        case ExtensionMessageEnum.ShowImages: {
+          console.log(message.dirList);
           originDirListRef.current = message.dirList;
           setFilteredDirList(message.dirList);
           setProjectName(message.projectName);
@@ -83,16 +88,13 @@ const Webview: FC = () => {
           setPageStatus("ready");
           break;
         }
-        case "compressImageCallback": {
-          if (message.status === "success") {
-            const percent = (
-              ((message.originalSize - message.compressedSize) /
-                message.originalSize) *
-              100
-            ).toFixed(2);
-            toast.success(t("compress_success", { percent: `${percent}%` }));
-          } else if (message.status === "fail") {
+        case ExtensionMessageEnum.ShowCompressResult: {
+          if (message.reducedPercent === 0) {
             toast.info(t("compress_fail"));
+          } else {
+            toast.success(
+              t("compress_success", { percent: `${message.reducedPercent}%` })
+            );
           }
           break;
         }
@@ -153,7 +155,7 @@ const Webview: FC = () => {
             count += list.length;
             acc.push({
               completePath: dir.completePath,
-              path: dir.path,
+              shortPath: dir.shortPath,
               imageList: list,
             });
           }
@@ -216,7 +218,7 @@ const Webview: FC = () => {
         </div>
       ) : filteredCount > 0 ? (
         filteredDirList.map((dir, dirIndex) => (
-          <div className="imageCard" key={dir.path} data-expanded={true}>
+          <div className="imageCard" key={dir.shortPath} data-expanded={true}>
             <div
               className="dirPathContainer"
               onClick={() => {
@@ -227,14 +229,14 @@ const Webview: FC = () => {
                   : target.setAttribute("data-expanded", "true");
               }}
             >
-              <div className="dirPath">{dir.path}</div>
+              <div className="dirPath">{dir.shortPath}</div>
 
               <div
                 className="folderIconBox"
                 onClick={(e) => {
                   e.stopPropagation();
                   VsCodeApi.postMessage({
-                    command: OperationEnum.OpenExternal,
+                    command: WebviewMessageEnum.OpenExternal,
                     completePath: dir.completePath,
                   });
                 }}
@@ -252,11 +254,11 @@ const Webview: FC = () => {
                     items: [
                       {
                         label: t("reveal_in_side_bar"),
-                        key: OperationEnum.RevealInExplorer,
+                        key: WebviewMessageEnum.RevealInExplorer,
                       },
                       {
                         label: t("open_containing_folder"),
-                        key: OperationEnum.RevealFileInOS,
+                        key: WebviewMessageEnum.RevealFileInOS,
                       },
                       {
                         type: "divider",
@@ -274,21 +276,22 @@ const Webview: FC = () => {
                       },
                       {
                         label: t("compress_image"),
-                        key: OperationEnum.CompressImage,
+                        key: WebviewMessageEnum.CompressImage,
+                        disabled: image.ext === ".ico",
                       },
                     ],
                     onClick: ({ key }) => {
                       switch (key) {
-                        case OperationEnum.RevealInExplorer:
+                        case WebviewMessageEnum.RevealInExplorer:
                           VsCodeApi.postMessage({
-                            command: OperationEnum.RevealInExplorer,
+                            command: WebviewMessageEnum.RevealInExplorer,
                             completeImagePath:
                               dir.completePath + "/" + image.name,
                           });
                           break;
-                        case OperationEnum.RevealFileInOS:
+                        case WebviewMessageEnum.RevealFileInOS:
                           VsCodeApi.postMessage({
-                            command: OperationEnum.RevealFileInOS,
+                            command: WebviewMessageEnum.RevealFileInOS,
                             completeImagePath:
                               dir.completePath + "/" + image.name,
                           });
@@ -308,12 +311,20 @@ const Webview: FC = () => {
                             error: t("copy_base64_failed"),
                           });
                           break;
-                        case OperationEnum.CompressImage:
-                          VsCodeApi.postMessage({
-                            command: OperationEnum.CompressImage,
-                            completeImagePath:
-                              dir.completePath + "/" + image.name,
-                          });
+                        case WebviewMessageEnum.CompressImage:
+                          if (image.ext === ".svg") {
+                            VsCodeApi.postMessage({
+                              command: WebviewMessageEnum.CompressSVG,
+                              completeSvgPath:
+                                dir.completePath + "/" + image.name,
+                            });
+                          } else {
+                            VsCodeApi.postMessage({
+                              command: WebviewMessageEnum.CompressImage,
+                              completeImagePath:
+                                dir.completePath + "/" + image.name,
+                            });
+                          }
                           break;
                       }
                     },

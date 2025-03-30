@@ -1,8 +1,9 @@
 import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as path from "path";
+import * as svgo from "svgo";
 import * as vscode from "vscode";
-import { OperationEnum } from "./consts/enum";
+import { ExtensionMessageEnum, WebviewMessageEnum } from "./consts/enum";
 import { installSharp } from "./utils/sharp-installer";
 
 let panel: vscode.WebviewPanel;
@@ -76,7 +77,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
       panel.webview.onDidReceiveMessage((message) => {
         switch (message.command) {
-          case OperationEnum.RequestImages:
+          case WebviewMessageEnum.RequestImages:
             const suffix = [
               ".avif",
               ".ico",
@@ -162,7 +163,7 @@ export async function activate(context: vscode.ExtensionContext) {
               if (currentDirImages.length > 0) {
                 result.push({
                   completePath: dirPath,
-                  path:
+                  shortPath:
                     dirPath.replace(uri.fsPath, "") ||
                     (process.platform === "win32" ? "\\" : "/"),
                   imageList: currentDirImages,
@@ -177,7 +178,7 @@ export async function activate(context: vscode.ExtensionContext) {
                 // 获取当前目录及其子目录下的所有图片
                 getImagesInDirectory(uri.fsPath).then((results) => {
                   panel.webview.postMessage({
-                    command: "showImages",
+                    command: ExtensionMessageEnum.ShowImages,
                     projectName: folder.name,
                     dirPath: uri.fsPath.replace(folder.uri.fsPath, ""),
                     nums,
@@ -188,7 +189,7 @@ export async function activate(context: vscode.ExtensionContext) {
             });
 
             break;
-          case OperationEnum.UpdateThemeConfig:
+          case WebviewMessageEnum.UpdateThemeConfig:
             vscode.workspace
               .getConfiguration("superImagePreview")
               .update(
@@ -197,7 +198,7 @@ export async function activate(context: vscode.ExtensionContext) {
                 vscode.ConfigurationTarget.Global
               );
             break;
-          case OperationEnum.UpdateLanguageConfig:
+          case WebviewMessageEnum.UpdateLanguageConfig:
             vscode.workspace
               .getConfiguration("superImagePreview")
               .update(
@@ -206,7 +207,7 @@ export async function activate(context: vscode.ExtensionContext) {
                 vscode.ConfigurationTarget.Global
               );
             break;
-          case OperationEnum.OpenExternal:
+          case WebviewMessageEnum.OpenExternal:
             // 优先使用系统命令，避免windows在中文路径下打不开文件夹的问题
             childProcess.exec(`start "" "${message.completePath}"`, (error) => {
               if (error) {
@@ -214,20 +215,23 @@ export async function activate(context: vscode.ExtensionContext) {
               }
             });
             break;
-          case OperationEnum.RevealFileInOS:
+          case WebviewMessageEnum.RevealFileInOS:
             vscode.commands.executeCommand(
               "revealFileInOS",
               vscode.Uri.file(message.completeImagePath)
             );
             break;
-          case OperationEnum.RevealInExplorer:
+          case WebviewMessageEnum.RevealInExplorer:
             vscode.commands.executeCommand(
               "revealInExplorer",
               vscode.Uri.file(message.completeImagePath)
             );
             break;
-          case OperationEnum.CompressImage:
+          case WebviewMessageEnum.CompressImage:
             compressImage(message.completeImagePath);
+            break;
+          case WebviewMessageEnum.CompressSVG:
+            compressSVG(message.completeSvgPath);
             break;
         }
       });
@@ -256,40 +260,102 @@ async function compressImage(imagePath: string) {
     // 根据图片类型选择合适的压缩参数
     let compressedBuffer;
     const imageBuffer = fs.readFileSync(imagePath);
-    const image = sharp(imageBuffer);
 
     switch (extname.toLowerCase()) {
       case ".jpg":
       case ".jpeg":
-        compressedBuffer = await image.jpeg({ quality: 75 }).toBuffer();
+        compressedBuffer = await sharp(imageBuffer).jpeg().toBuffer();
         break;
       case ".png":
-        compressedBuffer = await image.png({ compressionLevel: 9 }).toBuffer();
+        compressedBuffer = await sharp(imageBuffer).png().toBuffer();
         break;
       case ".webp":
-        compressedBuffer = await image.webp({ quality: 75 }).toBuffer();
+        compressedBuffer = await sharp(imageBuffer).webp().toBuffer();
+        break;
+      case ".gif":
+        compressedBuffer = await sharp(imageBuffer, {
+          animated: true,
+          limitInputPixels: false,
+        })
+          .gif()
+          .toBuffer();
+        break;
+      case ".avif":
+        compressedBuffer = await sharp(imageBuffer).avif().toBuffer();
         break;
       default:
-        // 对于其他格式，尝试转换为更高效的webp格式
-        compressedBuffer = await image.webp({ quality: 75 }).toBuffer();
+        return;
     }
+    const compressedSize = compressedBuffer.byteLength;
+    const reducedPercent = Number(
+      (((originalSize - compressedSize) / originalSize) * 100).toFixed(2)
+    );
 
-    if (compressedBuffer.byteLength < originalSize) {
+    if (reducedPercent > 0.01) {
       fs.writeFileSync(outputPath, compressedBuffer);
       panel.webview.postMessage({
-        command: "compressImageCallback",
-        status: "success",
-        originalSize,
-        compressedSize: compressedBuffer.byteLength,
+        command: ExtensionMessageEnum.ShowCompressResult,
+        reducedPercent,
       });
     } else {
       panel.webview.postMessage({
-        command: "compressImageCallback",
-        status: "fail",
+        command: ExtensionMessageEnum.ShowCompressResult,
+        reducedPercent: 0,
       });
     }
   } catch (error) {
     console.log("error", error);
+  }
+}
+
+function compressSVG(svgPath: string) {
+  try {
+    // 读取SVG文件内容
+    const svgContent = fs.readFileSync(svgPath, "utf8");
+
+    // 获取原文件大小
+    const originalSize = fs.statSync(svgPath).size;
+
+    // 压缩SVG
+    const result = svgo.optimize(svgContent);
+
+    // 如果优化成功，计算压缩后的大小
+    if (result.data) {
+      // 计算压缩后的数据大小（字节长度）
+      const compressedSize = Buffer.byteLength(result.data);
+      const reducedPercent = Number(
+        (((originalSize - compressedSize) / originalSize) * 100).toFixed(2)
+      );
+
+      // 只有当压缩后的大小小于原始大小时才写入文件
+      if (reducedPercent > 0.01) {
+        // 确定输出路径
+        const extname = path.extname(svgPath);
+        const basename = path.basename(svgPath, extname);
+        const dirname = path.dirname(svgPath);
+        const outputPath = path.join(
+          dirname,
+          `${basename}-compressed${extname}`
+        );
+
+        // 写入压缩后的文件
+        fs.writeFileSync(outputPath, result.data);
+
+        // 发送压缩成功消息
+        panel.webview.postMessage({
+          command: ExtensionMessageEnum.ShowCompressResult,
+          reducedPercent,
+        });
+      } else {
+        // 压缩后文件更大或相同大小，发送无法压缩消息
+        panel.webview.postMessage({
+          command: ExtensionMessageEnum.ShowCompressResult,
+          reducedPercent: 0,
+        });
+      }
+    }
+  } catch (error) {
+    console.error("SVG压缩失败:", error);
   }
 }
 
