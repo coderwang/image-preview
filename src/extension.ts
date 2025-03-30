@@ -13,7 +13,7 @@ export async function activate(context: vscode.ExtensionContext) {
   // 在扩展开发宿主环境下，由于没有安装和启用的过程，所以只会在命令首次执行时调用
   // 所以，在开发环境和生产环境，由于执行时机的不同，表现可能会不同~~
 
-  // 尝试安装Sharp
+  // todo  放这里会阻塞用户  考虑不阻塞，用一个全局状态管理  如果没装好就不让用户压缩  尝试安装Sharp
   try {
     await installSharp(context);
   } catch (error) {
@@ -304,7 +304,7 @@ async function compressImage(imagePath: string) {
       });
     }
   } catch (error) {
-    console.log("error", error);
+    // todo 提示手动安装sharp
   }
 }
 
@@ -355,7 +355,7 @@ function compressSVG(svgPath: string) {
       }
     }
   } catch (error) {
-    console.error("SVG压缩失败:", error);
+    // todo 提示用户svg源文件有问题
   }
 }
 

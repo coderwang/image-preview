@@ -73,7 +73,6 @@ const Webview: FC = () => {
         event.data;
       switch (message.command) {
         case ExtensionMessageEnum.ShowImages: {
-          console.log(message.dirList);
           originDirListRef.current = message.dirList;
           setFilteredDirList(message.dirList);
           setProjectName(message.projectName);
