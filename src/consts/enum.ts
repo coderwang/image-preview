@@ -32,6 +32,8 @@ export const enum WebviewMessageEnum {
   RevealFileInOS = "revealFileInOS",
   /** 压缩图片 */
   CompressImage = "compressImage",
+  /** 压缩SVG */
+  CompressSVG = "compressSVG",
 }
 
 // 扩展发送的消息枚举

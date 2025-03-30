@@ -89,15 +89,12 @@ const Webview: FC = () => {
           break;
         }
         case ExtensionMessageEnum.ShowCompressResult: {
-          if (message.status === "success") {
-            const percent = (
-              ((message.originalSize - message.compressedSize) /
-                message.originalSize) *
-              100
-            ).toFixed(2);
-            toast.success(t("compress_success", { percent: `${percent}%` }));
-          } else if (message.status === "fail") {
+          if (message.reducedPercent === 0) {
             toast.info(t("compress_fail"));
+          } else {
+            toast.success(
+              t("compress_success", { percent: `${message.reducedPercent}%` })
+            );
           }
           break;
         }
@@ -315,11 +312,19 @@ const Webview: FC = () => {
                           });
                           break;
                         case WebviewMessageEnum.CompressImage:
-                          VsCodeApi.postMessage({
-                            command: WebviewMessageEnum.CompressImage,
-                            completeImagePath:
-                              dir.completePath + "/" + image.name,
-                          });
+                          if (image.ext === ".svg") {
+                            VsCodeApi.postMessage({
+                              command: WebviewMessageEnum.CompressSVG,
+                              completeSvgPath:
+                                dir.completePath + "/" + image.name,
+                            });
+                          } else {
+                            VsCodeApi.postMessage({
+                              command: WebviewMessageEnum.CompressImage,
+                              completeImagePath:
+                                dir.completePath + "/" + image.name,
+                            });
+                          }
                           break;
                       }
                     },

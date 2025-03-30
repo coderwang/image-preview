@@ -13,18 +13,7 @@ export interface ShowImagesMessage {
   dirList: DirInfo[];
 }
 
-interface CompressImageSuccess {
+export interface CompressImageCallbackMessage {
   command: ExtensionMessageEnum.ShowCompressResult;
-  status: "success";
-  originalSize: number;
-  compressedSize: number;
+  reducedPercent: number; // 不带%的百分比数值（保留两位小数）
 }
-
-interface CompressImageFail {
-  command: ExtensionMessageEnum.ShowCompressResult;
-  status: "fail";
-}
-
-export type CompressImageCallbackMessage =
-  | CompressImageSuccess
-  | CompressImageFail;

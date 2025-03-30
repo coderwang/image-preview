@@ -1,6 +1,7 @@
 import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as path from "path";
+import * as svgo from "svgo";
 import * as vscode from "vscode";
 import { ExtensionMessageEnum, WebviewMessageEnum } from "./consts/enum";
 import { installSharp } from "./utils/sharp-installer";
@@ -229,6 +230,9 @@ export async function activate(context: vscode.ExtensionContext) {
           case WebviewMessageEnum.CompressImage:
             compressImage(message.completeImagePath);
             break;
+          case WebviewMessageEnum.CompressSVG:
+            compressSVG(message.completeSvgPath);
+            break;
         }
       });
     }
@@ -282,23 +286,76 @@ async function compressImage(imagePath: string) {
       default:
         return;
     }
+    const compressedSize = compressedBuffer.byteLength;
+    const reducedPercent = Number(
+      (((originalSize - compressedSize) / originalSize) * 100).toFixed(2)
+    );
 
-    if (compressedBuffer.byteLength < originalSize) {
+    if (reducedPercent > 0.01) {
       fs.writeFileSync(outputPath, compressedBuffer);
       panel.webview.postMessage({
         command: ExtensionMessageEnum.ShowCompressResult,
-        status: "success",
-        originalSize,
-        compressedSize: compressedBuffer.byteLength,
+        reducedPercent,
       });
     } else {
       panel.webview.postMessage({
         command: ExtensionMessageEnum.ShowCompressResult,
-        status: "fail",
+        reducedPercent: 0,
       });
     }
   } catch (error) {
     console.log("error", error);
+  }
+}
+
+function compressSVG(svgPath: string) {
+  try {
+    // 读取SVG文件内容
+    const svgContent = fs.readFileSync(svgPath, "utf8");
+
+    // 获取原文件大小
+    const originalSize = fs.statSync(svgPath).size;
+
+    // 压缩SVG
+    const result = svgo.optimize(svgContent);
+
+    // 如果优化成功，计算压缩后的大小
+    if (result.data) {
+      // 计算压缩后的数据大小（字节长度）
+      const compressedSize = Buffer.byteLength(result.data);
+      const reducedPercent = Number(
+        (((originalSize - compressedSize) / originalSize) * 100).toFixed(2)
+      );
+
+      // 只有当压缩后的大小小于原始大小时才写入文件
+      if (reducedPercent > 0.01) {
+        // 确定输出路径
+        const extname = path.extname(svgPath);
+        const basename = path.basename(svgPath, extname);
+        const dirname = path.dirname(svgPath);
+        const outputPath = path.join(
+          dirname,
+          `${basename}-compressed${extname}`
+        );
+
+        // 写入压缩后的文件
+        fs.writeFileSync(outputPath, result.data);
+
+        // 发送压缩成功消息
+        panel.webview.postMessage({
+          command: ExtensionMessageEnum.ShowCompressResult,
+          reducedPercent,
+        });
+      } else {
+        // 压缩后文件更大或相同大小，发送无法压缩消息
+        panel.webview.postMessage({
+          command: ExtensionMessageEnum.ShowCompressResult,
+          reducedPercent: 0,
+        });
+      }
+    }
+  } catch (error) {
+    console.error("SVG压缩失败:", error);
   }
 }
 
