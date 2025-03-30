@@ -72,14 +72,35 @@ declare namespace VsCodeApi {
 type ImageType = "avif" | "ico" | "jpg" | "png" | "gif" | "webp" | "svg";
 
 interface ImageInfo {
+  /**
+   * @description 生成的 vscode url
+   * @example 'https://file%2B.vscode-resource.vscode-cdn.net/Users/xxx/project/src/assets/images/test.png'
+   * */
   url: string;
+  /**
+   * @description 图片名称
+   * @example 'test.png'
+   * */
   name: string;
+  /**
+   * @description 图片后缀
+   * @example '.png'
+   * */
   ext: string;
 }
 
 interface DirInfo {
+  /**
+   * @description 系统完整路径
+   * @example '/Users/xxx/project/src/assets/images'
+   * */
   completePath: string;
-  path: string;
+  /**
+   * @description 展示在webview的短路径，不具备有效信息
+   * @example '/assets/images'
+   * */
+  shortPath: string;
+  /** 该目录下的图片列表 */
   imageList: ImageInfo[];
 }
 

@@ -1,10 +1,12 @@
+import { ExtensionMessageEnum } from "./enum";
+
 export interface ImagePreviewRef {
   show: () => void;
   hide: () => void;
 }
 
 export interface ShowImagesMessage {
-  command: "showImages";
+  command: ExtensionMessageEnum.ShowImages;
   projectName: string;
   dirPath: string;
   nums: Record<ImageType, number>;
@@ -12,14 +14,14 @@ export interface ShowImagesMessage {
 }
 
 interface CompressImageSuccess {
-  command: "compressImageCallback";
+  command: ExtensionMessageEnum.ShowCompressResult;
   status: "success";
   originalSize: number;
   compressedSize: number;
 }
 
 interface CompressImageFail {
-  command: "compressImageCallback";
+  command: ExtensionMessageEnum.ShowCompressResult;
   status: "fail";
 }
 

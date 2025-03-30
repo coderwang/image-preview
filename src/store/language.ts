@@ -1,4 +1,4 @@
-import { Language, OperationEnum } from "@/consts/enum";
+import { Language, WebviewMessageEnum } from "@/consts/enum";
 import i18n from "i18next";
 import { atom } from "jotai";
 
@@ -16,7 +16,7 @@ const languageAtom = atom(
     document.documentElement.setAttribute("lang", newLanguage);
     i18n.changeLanguage(newLanguage);
     VsCodeApi.postMessage({
-      command: OperationEnum.UpdateLanguageConfig,
+      command: WebviewMessageEnum.UpdateLanguageConfig,
       language: newLanguage,
     });
   }

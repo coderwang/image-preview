@@ -2,7 +2,7 @@ import * as childProcess from "child_process";
 import * as fs from "fs";
 import * as path from "path";
 import * as vscode from "vscode";
-import { OperationEnum } from "./consts/enum";
+import { ExtensionMessageEnum, WebviewMessageEnum } from "./consts/enum";
 import { installSharp } from "./utils/sharp-installer";
 
 let panel: vscode.WebviewPanel;
@@ -76,7 +76,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
       panel.webview.onDidReceiveMessage((message) => {
         switch (message.command) {
-          case OperationEnum.RequestImages:
+          case WebviewMessageEnum.RequestImages:
             const suffix = [
               ".avif",
               ".ico",
@@ -162,7 +162,7 @@ export async function activate(context: vscode.ExtensionContext) {
               if (currentDirImages.length > 0) {
                 result.push({
                   completePath: dirPath,
-                  path:
+                  shortPath:
                     dirPath.replace(uri.fsPath, "") ||
                     (process.platform === "win32" ? "\\" : "/"),
                   imageList: currentDirImages,
@@ -177,7 +177,7 @@ export async function activate(context: vscode.ExtensionContext) {
                 // 获取当前目录及其子目录下的所有图片
                 getImagesInDirectory(uri.fsPath).then((results) => {
                   panel.webview.postMessage({
-                    command: "showImages",
+                    command: ExtensionMessageEnum.ShowImages,
                     projectName: folder.name,
                     dirPath: uri.fsPath.replace(folder.uri.fsPath, ""),
                     nums,
@@ -188,7 +188,7 @@ export async function activate(context: vscode.ExtensionContext) {
             });
 
             break;
-          case OperationEnum.UpdateThemeConfig:
+          case WebviewMessageEnum.UpdateThemeConfig:
             vscode.workspace
               .getConfiguration("superImagePreview")
               .update(
@@ -197,7 +197,7 @@ export async function activate(context: vscode.ExtensionContext) {
                 vscode.ConfigurationTarget.Global
               );
             break;
-          case OperationEnum.UpdateLanguageConfig:
+          case WebviewMessageEnum.UpdateLanguageConfig:
             vscode.workspace
               .getConfiguration("superImagePreview")
               .update(
@@ -206,7 +206,7 @@ export async function activate(context: vscode.ExtensionContext) {
                 vscode.ConfigurationTarget.Global
               );
             break;
-          case OperationEnum.OpenExternal:
+          case WebviewMessageEnum.OpenExternal:
             // 优先使用系统命令，避免windows在中文路径下打不开文件夹的问题
             childProcess.exec(`start "" "${message.completePath}"`, (error) => {
               if (error) {
@@ -214,19 +214,19 @@ export async function activate(context: vscode.ExtensionContext) {
               }
             });
             break;
-          case OperationEnum.RevealFileInOS:
+          case WebviewMessageEnum.RevealFileInOS:
             vscode.commands.executeCommand(
               "revealFileInOS",
               vscode.Uri.file(message.completeImagePath)
             );
             break;
-          case OperationEnum.RevealInExplorer:
+          case WebviewMessageEnum.RevealInExplorer:
             vscode.commands.executeCommand(
               "revealInExplorer",
               vscode.Uri.file(message.completeImagePath)
             );
             break;
-          case OperationEnum.CompressImage:
+          case WebviewMessageEnum.CompressImage:
             compressImage(message.completeImagePath);
             break;
         }
@@ -286,14 +286,14 @@ async function compressImage(imagePath: string) {
     if (compressedBuffer.byteLength < originalSize) {
       fs.writeFileSync(outputPath, compressedBuffer);
       panel.webview.postMessage({
-        command: "compressImageCallback",
+        command: ExtensionMessageEnum.ShowCompressResult,
         status: "success",
         originalSize,
         compressedSize: compressedBuffer.byteLength,
       });
     } else {
       panel.webview.postMessage({
-        command: "compressImageCallback",
+        command: ExtensionMessageEnum.ShowCompressResult,
         status: "fail",
       });
     }
