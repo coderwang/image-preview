@@ -25,6 +25,7 @@ import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { RESET } from "jotai/utils";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -34,11 +35,12 @@ import EmptyBox from "../components/EmptyBox";
 import "./webview.less";
 
 const Webview: FC = () => {
+  const compressToastIdRef = useRef<string | number>(undefined);
   const { t } = useTranslation();
   const [pageStatus, setPageStatus] = useState<"loading" | "ready">("loading");
 
   const searchValue = useAtomValue(searchValueAtom);
-  const showType = useAtomValue(showTypeAtom);
+  const [showType, setShowType] = useAtom(showTypeAtom);
   const imageSize = useAtomValue(imageSizeAtom);
   const backgroundColor = useAtomValue(backgroundColorAtom);
   const setNums = useSetAtom(numsAtom);
@@ -86,9 +88,26 @@ const Webview: FC = () => {
           if (message.reducedPercent === 0) {
             toast.info(t("compress_fail"));
           } else {
-            // todo 压缩成功后，刷新图片列表
-            toast.success(
-              t("compress_success", { percent: `${message.reducedPercent}%` })
+            compressToastIdRef.current = toast.success(
+              t("compress_success", { percent: `${message.reducedPercent}%` }),
+              {
+                id: compressToastIdRef.current,
+                action: {
+                  label: t("refresh"),
+                  onClick: () => {
+                    console.log("click refresh");
+                    setPageStatus("loading");
+                    setShowType(RESET);
+                    setNums(RESET);
+                    setImageBasicInfo({});
+                    VsCodeApi.postMessage({
+                      command: WebviewMessageEnum.RequestImages,
+                    });
+                  },
+                },
+                duration: 5000,
+                closeButton: true,
+              }
             );
           }
           break;
@@ -102,6 +121,9 @@ const Webview: FC = () => {
   }, []);
 
   useEffect(() => {
+    if (pageStatus === "loading") {
+      return;
+    }
     if (Object.values(showType).every((item) => item) && searchValue === "") {
       setFilteredDirList(originDirListRef.current);
       setFilteredCount(totalCount);
@@ -165,7 +187,7 @@ const Webview: FC = () => {
       setFilteredDirList(filtered);
       setFilteredCount(count);
     }
-  }, [showType, searchValue]);
+  }, [showType, searchValue, pageStatus]);
 
   const expandAll = () => {
     document.querySelectorAll(`.imageCard`).forEach((item) => {

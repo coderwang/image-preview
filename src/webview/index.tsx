@@ -32,6 +32,7 @@ const App: React.FC = () => {
       <AntdApp>
         <Toaster
           theme={theme}
+          className="toastContainer"
           visibleToasts={2}
           richColors
           offset={{

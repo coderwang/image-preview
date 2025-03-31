@@ -6,6 +6,7 @@ import { Modal, Radio } from "antd";
 import { useAtom } from "jotai";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import styles from "./index.module.less";
 
 const SettingModal = () => {
@@ -46,6 +47,7 @@ const SettingModal = () => {
             optionType="button"
             buttonStyle="solid"
             onChange={(e) => {
+              toast.dismiss();
               setTheme(e.target.value);
             }}
           />
@@ -63,6 +65,7 @@ const SettingModal = () => {
             optionType="button"
             buttonStyle="solid"
             onChange={(e) => {
+              toast.dismiss();
               setLanguage(e.target.value);
             }}
           />

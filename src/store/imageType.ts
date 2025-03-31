@@ -1,17 +1,19 @@
-import { atom } from "jotai";
-import { atomWithImmer } from "jotai-immer";
+import { withImmer } from "jotai-immer";
+import { atomWithReset } from "jotai/utils";
 
-export const showTypeAtom = atomWithImmer<Record<ImageType, boolean>>({
-  avif: true,
-  ico: true,
-  jpg: true,
-  png: true,
-  gif: true,
-  webp: true,
-  svg: true,
-});
+export const showTypeAtom = withImmer(
+  atomWithReset<Record<ImageType, boolean>>({
+    avif: true,
+    ico: true,
+    jpg: true,
+    png: true,
+    gif: true,
+    webp: true,
+    svg: true,
+  })
+);
 
-export const numsAtom = atom<Record<ImageType, number>>({
+export const numsAtom = atomWithReset<Record<ImageType, number>>({
   avif: 0,
   ico: 0,
   jpg: 0,
