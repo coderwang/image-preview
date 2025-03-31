@@ -17,3 +17,12 @@ export interface CompressImageCallbackMessage {
   command: ExtensionMessageEnum.ShowCompressResult;
   reducedPercent: number; // 不带%的百分比数值（保留两位小数）
 }
+
+export interface TipSvgFileErrorMessage {
+  command: ExtensionMessageEnum.TipSvgFileError;
+}
+
+export type ExtensionMessage =
+  | ShowImagesMessage
+  | CompressImageCallbackMessage
+  | TipSvgFileErrorMessage;

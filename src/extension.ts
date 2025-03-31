@@ -366,7 +366,10 @@ function compressSVG(svgPath: string) {
       }
     }
   } catch (error) {
-    // todo 在webview中提示用户svg源文件有问题
+    // 走到这儿的通常都是svg文件有问题
+    panel.webview.postMessage({
+      command: ExtensionMessageEnum.TipSvgFileError,
+    });
   }
 }
 

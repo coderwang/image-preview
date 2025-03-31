@@ -9,11 +9,7 @@ import {
   OperationEnum,
   WebviewMessageEnum,
 } from "@/consts/enum";
-import {
-  CompressImageCallbackMessage,
-  ImagePreviewRef,
-  ShowImagesMessage,
-} from "@/consts/interface";
+import { ExtensionMessage, ImagePreviewRef } from "@/consts/interface";
 import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
 import {
@@ -69,8 +65,7 @@ const Webview: FC = () => {
     });
 
     window.addEventListener("message", (event) => {
-      const message: ShowImagesMessage | CompressImageCallbackMessage =
-        event.data;
+      const message: ExtensionMessage = event.data;
       switch (message.command) {
         case ExtensionMessageEnum.ShowImages: {
           originDirListRef.current = message.dirList;
@@ -96,6 +91,10 @@ const Webview: FC = () => {
               t("compress_success", { percent: `${message.reducedPercent}%` })
             );
           }
+          break;
+        }
+        case ExtensionMessageEnum.TipSvgFileError: {
+          toast.error(t("svg_file_error"));
           break;
         }
       }

@@ -28,5 +28,6 @@
   "open_containing_folder": "Open Containing Folder",
   "compress_image": "Compress",
   "compress_success": "Compression successful, size reduced by {{percent}}",
-  "compress_fail": "Can't compress anymore."
+  "compress_fail": "Can't compress anymore.",
+  "svg_file_error": "SVG source file is invalid, please check it!"
 }

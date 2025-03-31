@@ -28,5 +28,6 @@
   "open_containing_folder": "打开包含文件夹",
   "compress_image": "压缩",
   "compress_success": "压缩成功，大小减少{{percent}}",
-  "compress_fail": "已经不能再压缩了~"
+  "compress_fail": "已经不能再压缩了~",
+  "svg_file_error": "SVG源文件有问题，请检查！"
 }

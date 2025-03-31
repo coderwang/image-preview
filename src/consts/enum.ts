@@ -42,4 +42,6 @@ export const enum ExtensionMessageEnum {
   ShowImages = "showImages",
   /** 展示压缩结果 */
   ShowCompressResult = "showCompressResult",
+  /** 提示svg源文件有问题 */
+  TipSvgFileError = "tipSvgFileError",
 }
