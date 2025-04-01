@@ -6,7 +6,8 @@ import {
   isSettingModalOpenAtom,
 } from "@/store/settings";
 import { themeAtom } from "@/store/theme";
-import { ReactComponent as Top } from "assets/svg/top.svg";
+import { refreshPage } from "@/utils";
+import { ReactComponent as RefreshIcon } from "assets/svg/refresh.svg";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -40,14 +41,11 @@ const SearchContainer: React.FC = () => {
             />
           </div>
         )}
-        <Top
-          className="backTop"
+        <RefreshIcon
+          className="refresh"
           color={theme === Theme.Light ? "#4CB6EC" : "#999"}
           onClick={() => {
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
+            refreshPage();
           }}
         />
       </div>

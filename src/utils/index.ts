@@ -1,6 +1,9 @@
-import { Language } from "@/consts/enum";
+import { Language, WebviewMessageEnum } from "@/consts/enum";
 import store from "@/store";
+import { imageBasicInfoAtom, pageStatusAtom } from "@/store/image";
+import { numsAtom, showTypeAtom } from "@/store/imageType";
 import { languageAtom } from "@/store/language";
+import { RESET } from "jotai/utils";
 
 export const isChinese = () => {
   return store.get(languageAtom) === Language.Chinese;
@@ -126,5 +129,15 @@ export const getImageBase64 = (image: ImageInfo): Promise<string> => {
       .catch((error) => {
         reject(error);
       });
+  });
+};
+
+export const refreshPage = () => {
+  store.set(pageStatusAtom, "loading");
+  store.set(showTypeAtom, RESET);
+  store.set(numsAtom, RESET);
+  store.set(imageBasicInfoAtom, {});
+  VsCodeApi.postMessage({
+    command: WebviewMessageEnum.RequestImages,
   });
 };

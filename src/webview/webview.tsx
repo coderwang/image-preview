@@ -14,22 +14,22 @@ import { backgroundColorAtom } from "@/store/bgc";
 import { filteredCountAtom, totalCountAtom } from "@/store/count";
 import {
   currentPreviewImageIndexAtom,
+  imageBasicInfoAtom,
+  pageStatusAtom,
   previewImageListAtom,
 } from "@/store/image";
 import { imageSizeAtom } from "@/store/imageSize";
 import { numsAtom, showTypeAtom } from "@/store/imageType";
 import { searchValueAtom } from "@/store/searchValue";
-import { getImageBase64, getImageBasicInfo } from "@/utils";
+import { getImageBase64, getImageBasicInfo, refreshPage } from "@/utils";
 import { Dropdown } from "antd";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
-import { RESET } from "jotai/utils";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
-import { useImmer } from "use-immer";
 import CounterContainer from "../components/CounterContainer";
 import EmptyBox from "../components/EmptyBox";
 import "./webview.less";
@@ -37,7 +37,7 @@ import "./webview.less";
 const Webview: FC = () => {
   const compressToastIdRef = useRef<string | number>(undefined);
   const { t } = useTranslation();
-  const [pageStatus, setPageStatus] = useState<"loading" | "ready">("loading");
+  const [pageStatus, setPageStatus] = useAtom(pageStatusAtom);
 
   const searchValue = useAtomValue(searchValueAtom);
   const [showType, setShowType] = useAtom(showTypeAtom);
@@ -50,9 +50,7 @@ const Webview: FC = () => {
   const originDirListRef = useRef<DirInfo[]>([]);
   const [filteredDirList, setFilteredDirList] = useState<DirInfo[]>([]);
 
-  const [imageBasicInfo, setImageBasicInfo] = useImmer<
-    Record<ImageInfo["url"], ImageBasicInfo>
-  >({});
+  const [imageBasicInfo, updateImageBasicInfo] = useAtom(imageBasicInfoAtom);
 
   const [projectName, setProjectName] = useState<string>("");
   const [dirPath, setDirPath] = useState<string>("");
@@ -94,15 +92,7 @@ const Webview: FC = () => {
                 id: compressToastIdRef.current,
                 action: {
                   label: t("refresh"),
-                  onClick: () => {
-                    setPageStatus("loading");
-                    setShowType(RESET);
-                    setNums(RESET);
-                    setImageBasicInfo({});
-                    VsCodeApi.postMessage({
-                      command: WebviewMessageEnum.RequestImages,
-                    });
-                  },
+                  onClick: refreshPage,
                 },
                 duration: 5000,
                 closeButton: true,
@@ -371,7 +361,7 @@ const Webview: FC = () => {
                       }
                       getImageBasicInfo(image)
                         .then((basicInfo) => {
-                          setImageBasicInfo((draft) => {
+                          updateImageBasicInfo((draft) => {
                             draft[image.url] = basicInfo;
                           });
                         })
