@@ -1,6 +1,7 @@
 import BackgroundContainer from "@/components/BackgroundContainer";
 import ImagePreview from "@/components/ImagePreview";
 import ImageTypeContainer from "@/components/ImageTypeContainer";
+import ScrollToTop from "@/components/ScrollToTop";
 import SearchContainer from "@/components/SearchContainer";
 import SettingButton from "@/components/SettingButton";
 import SliderContainer from "@/components/SliderContainer";
@@ -426,6 +427,7 @@ const Webview: FC = () => {
       )}
 
       <CounterContainer />
+      <ScrollToTop />
       <ImagePreview ref={imagePreviewRef} />
     </div>
   );
