@@ -95,7 +95,6 @@ const Webview: FC = () => {
                 action: {
                   label: t("refresh"),
                   onClick: () => {
-                    console.log("click refresh");
                     setPageStatus("loading");
                     setShowType(RESET);
                     setNums(RESET);
@@ -114,6 +113,10 @@ const Webview: FC = () => {
         }
         case ExtensionMessageEnum.TipSvgFileError: {
           toast.error(t("svg_file_error"));
+          break;
+        }
+        case ExtensionMessageEnum.TipCompressedImageExist: {
+          toast.info(t("compressed_image_exist"));
           break;
         }
       }

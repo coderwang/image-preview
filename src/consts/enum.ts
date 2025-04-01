@@ -44,4 +44,6 @@ export const enum ExtensionMessageEnum {
   ShowCompressResult = "showCompressResult",
   /** 提示svg源文件有问题 */
   TipSvgFileError = "tipSvgFileError",
+  /** 提示已存在压缩后的图片 */
+  TipCompressedImageExist = "tipCompressedImageExist",
 }

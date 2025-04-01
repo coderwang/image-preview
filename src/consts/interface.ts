@@ -22,7 +22,12 @@ export interface TipSvgFileErrorMessage {
   command: ExtensionMessageEnum.TipSvgFileError;
 }
 
+export interface TipCompressedImageExistMessage {
+  command: ExtensionMessageEnum.TipCompressedImageExist;
+}
+
 export type ExtensionMessage =
   | ShowImagesMessage
   | CompressImageCallbackMessage
-  | TipSvgFileErrorMessage;
+  | TipSvgFileErrorMessage
+  | TipCompressedImageExistMessage;

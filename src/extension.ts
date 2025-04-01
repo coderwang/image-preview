@@ -247,15 +247,22 @@ async function compressImage(imagePath: string) {
     // 动态导入sharp，确保它已经安装
     const sharp = require("sharp") as typeof import("sharp");
 
-    // 获取原图信息
-    const originalStats = fs.statSync(imagePath);
-    const originalSize = originalStats.size;
-
     // 确定输出路径
     const extname = path.extname(imagePath);
     const basename = path.basename(imagePath, extname);
     const dirname = path.dirname(imagePath);
     const outputPath = path.join(dirname, `${basename}-compressed${extname}`);
+
+    if (fs.existsSync(outputPath)) {
+      panel.webview.postMessage({
+        command: ExtensionMessageEnum.TipCompressedImageExist,
+      });
+      return;
+    }
+
+    // 获取原图信息
+    const originalStats = fs.statSync(imagePath);
+    const originalSize = originalStats.size;
 
     // 根据图片类型选择合适的压缩参数
     let compressedBuffer;
@@ -324,12 +331,23 @@ async function compressImage(imagePath: string) {
 
 function compressSVG(svgPath: string) {
   try {
+    // 确定输出路径
+    const extname = path.extname(svgPath);
+    const basename = path.basename(svgPath, extname);
+    const dirname = path.dirname(svgPath);
+    const outputPath = path.join(dirname, `${basename}-compressed${extname}`);
+
+    if (fs.existsSync(outputPath)) {
+      panel.webview.postMessage({
+        command: ExtensionMessageEnum.TipCompressedImageExist,
+      });
+      return;
+    }
+
     // 读取SVG文件内容
     const svgContent = fs.readFileSync(svgPath, "utf8");
-
     // 获取原文件大小
     const originalSize = fs.statSync(svgPath).size;
-
     // 压缩SVG
     const result = svgo.optimize(svgContent);
 
@@ -343,15 +361,6 @@ function compressSVG(svgPath: string) {
 
       // 只有当压缩后的大小小于原始大小时才写入文件
       if (reducedPercent > 0.01) {
-        // 确定输出路径
-        const extname = path.extname(svgPath);
-        const basename = path.basename(svgPath, extname);
-        const dirname = path.dirname(svgPath);
-        const outputPath = path.join(
-          dirname,
-          `${basename}-compressed${extname}`
-        );
-
         // 写入压缩后的文件
         fs.writeFileSync(outputPath, result.data);
 

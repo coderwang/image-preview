@@ -30,5 +30,6 @@
   "compress_success": "压缩成功，大小减少{{percent}}",
   "compress_fail": "已经不能再压缩了~",
   "svg_file_error": "SVG源文件有问题，请检查！",
-  "refresh": "刷新"
+  "refresh": "刷新",
+  "compressed_image_exist": "已存在压缩过的图片~"
 }

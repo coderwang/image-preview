@@ -30,5 +30,6 @@
   "compress_success": "Compression successful, size reduced by {{percent}}",
   "compress_fail": "Can't compress anymore.",
   "svg_file_error": "SVG source file is invalid, please check it!",
-  "refresh": "Refresh"
+  "refresh": "Refresh",
+  "compressed_image_exist": "Compressed image already exists."
 }
