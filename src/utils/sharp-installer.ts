@@ -112,8 +112,11 @@ export async function installSharp(
       )
       .then((selection) => {
         if (selection === "How to install manually?") {
-          // todo 文档
-          vscode.env.openExternal(vscode.Uri.parse("https://www.baidu.com"));
+          vscode.env.openExternal(
+            vscode.Uri.parse(
+              "https://github.com/coderwang/image-preview/blob/master/COMPRESS.md"
+            )
+          );
         }
       });
   }

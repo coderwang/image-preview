@@ -13,3 +13,5 @@ vsc-extension-quickstart.md
 node_modules/**
 webpack.*
 README_ZH.md
+COMPRESS_ZH.md
+COMPRESS.md

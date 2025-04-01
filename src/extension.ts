@@ -312,8 +312,11 @@ async function compressImage(imagePath: string) {
       )
       .then((selection) => {
         if (selection === "Install manually") {
-          // todo 文档
-          vscode.env.openExternal(vscode.Uri.parse("https://www.baidu.com"));
+          vscode.env.openExternal(
+            vscode.Uri.parse(
+              "https://github.com/coderwang/image-preview/blob/master/COMPRESS.md"
+            )
+          );
         }
       });
   }
