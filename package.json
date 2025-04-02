@@ -1,10 +1,10 @@
 {
   "name": "image-preview",
   "displayName": "Super Image Preview",
-  "description": "Preview and manage all images in any folder",
+  "description": "Preview and manage all images in each folder",
   "keywords": [
-    "svg",
     "image",
+    "svg",
     "copy base64",
     "compress image",
     "image viewer",
@@ -12,7 +12,7 @@
     "image manager",
     "图片预览"
   ],
-  "version": "2.1.3",
+  "version": "2.2.0",
   "publisher": "coderwsh",
   "icon": "assets/icon.png",
   "repository": {

@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.2.0] - 2025-04-02
+
+### 🚀 Added
+
+- Support compressing images with Sharp and SVGO.
+- Support refreshing the page.
+
 ## [2.1.2] - 2025-03-25
 
 ### 🌊 Optimized

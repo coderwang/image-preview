@@ -18,7 +18,7 @@ Of the eight currently supported image types, only the `ico` type does not suppo
 
 In most scenarios, compression can be performed without worrying about image quality.
 
-## Automatically install sharp
+## Automatically Install Sharp
 
 When the extension is installed or enabled, you will see the following prompt, indicating that it is being automatically installed:
 
@@ -32,7 +32,7 @@ If the installation fails, you will see the following prompt:
 
 You can try to install it manually.
 
-## Manually install Sharp
+## Manually Install Sharp
 
 **Preparation before installation:**
 
