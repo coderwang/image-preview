@@ -6,13 +6,13 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 
-const SliderContainer: React.FC = () => {
+const ImageSizeContainer: React.FC = () => {
   const [imageSize, setImageSize] = useAtom(imageSizeAtom);
   const { t } = useTranslation();
 
   return (
-    <div className={styles.sliderContainer}>
-      <div className="sliderTitle">
+    <div className={styles.imageSizeContainer}>
+      <div className="imageSizeTitle">
         {t("image_size")}(<i>{imageSize}px</i>):
       </div>
       <Slider
@@ -26,4 +26,4 @@ const SliderContainer: React.FC = () => {
   );
 };
 
-export default SliderContainer;
+export default ImageSizeContainer;

@@ -31,5 +31,11 @@
   "compress_fail": "已经不能再压缩了~",
   "svg_file_error": "SVG源文件有问题，请检查！",
   "refresh": "刷新",
-  "compressed_image_exist": "已存在压缩过的图片~"
+  "compressed_image_exist": "已存在压缩过的图片~",
+  "delete": "删除",
+  "delete_image_title": "确定要删除吗？",
+  "delete_image_content": "删除后，可以到回收站中恢复。",
+  "delete_image_checkbox": "不再询问",
+  "cancel": "取消",
+  "confirm": "确定"
 }

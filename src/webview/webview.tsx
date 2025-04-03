@@ -1,10 +1,11 @@
 import BackgroundContainer from "@/components/BackgroundContainer";
 import ImagePreview from "@/components/ImagePreview";
+import ImageSizeContainer from "@/components/ImageSizeContainer";
 import ImageTypeContainer from "@/components/ImageTypeContainer";
+import OperateBtnContainer from "@/components/OperateBtnContainer";
 import ScrollToTop from "@/components/ScrollToTop";
 import SearchContainer from "@/components/SearchContainer";
 import SettingButton from "@/components/SettingButton";
-import SliderContainer from "@/components/SliderContainer";
 import {
   ExtensionMessageEnum,
   OperationEnum,
@@ -12,18 +13,26 @@ import {
 } from "@/consts/enum";
 import { ExtensionMessage, ImagePreviewRef } from "@/consts/interface";
 import { backgroundColorAtom } from "@/store/bgc";
-import { filteredCountAtom, totalCountAtom } from "@/store/count";
+import { filterCountAtom, totalCountAtom } from "@/store/count";
 import {
   currentPreviewImageIndexAtom,
+  filterDirListAtom,
   imageBasicInfoAtom,
+  originDirListAtom,
   pageStatusAtom,
   previewImageListAtom,
 } from "@/store/image";
 import { imageSizeAtom } from "@/store/imageSize";
 import { numsAtom, showTypeAtom } from "@/store/imageType";
+import { needAskForDeleteImageAtom } from "@/store/modal";
 import { searchValueAtom } from "@/store/searchValue";
-import { getImageBase64, getImageBasicInfo, refreshPage } from "@/utils";
-import { Dropdown } from "antd";
+import {
+  deleteImage,
+  getImageBase64,
+  getImageBasicInfo,
+  refreshPage,
+} from "@/utils";
+import { App, Dropdown } from "antd";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
@@ -36,50 +45,61 @@ import EmptyBox from "../components/EmptyBox";
 import "./webview.less";
 
 const Webview: FC = () => {
-  const compressToastIdRef = useRef<string | number>(undefined);
+  const { modal } = App.useApp();
   const { t } = useTranslation();
-  const [pageStatus, setPageStatus] = useAtom(pageStatusAtom);
-
-  const searchValue = useAtomValue(searchValueAtom);
-  const [showType, setShowType] = useAtom(showTypeAtom);
-  const imageSize = useAtomValue(imageSizeAtom);
-  const backgroundColor = useAtomValue(backgroundColorAtom);
-  const setNums = useSetAtom(numsAtom);
-  const [filteredCount, setFilteredCount] = useAtom(filteredCountAtom);
-  const [totalCount, setTotalCount] = useAtom(totalCountAtom);
-
-  const originDirListRef = useRef<DirInfo[]>([]);
-  const [filteredDirList, setFilteredDirList] = useState<DirInfo[]>([]);
-
-  const [imageBasicInfo, updateImageBasicInfo] = useAtom(imageBasicInfoAtom);
 
   const [projectName, setProjectName] = useState<string>("");
   const [dirPath, setDirPath] = useState<string>("");
+
+  const [pageStatus, setPageStatus] = useAtom(pageStatusAtom);
+  const [originDirList, setOriginDirList] = useAtom(originDirListAtom);
+  const [filterDirList, setFilterDirList] = useAtom(filterDirListAtom);
+  const [totalCount, setTotalCount] = useAtom(totalCountAtom);
+  const [filterCount, setFilterCount] = useAtom(filterCountAtom);
+  const setNums = useSetAtom(numsAtom);
+
+  const searchValue = useAtomValue(searchValueAtom);
+  const showType = useAtomValue(showTypeAtom);
+  const imageSize = useAtomValue(imageSizeAtom);
+  const backgroundColor = useAtomValue(backgroundColorAtom);
+
+  const [imageBasicInfo, updateImageBasicInfo] = useAtom(imageBasicInfoAtom);
 
   const imagePreviewRef = useRef<ImagePreviewRef>(null);
   const setPreviewImageList = useSetAtom(previewImageListAtom);
   const setCurrentPreviewImageIndex = useSetAtom(currentPreviewImageIndexAtom);
 
+  const askForDeleteRef = useRef<HTMLInputElement>(null);
+  const [needAskForDeleteImage, setNeedAskForDeleteImage] = useAtom(
+    needAskForDeleteImageAtom
+  );
+
+  const compressToastIdRef = useRef<string | number>(undefined);
+
   useEffect(() => {
     VsCodeApi.postMessage({
       command: WebviewMessageEnum.RequestImages,
     });
+  }, []);
 
+  useEffect(() => {
     window.addEventListener("message", (event) => {
       const message: ExtensionMessage = event.data;
       switch (message.command) {
         case ExtensionMessageEnum.ShowImages: {
-          originDirListRef.current = message.dirList;
-          setFilteredDirList(message.dirList);
           setProjectName(message.projectName);
           setDirPath(message.dirPath);
+
+          setOriginDirList(message.dirList);
+          setFilterDirList(message.dirList);
           setNums(message.nums);
+
           const total = Object.values(message.nums).reduce(
             (acc, count) => acc + count,
             0
           );
           setTotalCount(total);
-          setFilteredCount(total);
+          setFilterCount(total);
           setPageStatus("ready");
           break;
         }
@@ -119,81 +139,66 @@ const Webview: FC = () => {
       return;
     }
     if (Object.values(showType).every((item) => item) && searchValue === "") {
-      setFilteredDirList(originDirListRef.current);
-      setFilteredCount(totalCount);
+      setFilterDirList(originDirList);
+      setFilterCount(totalCount);
     } else {
       let count = 0;
-      const filtered = originDirListRef.current.reduce(
-        (acc: DirInfo[], dir) => {
-          let list: ImageInfo[] = [];
-          dir.imageList.forEach((image) => {
-            switch (image.ext) {
-              case ".ico":
-                showType.ico &&
-                  image.name.includes(searchValue) &&
-                  list.push(image);
-                break;
-              case ".avif":
-                showType.avif &&
-                  image.name.includes(searchValue) &&
-                  list.push(image);
-                break;
-              case ".jpg":
-              case ".jpeg":
-                showType.jpg &&
-                  image.name.includes(searchValue) &&
-                  list.push(image);
-                break;
-              case ".png":
-                showType.png &&
-                  image.name.includes(searchValue) &&
-                  list.push(image);
-                break;
-              case ".gif":
-                showType.gif &&
-                  image.name.includes(searchValue) &&
-                  list.push(image);
-                break;
-              case ".webp":
-                showType.webp &&
-                  image.name.includes(searchValue) &&
-                  list.push(image);
-                break;
-              case ".svg":
-                showType.svg &&
-                  image.name.includes(searchValue) &&
-                  list.push(image);
-                break;
-            }
-          });
-          if (list.length > 0) {
-            count += list.length;
-            acc.push({
-              completePath: dir.completePath,
-              shortPath: dir.shortPath,
-              imageList: list,
-            });
+      const filtered = originDirList.reduce((acc: DirInfo[], dir) => {
+        let list: ImageInfo[] = [];
+        dir.imageList.forEach((image) => {
+          switch (image.ext) {
+            case ".ico":
+              showType.ico &&
+                image.name.includes(searchValue) &&
+                list.push(image);
+              break;
+            case ".avif":
+              showType.avif &&
+                image.name.includes(searchValue) &&
+                list.push(image);
+              break;
+            case ".jpg":
+            case ".jpeg":
+              showType.jpg &&
+                image.name.includes(searchValue) &&
+                list.push(image);
+              break;
+            case ".png":
+              showType.png &&
+                image.name.includes(searchValue) &&
+                list.push(image);
+              break;
+            case ".gif":
+              showType.gif &&
+                image.name.includes(searchValue) &&
+                list.push(image);
+              break;
+            case ".webp":
+              showType.webp &&
+                image.name.includes(searchValue) &&
+                list.push(image);
+              break;
+            case ".svg":
+              showType.svg &&
+                image.name.includes(searchValue) &&
+                list.push(image);
+              break;
           }
-          return acc;
-        },
-        []
-      );
-      setFilteredDirList(filtered);
-      setFilteredCount(count);
+        });
+        if (list.length > 0) {
+          count += list.length;
+          acc.push({
+            completePath: dir.completePath,
+            shortPath: dir.shortPath,
+            imageList: list,
+          });
+        }
+        return acc;
+      }, []);
+      setFilterDirList(filtered);
+      setFilterCount(count);
     }
   }, [showType, searchValue, pageStatus]);
-
-  const expandAll = () => {
-    document.querySelectorAll(`.imageCard`).forEach((item) => {
-      item.setAttribute("data-expanded", "true");
-    });
-  };
-
-  const collapseAll = () => {
-    document.querySelectorAll(`.imageCard`).forEach((item) => {
-      item.setAttribute("data-expanded", "false");
-    });
-  };
 
   return (
     <div className="container">
@@ -216,212 +221,256 @@ const Webview: FC = () => {
       <div className="actionBar">
         <SearchContainer />
         <ImageTypeContainer />
-        <SliderContainer />
+        <ImageSizeContainer />
         <BackgroundContainer />
-        <div className="btnContainer">
-          <div className="gradientBtn gradientStatic" onClick={expandAll}>
-            {t("expand_all")}
-          </div>
-          <div className="gradientBtn gradientBorder" onClick={collapseAll}>
-            {t("collapse_all")}
-          </div>
-        </div>
+        <OperateBtnContainer />
       </div>
       {pageStatus === "loading" ? (
         <div className="loadingBox">
           <Loading className="loadingIcon" />
         </div>
-      ) : filteredCount > 0 ? (
-        filteredDirList.map((dir, dirIndex) => (
-          <div className="imageCard" key={dir.shortPath} data-expanded={true}>
-            <div
-              className="dirPathContainer"
-              onClick={() => {
-                const target =
-                  document.querySelectorAll(`.imageCard`)[dirIndex];
-                target.getAttribute("data-expanded") === "true"
-                  ? target.setAttribute("data-expanded", "false")
-                  : target.setAttribute("data-expanded", "true");
-              }}
-            >
-              <div className="dirPath">{dir.shortPath}</div>
-
+      ) : filterCount > 0 ? (
+        filterDirList.map(
+          (dir, dirIndex) =>
+            dir.imageList.length > 0 && (
               <div
-                className="folderIconBox"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  VsCodeApi.postMessage({
-                    command: WebviewMessageEnum.OpenExternal,
-                    completePath: dir.completePath,
-                  });
-                }}
+                className="imageCard"
+                key={dir.shortPath}
+                data-expanded={true}
               >
-                <Folder className="folderIcon" />
-              </div>
-              <ArrowDown className="arrowDown" color="#fff" />
-            </div>
-            <div className="imageContainer">
-              {dir.imageList.map((image, imageIndex) => (
-                <Dropdown
-                  key={image.name}
-                  menu={{
-                    className: "customDropdown",
-                    items: [
-                      {
-                        label: t("reveal_in_side_bar"),
-                        key: WebviewMessageEnum.RevealInExplorer,
-                      },
-                      {
-                        label: t("open_containing_folder"),
-                        key: WebviewMessageEnum.RevealFileInOS,
-                      },
-                      {
-                        type: "divider",
-                      },
-                      {
-                        label: t("copy_image_name"),
-                        key: OperationEnum.CopyImageName,
-                      },
-                      {
-                        label: t("copy_base64"),
-                        key: OperationEnum.CopyBase64,
-                      },
-                      {
-                        type: "divider",
-                      },
-                      {
-                        label: t("compress_image"),
-                        key: WebviewMessageEnum.CompressImage,
-                        disabled: image.ext === ".ico",
-                      },
-                    ],
-                    onClick: ({ key }) => {
-                      switch (key) {
-                        case WebviewMessageEnum.RevealInExplorer:
-                          VsCodeApi.postMessage({
-                            command: WebviewMessageEnum.RevealInExplorer,
-                            completeImagePath:
-                              dir.completePath + "/" + image.name,
-                          });
-                          break;
-                        case WebviewMessageEnum.RevealFileInOS:
-                          VsCodeApi.postMessage({
-                            command: WebviewMessageEnum.RevealFileInOS,
-                            completeImagePath:
-                              dir.completePath + "/" + image.name,
-                          });
-                          break;
-                        case OperationEnum.CopyImageName:
-                          navigator.clipboard.writeText(image.name).then(() => {
-                            toast.success(t("copy_image_name_success"));
-                          });
-                          break;
-                        case OperationEnum.CopyBase64:
-                          toast.promise(getImageBase64(image), {
-                            loading: t("copy_base64_loading"),
-                            success: async (data: string) => {
-                              await navigator.clipboard.writeText(data);
-                              return t("copy_base64_success");
-                            },
-                            error: t("copy_base64_failed"),
-                          });
-                          break;
-                        case WebviewMessageEnum.CompressImage:
-                          if (image.ext === ".svg") {
-                            VsCodeApi.postMessage({
-                              command: WebviewMessageEnum.CompressSVG,
-                              completeSvgPath:
-                                dir.completePath + "/" + image.name,
-                            });
-                          } else {
-                            VsCodeApi.postMessage({
-                              command: WebviewMessageEnum.CompressImage,
-                              completeImagePath:
-                                dir.completePath + "/" + image.name,
-                            });
-                          }
-                          break;
-                      }
-                    },
+                <div
+                  className="dirPathContainer"
+                  onClick={() => {
+                    const target =
+                      document.querySelectorAll(`.imageCard`)[dirIndex];
+                    target.getAttribute("data-expanded") === "true"
+                      ? target.setAttribute("data-expanded", "false")
+                      : target.setAttribute("data-expanded", "true");
                   }}
-                  trigger={["contextMenu"]}
                 >
+                  <div className="dirPath">{dir.shortPath}</div>
+
                   <div
-                    className="imageItem"
-                    style={{ width: imageSize }}
-                    onClick={() => {
-                      setPreviewImageList(
-                        dir.imageList.map((item) => item.url)
-                      );
-                      setCurrentPreviewImageIndex(imageIndex);
-                      imagePreviewRef.current?.show();
-                    }}
-                    onMouseEnter={() => {
-                      if (Object.keys(imageBasicInfo).includes(image.url)) {
-                        return;
-                      }
-                      getImageBasicInfo(image)
-                        .then((basicInfo) => {
-                          updateImageBasicInfo((draft) => {
-                            draft[image.url] = basicInfo;
-                          });
-                        })
-                        .catch((error) => {
-                          console.error(
-                            "Failed to get image basic info",
-                            error
-                          );
-                        });
+                    className="folderIconBox"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      VsCodeApi.postMessage({
+                        command: WebviewMessageEnum.OpenExternal,
+                        completePath: dir.completePath,
+                      });
                     }}
                   >
-                    <div
-                      className="imageBox"
-                      style={{
-                        height: imageSize,
-                        backgroundColor:
-                          typeof backgroundColor === "string"
-                            ? backgroundColor
-                            : backgroundColor?.toRgbString(),
+                    <Folder className="folderIcon" />
+                  </div>
+                  <ArrowDown className="arrowDown" color="#fff" />
+                </div>
+                <div className="imageContainer">
+                  {dir.imageList.map((image, imageIndex) => (
+                    <Dropdown
+                      key={image.name}
+                      menu={{
+                        className: "customDropdown",
+                        items: [
+                          {
+                            label: t("reveal_in_side_bar"),
+                            key: WebviewMessageEnum.RevealInExplorer,
+                          },
+                          {
+                            label: t("open_containing_folder"),
+                            key: WebviewMessageEnum.RevealFileInOS,
+                          },
+                          {
+                            type: "divider",
+                          },
+                          {
+                            label: t("copy_image_name"),
+                            key: OperationEnum.CopyImageName,
+                          },
+                          {
+                            label: t("copy_base64"),
+                            key: OperationEnum.CopyBase64,
+                          },
+                          {
+                            type: "divider",
+                          },
+                          {
+                            label: t("compress_image"),
+                            key: WebviewMessageEnum.CompressImage,
+                            disabled: image.ext === ".ico",
+                          },
+                          {
+                            label: t("delete"),
+                            key: WebviewMessageEnum.DeleteImage,
+                          },
+                        ],
+                        onClick: ({ key }) => {
+                          switch (key) {
+                            case WebviewMessageEnum.RevealInExplorer:
+                              VsCodeApi.postMessage({
+                                command: WebviewMessageEnum.RevealInExplorer,
+                                completeImagePath:
+                                  dir.completePath + "/" + image.name,
+                              });
+                              break;
+                            case WebviewMessageEnum.RevealFileInOS:
+                              VsCodeApi.postMessage({
+                                command: WebviewMessageEnum.RevealFileInOS,
+                                completeImagePath:
+                                  dir.completePath + "/" + image.name,
+                              });
+                              break;
+                            case OperationEnum.CopyImageName:
+                              navigator.clipboard
+                                .writeText(image.name)
+                                .then(() => {
+                                  toast.success(t("copy_image_name_success"));
+                                });
+                              break;
+                            case OperationEnum.CopyBase64:
+                              toast.promise(getImageBase64(image), {
+                                loading: t("copy_base64_loading"),
+                                success: async (data: string) => {
+                                  await navigator.clipboard.writeText(data);
+                                  return t("copy_base64_success");
+                                },
+                                error: t("copy_base64_failed"),
+                              });
+                              break;
+                            case WebviewMessageEnum.CompressImage:
+                              if (image.ext === ".svg") {
+                                VsCodeApi.postMessage({
+                                  command: WebviewMessageEnum.CompressSVG,
+                                  completeSvgPath:
+                                    dir.completePath + "/" + image.name,
+                                });
+                              } else {
+                                VsCodeApi.postMessage({
+                                  command: WebviewMessageEnum.CompressImage,
+                                  completeImagePath:
+                                    dir.completePath + "/" + image.name,
+                                });
+                              }
+                              break;
+                            case WebviewMessageEnum.DeleteImage:
+                              if (needAskForDeleteImage) {
+                                modal.confirm({
+                                  className: "deleteImageModal",
+                                  title: t("delete_image_title"),
+                                  content: (
+                                    <div>
+                                      <div className="deleteImageModalText">
+                                        {t("delete_image_content")}
+                                      </div>
+                                      <div className="deleteImageModalCheckbox">
+                                        <input
+                                          id="delete-image-checkbox"
+                                          type="checkbox"
+                                          // 这里如果用受控组件是拿不到状态的
+                                          ref={askForDeleteRef}
+                                        />
+                                        <label htmlFor="delete-image-checkbox">
+                                          {t("delete_image_checkbox")}
+                                        </label>
+                                      </div>
+                                    </div>
+                                  ),
+                                  cancelText: t("cancel"),
+                                  okText: t("confirm"),
+                                  onOk: () => {
+                                    if (askForDeleteRef.current?.checked) {
+                                      setNeedAskForDeleteImage(false);
+                                    }
+                                    deleteImage(dir.completePath, image);
+                                  },
+                                });
+                              } else {
+                                deleteImage(dir.completePath, image);
+                              }
+                              break;
+                          }
+                        },
                       }}
+                      trigger={["contextMenu"]}
                     >
-                      {/* 图片本体 */}
-                      <img
-                        className="image"
-                        src={image.url}
-                        alt={image.name}
-                        loading="lazy"
-                      />
-                      {/* 图片大小和尺寸 */}
-                      {imageBasicInfo[image.url] && (
+                      <div
+                        className="imageItem"
+                        style={{ width: imageSize }}
+                        onClick={() => {
+                          setPreviewImageList(
+                            dir.imageList.map((item) => item.url)
+                          );
+                          setCurrentPreviewImageIndex(imageIndex);
+                          imagePreviewRef.current?.show();
+                        }}
+                        onMouseEnter={() => {
+                          if (Object.keys(imageBasicInfo).includes(image.url)) {
+                            return;
+                          }
+                          getImageBasicInfo(image)
+                            .then((basicInfo) => {
+                              updateImageBasicInfo((draft) => {
+                                draft[image.url] = basicInfo;
+                              });
+                            })
+                            .catch((error) => {
+                              console.error(
+                                "Failed to get image basic info",
+                                error
+                              );
+                            });
+                        }}
+                      >
                         <div
-                          className="imageBasicInfo"
+                          className="imageBox"
                           style={{
-                            fontSize:
-                              imageSize <= 60 ? `${imageSize / 4}px` : "15px",
-                            lineHeight:
-                              imageSize <= 60
-                                ? `${imageSize / 4 + 2}px`
-                                : "17px",
+                            height: imageSize,
+                            backgroundColor:
+                              typeof backgroundColor === "string"
+                                ? backgroundColor
+                                : backgroundColor?.toRgbString(),
                           }}
                         >
-                          {imageBasicInfo[image.url].size}
-                          <br />
-                          {`${imageBasicInfo[image.url].width} x ${
-                            imageBasicInfo[image.url].height
-                          }`}
+                          {/* 图片本体 */}
+                          <img
+                            className="image"
+                            src={image.url}
+                            alt={image.name}
+                            loading="lazy"
+                          />
+                          {/* 图片大小和尺寸 */}
+                          {imageBasicInfo[image.url] && (
+                            <div
+                              className="imageBasicInfo"
+                              style={{
+                                fontSize:
+                                  imageSize <= 60
+                                    ? `${imageSize / 4}px`
+                                    : "15px",
+                                lineHeight:
+                                  imageSize <= 60
+                                    ? `${imageSize / 4 + 2}px`
+                                    : "17px",
+                              }}
+                            >
+                              {imageBasicInfo[image.url].size}
+                              <br />
+                              {`${imageBasicInfo[image.url].width} x ${
+                                imageBasicInfo[image.url].height
+                              }`}
+                            </div>
+                          )}
                         </div>
-                      )}
-                    </div>
-                    {/* 图片名称 */}
-                    <div className="imageName" title={image.name}>
-                      {image.name}
-                    </div>
-                  </div>
-                </Dropdown>
-              ))}
-            </div>
-          </div>
-        ))
+                        {/* 图片名称 */}
+                        <div className="imageName" title={image.name}>
+                          {image.name}
+                        </div>
+                      </div>
+                    </Dropdown>
+                  ))}
+                </div>
+              </div>
+            )
+        )
       ) : (
         <EmptyBox />
       )}

@@ -1,10 +1,10 @@
 import { ReactComponent as SettingIcon } from "@/assets/svg/settings.svg";
 import { Theme } from "@/consts/enum";
-import { searchValueAtom } from "@/store/searchValue";
 import {
   isSettingIconIntersectingAtom,
   isSettingModalOpenAtom,
-} from "@/store/settings";
+} from "@/store/modal";
+import { searchValueAtom } from "@/store/searchValue";
 import { themeAtom } from "@/store/theme";
 import { refreshPage } from "@/utils";
 import { ReactComponent as RefreshIcon } from "assets/svg/refresh.svg";

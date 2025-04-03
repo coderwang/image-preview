@@ -13,12 +13,14 @@ export const showTypeAtom = withImmer(
   })
 );
 
-export const numsAtom = atomWithReset<Record<ImageType, number>>({
-  avif: 0,
-  ico: 0,
-  jpg: 0,
-  png: 0,
-  gif: 0,
-  webp: 0,
-  svg: 0,
-});
+export const numsAtom = withImmer(
+  atomWithReset<Record<ImageType, number>>({
+    avif: 0,
+    ico: 0,
+    jpg: 0,
+    png: 0,
+    gif: 0,
+    webp: 0,
+    svg: 0,
+  })
+);

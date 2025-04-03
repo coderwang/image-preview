@@ -233,6 +233,15 @@ export function activate(context: vscode.ExtensionContext) {
           case WebviewMessageEnum.CompressSVG:
             compressSVG(message.completeSvgPath);
             break;
+          case WebviewMessageEnum.DeleteImage:
+            const imagePath = message.completeImagePath;
+            if (fs.existsSync(imagePath)) {
+              vscode.workspace.fs.delete(vscode.Uri.file(imagePath), {
+                useTrash: true,
+                recursive: true,
+              });
+            }
+            break;
         }
       });
     }

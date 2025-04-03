@@ -1,7 +1,7 @@
 import SettingModal from "@/components/SettingModal";
 import { Theme } from "@/consts/enum";
 import { themeAtom } from "@/store/theme";
-import { isChinese } from "@/utils";
+import { isCN } from "@/utils";
 import { App as AntdApp, theme as AntdTheme, ConfigProvider } from "antd";
 import enUS from "antd/locale/en_US";
 import zhCN from "antd/locale/zh_CN";
@@ -27,7 +27,7 @@ const App: React.FC = () => {
             ? AntdTheme.darkAlgorithm
             : AntdTheme.defaultAlgorithm,
       }}
-      locale={isChinese() ? zhCN : enUS}
+      locale={isCN() ? zhCN : enUS}
     >
       <AntdApp>
         <Toaster

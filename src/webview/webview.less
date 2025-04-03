@@ -31,57 +31,6 @@
     background-color: var(--bg-color);
     z-index: 10;
     transition: all 0.3s ease;
-
-    .btnContainer {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      padding: 8px 12px;
-
-      .gradientBtn {
-        width: 118px;
-        height: 38px;
-        border-radius: 6px;
-        font-size: 15px;
-        font-weight: 500;
-        text-align: center;
-        color: #fff;
-        cursor: pointer;
-        box-sizing: border-box;
-        transition: all 0.3s ease;
-
-        &:active {
-          opacity: 0.8;
-        }
-      }
-
-      .gradientStatic {
-        line-height: 38px;
-        background: linear-gradient(45deg, #6366f1, #ec4899);
-
-        &:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-        }
-      }
-
-      .gradientBorder {
-        background: white;
-        color: #6366f1;
-        line-height: 34px;
-        border: 2px solid transparent;
-        background-image: linear-gradient(white, white),
-          linear-gradient(45deg, #6366f1, #ec4899);
-        background-origin: border-box;
-        background-clip: padding-box, border-box;
-
-        &:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-        }
-      }
-    }
   }
 
   .imageCard {
@@ -276,5 +225,27 @@
 
   .ant-dropdown-menu-item-divider {
     margin: 4px 8px !important;
+  }
+}
+
+.deleteImageModal {
+  .deleteImageModalText {
+    margin-bottom: 12px;
+  }
+
+  .deleteImageModalCheckbox {
+    display: flex;
+    align-items: center;
+
+    input {
+      outline: none;
+      margin: 0;
+      cursor: pointer;
+    }
+
+    label {
+      padding-left: 6px;
+      cursor: pointer;
+    }
   }
 }

@@ -34,6 +34,8 @@ export const enum WebviewMessageEnum {
   CompressImage = "compressImage",
   /** 压缩SVG */
   CompressSVG = "compressSVG",
+  /** 删除图片 */
+  DeleteImage = "deleteImage",
 }
 
 // 扩展发送的消息枚举

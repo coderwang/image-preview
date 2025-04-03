@@ -1,11 +1,17 @@
 import { Language, WebviewMessageEnum } from "@/consts/enum";
 import store from "@/store";
-import { imageBasicInfoAtom, pageStatusAtom } from "@/store/image";
+import { filterCountAtom, totalCountAtom } from "@/store/count";
+import {
+  filterDirListAtom,
+  imageBasicInfoAtom,
+  originDirListAtom,
+  pageStatusAtom,
+} from "@/store/image";
 import { numsAtom, showTypeAtom } from "@/store/imageType";
 import { languageAtom } from "@/store/language";
 import { RESET } from "jotai/utils";
 
-export const isChinese = () => {
+export const isCN = () => {
   return store.get(languageAtom) === Language.Chinese;
 };
 
@@ -139,5 +145,33 @@ export const refreshPage = () => {
   store.set(imageBasicInfoAtom, {});
   VsCodeApi.postMessage({
     command: WebviewMessageEnum.RequestImages,
+  });
+};
+
+export const deleteImage = (completePath: string, image: ImageInfo) => {
+  store.set(originDirListAtom, (draft) => {
+    const dir = draft.find((dir) => dir.completePath === completePath);
+    if (dir) {
+      dir.imageList = dir.imageList.filter((item) => item.name !== image.name);
+    }
+  });
+  store.set(filterDirListAtom, (draft) => {
+    const dir = draft.find((dir) => dir.completePath === completePath);
+    if (dir) {
+      dir.imageList = dir.imageList.filter((item) => item.name !== image.name);
+    }
+  });
+  store.set(totalCountAtom, (prev) => prev - 1);
+  store.set(filterCountAtom, (prev) => prev - 1);
+  store.set(numsAtom, (draft) => {
+    const type = image.ext.slice(1);
+    draft[type as ImageType] -= 1;
+  });
+  store.set(imageBasicInfoAtom, (draft) => {
+    delete draft[image.url];
+  });
+  VsCodeApi.postMessage({
+    command: WebviewMessageEnum.DeleteImage,
+    completeImagePath: completePath + "/" + image.name,
   });
 };

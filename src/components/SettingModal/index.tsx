@@ -1,6 +1,6 @@
 import { Language, Theme } from "@/consts/enum";
 import { languageAtom } from "@/store/language";
-import { isSettingModalOpenAtom } from "@/store/settings";
+import { isSettingModalOpenAtom } from "@/store/modal";
 import { themeAtom } from "@/store/theme";
 import { Modal, Radio } from "antd";
 import { useAtom } from "jotai";

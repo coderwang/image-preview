@@ -3,7 +3,7 @@ import { Theme } from "@/consts/enum";
 import {
   isSettingIconIntersectingAtom,
   isSettingModalOpenAtom,
-} from "@/store/settings";
+} from "@/store/modal";
 import { themeAtom } from "@/store/theme";
 import { useAtomValue, useSetAtom } from "jotai";
 import React from "react";
