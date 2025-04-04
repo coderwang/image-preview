@@ -69,6 +69,12 @@ declare namespace VsCodeApi {
   export const setState: (state: any) => void;
 }
 
+interface Window {
+  vscodeEnv: {
+    platform: NodeJS.Platform;
+  };
+}
+
 type ImageType = "avif" | "ico" | "jpg" | "png" | "gif" | "webp" | "svg";
 
 interface ImageInfo {

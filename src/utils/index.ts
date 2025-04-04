@@ -15,6 +15,16 @@ export const isCN = () => {
   return store.get(languageAtom) === Language.Chinese;
 };
 
+export const getCompleteImagePath = (
+  completePath: string,
+  imageName: string
+) => {
+  if (window.vscodeEnv.platform === "win32") {
+    return completePath + "\\" + imageName;
+  }
+  return completePath + "/" + imageName;
+};
+
 export const getImageBasicInfo = (
   image: ImageInfo
 ): Promise<ImageBasicInfo> => {
@@ -172,6 +182,6 @@ export const deleteImage = (completePath: string, image: ImageInfo) => {
   });
   VsCodeApi.postMessage({
     command: WebviewMessageEnum.DeleteImage,
-    completeImagePath: completePath + "/" + image.name,
+    completeImagePath: getCompleteImagePath(completePath, image.name),
   });
 };

@@ -28,6 +28,7 @@ import { needAskForDeleteImageAtom } from "@/store/modal";
 import { searchValueAtom } from "@/store/searchValue";
 import {
   deleteImage,
+  getCompleteImagePath,
   getImageBase64,
   getImageBasicInfo,
   refreshPage,
@@ -308,15 +309,19 @@ const Webview: FC = () => {
                             case WebviewMessageEnum.RevealInExplorer:
                               VsCodeApi.postMessage({
                                 command: WebviewMessageEnum.RevealInExplorer,
-                                completeImagePath:
-                                  dir.completePath + "/" + image.name,
+                                completeImagePath: getCompleteImagePath(
+                                  dir.completePath,
+                                  image.name
+                                ),
                               });
                               break;
                             case WebviewMessageEnum.RevealFileInOS:
                               VsCodeApi.postMessage({
                                 command: WebviewMessageEnum.RevealFileInOS,
-                                completeImagePath:
-                                  dir.completePath + "/" + image.name,
+                                completeImagePath: getCompleteImagePath(
+                                  dir.completePath,
+                                  image.name
+                                ),
                               });
                               break;
                             case OperationEnum.CopyImageName:
@@ -340,14 +345,18 @@ const Webview: FC = () => {
                               if (image.ext === ".svg") {
                                 VsCodeApi.postMessage({
                                   command: WebviewMessageEnum.CompressSVG,
-                                  completeSvgPath:
-                                    dir.completePath + "/" + image.name,
+                                  completeSvgPath: getCompleteImagePath(
+                                    dir.completePath,
+                                    image.name
+                                  ),
                                 });
                               } else {
                                 VsCodeApi.postMessage({
                                   command: WebviewMessageEnum.CompressImage,
-                                  completeImagePath:
-                                    dir.completePath + "/" + image.name,
+                                  completeImagePath: getCompleteImagePath(
+                                    dir.completePath,
+                                    image.name
+                                  ),
                                 });
                               }
                               break;

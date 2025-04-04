@@ -67,6 +67,11 @@ export function activate(context: vscode.ExtensionContext) {
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <script>
+            window.vscodeEnv = {
+              platform: "${process.platform}"
+            };
+          </script>
       </head>
       <body>
           <div id="root"></div>
