@@ -37,5 +37,7 @@
   "delete_image_content": "Deleted images can be recovered from the recycle bin.",
   "delete_image_checkbox": "Don't ask me again",
   "cancel": "Cancel",
-  "confirm": "Confirm"
+  "confirm": "Confirm",
+  "copy_path": "Copy Path",
+  "copy_path_success": "Copy path successfully!"
 }

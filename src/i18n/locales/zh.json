@@ -37,5 +37,7 @@
   "delete_image_content": "删除后，可以到回收站中恢复。",
   "delete_image_checkbox": "不再询问",
   "cancel": "取消",
-  "confirm": "确定"
+  "confirm": "确定",
+  "copy_path": "复制路径",
+  "copy_path_success": "复制路径成功!"
 }

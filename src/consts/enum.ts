@@ -14,6 +14,8 @@ export const enum OperationEnum {
   CopyImageName = "copyImageName",
   /** 复制图片 base64 */
   CopyBase64 = "copyBase64",
+  /** 复制路径 */
+  CopyPath = "copyPath",
 }
 
 // webview发送的消息枚举

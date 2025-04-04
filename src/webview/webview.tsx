@@ -292,6 +292,10 @@ const Webview: FC = () => {
                             key: OperationEnum.CopyBase64,
                           },
                           {
+                            label: t("copy_path"),
+                            key: OperationEnum.CopyPath,
+                          },
+                          {
                             type: "divider",
                           },
                           {
@@ -340,6 +344,18 @@ const Webview: FC = () => {
                                 },
                                 error: t("copy_base64_failed"),
                               });
+                              break;
+                            case OperationEnum.CopyPath:
+                              navigator.clipboard
+                                .writeText(
+                                  getCompleteImagePath(
+                                    dir.completePath,
+                                    image.name
+                                  )
+                                )
+                                .then(() => {
+                                  toast.success(t("copy_path_success"));
+                                });
                               break;
                             case WebviewMessageEnum.CompressImage:
                               if (image.ext === ".svg") {
