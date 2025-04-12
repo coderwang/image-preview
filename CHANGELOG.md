@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.3.0] - 2025-04-12
+
+### 🚀 Added
+
+- Support copying image system path.
+- Support deleting images to the recycle bin.
+
 ## [2.2.0] - 2025-04-02
 
 ### 🚀 Added
