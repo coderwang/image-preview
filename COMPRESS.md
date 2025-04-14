@@ -30,7 +30,9 @@ If the installation fails, you will see the following prompt:
 
 ![sharp_install_failed](./src/assets/readme/sharp_install_failed.png)
 
-You can try to install it manually.
+Please check your network status and make sure the node version is `^18.17.0 or >=20.3.0`, then re-enable the extension.
+
+If it does not work, you can try to install it manually.
 
 ## Manually Install Sharp
 
@@ -40,14 +42,20 @@ You can try to install it manually.
 
 ### 1、Mac Installation Guide
 
-First go to the extension installation directory:
+First go to the editor's persistent cache directory:
 
 ```bash
-# VSCode extension directory, please replace x.x.x with the installed version
-cd ~/.vscode/extensions/coderwsh.image-preview-x.x.x
+# VSCode
+cd ~/Library/Application\ Support/Code/User/globalStorage
 
-# Cursor extension directory
-cd ~/.cursor/extensions/coderwsh.image-preview-x.x.x
+# Cursor
+cd ~/Library/Application\ Support/Cursor/User/globalStorage
+```
+
+Create a directory named `coderwsh.image-preview`:
+
+```bash
+mkdir coderwsh.image-preview && cd coderwsh.image-preview
 ```
 
 To ensure stability, please install version 0.33.5 of sharp:
@@ -66,14 +74,20 @@ npm install sharp@0.33.5
 After successful installation:
 
 ```bash
-# Return to the extension installation directory
+# Back to `coderwsh.image-preview`
 cd ..
+
+# Create a directory named `sharp-cache`
+mkdir sharp-cache && cd sharp-cache
 
 # Make sure the node_modules directory exists
 mkdir node_modules
 
-# Copy all files in the node_modules in the temporary directory to the node_modules in the extension directory
-cp -Rf temp_install/node_modules/* node_modules
+# Back to `coderwsh.image-preview`
+cd ..
+
+# Copy all files in the node_modules in the temporary directory to the node_modules in the `sharp-cache` directory
+cp -Rf temp_install/node_modules/* sharp-cache/node_modules
 
 # Clean up the temporary directory
 rm -rf temp_install

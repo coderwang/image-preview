@@ -30,7 +30,9 @@
 
 ![sharp_install_failed](./src/assets/readme/sharp_install_failed.png)
 
-由于国内网络环境的原因，如果没有 🪜，可能会导致安装失败，此时可以尝试手动安装。
+此时先检查一下 node 版本要在 **^18.17.0 或 >=20.3.0**，再尝试将镜像源切换到国内，最后重启一下插件。
+
+如果还是安装失败，可以手动安装。
 
 ## 手动安装 sharp
 
@@ -38,17 +40,23 @@
 
 ### 1、Mac 安装指南
 
-首先找到插件的安装目录，`cd` 进去：
+首先找到编辑器的持久缓存目录，`cd` 进去：
 
 ```bash
-# VSCode 插件目录，注意替换x.x.x为安装版本
-cd ~/.vscode/extensions/coderwsh.image-preview-x.x.x
+# VSCode
+cd ~/Library/Application\ Support/Code/User/globalStorage
 
-# Cursor 插件目录
-cd ~/.cursor/extensions/coderwsh.image-preview-x.x.x
+# Cursor
+cd ~/Library/Application\ Support/Cursor/User/globalStorage
 
-# Trae 插件目录
-cd ~/.trae/extensions/coderwsh.image-preview-x.x.x
+# Trae
+cd ~/Library/Application\ Support/Trae/User/globalStorage
+```
+
+创建一个本插件专用的文件夹（名字必须为`coderwsh.image-preview`）：
+
+```bash
+mkdir coderwsh.image-preview && cd coderwsh.image-preview
 ```
 
 为了确保稳定性，请安装 0.33.5 版本的 sharp：
@@ -67,14 +75,20 @@ npm install sharp@0.33.5
 安装成功后：
 
 ```bash
-# 回到插件安装目录
+# 回到`coderwsh.image-preview`目录
 cd ..
 
-# 确保 node_modules 目录存在，若已经存在了则不用管
+# 创建一个 sharp 专门缓存目录（名字必须是`sharp-cache`）
+mkdir sharp-cache && cd sharp-cache
+
+# 创建 node_modules，若已经存在了则不用管
 mkdir node_modules
 
-# 将临时目录下的 node_modules 复制到插件目录中的 node_modules
-cp -Rf temp_install/node_modules/* node_modules
+# 回到`coderwsh.image-preview`目录
+cd ..
+
+# 将临时目录下的 node_modules 复制到 sharp-cache 目录下的 node_modules
+cp -Rf temp_install/node_modules/* sharp-cache/node_modules
 
 # 清理临时目录
 rm -rf temp_install
