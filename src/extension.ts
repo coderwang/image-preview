@@ -7,8 +7,11 @@ import { ExtensionMessageEnum, WebviewMessageEnum } from "./consts/enum";
 import { installSharp } from "./utils/sharp-installer";
 
 let panel: vscode.WebviewPanel;
+let extensionContext: vscode.ExtensionContext;
 
 export function activate(context: vscode.ExtensionContext) {
+  extensionContext = context;
+
   // 在正常环境下，这里的代码会在插件安装和启用时调用，在命令执行时不会调用
   // 在扩展开发宿主环境下，由于没有安装和启用的过程，所以只会在命令首次执行时调用
   // 所以，在开发环境和生产环境，由于执行时机的不同，表现可能会不同~~

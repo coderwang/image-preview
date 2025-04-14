@@ -8,12 +8,22 @@ const exec = promisify(childProcess.exec);
 const exists = promisify(fs.exists);
 const mkdir = promisify(fs.mkdir);
 
+// Sharp的全局缓存目录名称
+const SHARP_GLOBAL_CACHE_DIR = "sharp-cache";
+// 确保版本匹配，避免兼容性问题
+const SHARP_VERSION = "0.33.5";
+
 export async function installSharp(
   context: vscode.ExtensionContext
 ): Promise<void> {
-  const extensionPath = context.extensionPath;
+  // 使用全局存储路径作为缓存目录
+  const globalStoragePath = context.globalStorageUri.fsPath;
+  const sharpCachePath = path.join(globalStoragePath, SHARP_GLOBAL_CACHE_DIR);
 
   try {
+    // 在require前设置NODE_PATH环境变量，使Node.js能从缓存目录加载模块
+    setupSharpModulePath(sharpCachePath);
+
     try {
       // 尝试加载前先删除缓存
       delete require.cache[require.resolve("sharp")];
@@ -21,7 +31,7 @@ export async function installSharp(
       require("sharp");
       return;
     } catch (error) {
-      // 加载失败了什么都不用做，接着走下面的npm install流程
+      // 加载失败，继续安装流程
     }
 
     await vscode.window.withProgress(
@@ -31,8 +41,18 @@ export async function installSharp(
         cancellable: false,
       },
       async (progress) => {
-        // 创建一个临时目录，防止污染插件以及避免没有写入权限
-        const tempDir = path.join(extensionPath, "temp_install");
+        // 确保全局存储目录存在
+        if (!(await exists(globalStoragePath))) {
+          await mkdir(globalStoragePath, { recursive: true });
+        }
+
+        // 确保sharp缓存目录存在
+        if (!(await exists(sharpCachePath))) {
+          await mkdir(sharpCachePath, { recursive: true });
+        }
+
+        // 创建一个临时目录
+        const tempDir = path.join(globalStoragePath, "temp_install");
         if (!(await exists(tempDir))) {
           await mkdir(tempDir);
         }
@@ -51,16 +71,16 @@ export async function installSharp(
 
         // 运行npm install命令
         progress.report({ message: "Installing sharp" });
-        const { stdout, stderr } = await exec("npm install sharp@0.33.5", {
-          cwd: tempDir,
-        });
+        const { stdout, stderr } = await exec(
+          `npm install sharp@${SHARP_VERSION}`,
+          {
+            cwd: tempDir,
+          }
+        );
 
         if (stderr && !stderr.includes("npm WARN")) {
           throw new Error(stderr);
         }
-
-        // 到这儿sharp应该是安装成功了，再清一次缓存
-        delete require.cache[require.resolve("sharp")];
 
         // sharp涉及的所有模块
         const sourceModulesPath = path.join(tempDir, "node_modules");
@@ -68,31 +88,19 @@ export async function installSharp(
           throw new Error("Install sharp failed, can't find installed modules");
         }
 
-        // 确保扩展的node_modules目录存在
-        const extNodeModules = path.join(extensionPath, "node_modules");
-        if (!(await exists(extNodeModules))) {
-          await mkdir(extNodeModules);
+        // 复制sharp及其依赖到全局缓存目录
+        const targetModulesPath = path.join(sharpCachePath, "node_modules");
+        if (!(await exists(targetModulesPath))) {
+          await mkdir(targetModulesPath);
         }
 
-        // 复制sharp所有模块到扩展的node_modules（包括sharp和依赖的二进制包等）
+        // 复制模块到缓存目录
         if (process.platform === "win32") {
-          /**
-           * 使用xcopy复制
-           * /E 复制所有子目录（包括空目录）
-           * /I 目标路径extNodeModules不存在时自动创建，当然这里是一定存在的
-           * /H 包含隐藏文件和系统文件
-           * /Y 静默覆盖已有文件（不提示确认）
-           */
           await exec(
-            `xcopy "${sourceModulesPath}\\*" "${extNodeModules}" /E /I /H /Y`
+            `xcopy "${sourceModulesPath}\\*" "${targetModulesPath}" /E /I /H /Y`
           );
         } else {
-          /**
-           * 使用cp复制
-           * -R 递归复制
-           * -f 强制覆盖已有文件
-           */
-          await exec(`cp -Rf "${sourceModulesPath}/"* "${extNodeModules}/"`);
+          await exec(`cp -Rf "${sourceModulesPath}/"* "${targetModulesPath}/"`);
         }
 
         // 清理临时目录
@@ -101,6 +109,9 @@ export async function installSharp(
         } else {
           await exec(`rm -rf "${tempDir}"`);
         }
+
+        // 再清一下缓存
+        delete require.cache[require.resolve("sharp")];
       }
     );
   } catch (error) {
@@ -119,5 +130,34 @@ export async function installSharp(
           );
         }
       });
+  }
+}
+
+/**
+ * 设置node加载路径
+ */
+function setupSharpModulePath(sharpCachePath: string): void {
+  const modulesPath = path.join(sharpCachePath, "node_modules");
+
+  // 添加缓存路径到当前模块搜索路径
+  if (!module.paths.includes(modulesPath)) {
+    module.paths.unshift(modulesPath);
+  }
+
+  // 设置环境变量 NODE_PATH 作为全局模块加载路径（防止 module.paths 未生效）
+  const nodePath = process.env.NODE_PATH
+    ? `${modulesPath}${path.delimiter}${process.env.NODE_PATH}`
+    : modulesPath;
+  process.env.NODE_PATH = nodePath;
+
+  // 获取当前进程的主模块引用
+  if (require.main) {
+    try {
+      // @ts-ignore - 非公开API - 强制刷新模块搜索路径
+      require("module").Module._initPaths();
+    } catch (e) {
+      // 非关键操作
+      console.warn("_initPaths error ===>", e);
+    }
   }
 }
