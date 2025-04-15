@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.3.1] - 2025-04-15
+
+### 🌊 Optimized
+
+- Install Sharp to a persistent cache directory to avoid repeated installation for each extension upgrade.
+
 ## [2.3.0] - 2025-04-12
 
 ### 🚀 Added
