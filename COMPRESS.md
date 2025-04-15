@@ -99,16 +99,23 @@ Now, sharp has been successfully integrated into the extension. Since there may 
 
 The following operations are performed using `PowerShell`.
 
-First, find the installation directory of the extension. The installation location of the extension in Windows may be different, so please find it yourself.
+First, find the persistent cache directory of the editor. This location in Windows may be different, so please find it yourself.
 
-```powershell
-# VSCode extension directory, please replace x.x.x with the installed version
-cd C:\Users\admin\.vscode\extensions\coderwsh.image-preview-x.x.x
+```bash
+# VSCode (admin needs to be replaced)
+cd C:\Users\admin\AppData\Roaming\Code\User\globalStorage
+```
+
+Create a directory named `coderwsh.image-preview`:
+
+```bash
+mkdir coderwsh.image-preview
+cd coderwsh.image-preview
 ```
 
 To ensure stability, please install version 0.33.5 of sharp:
 
-```powershell
+```bash
 # Create a temporary directory
 mkdir temp_install
 cd temp_install
@@ -122,15 +129,22 @@ npm install sharp@0.33.5
 
 After successful installation:
 
-```powershell
-# Return to the extension installation directory
+```bash
+# Back to `coderwsh.image-preview`
 cd ..
+
+# Create a directory named `sharp-cache`
+mkdir sharp-cache
+cd sharp-cache
 
 # Make sure the node_modules directory exists
 mkdir node_modules
 
-# Copy all files in the node_modules in the temporary directory to the node_modules in the extension directory
-Copy-Item -Path temp_install/node_modules/* -Destination node_modules -Recurse -Force
+# Back to `coderwsh.image-preview`
+cd ..
+
+# Copy all files in the node_modules in the temporary directory to the node_modules in the `sharp-cache` directory
+Copy-Item -Path temp_install/node_modules/* -Destination sharp-cache/node_modules -Recurse -Force
 
 # Clean up the temporary directory
 Remove-Item -Path temp_install -Recurse -Force

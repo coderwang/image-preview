@@ -100,16 +100,23 @@ rm -rf temp_install
 
 以下操作使用 `PowerShell` 执行。
 
-首先找到插件的安装目录，`cd` 进去，Windows 中插件安装位置可能不尽相同，请自行找到。
+首先找到编辑器的持久化缓存目录，`cd` 进去，Windows 中该位置可能不尽相同，请自行找到。
 
-```powershell
-# VSCode 插件目录，注意替换x.x.x为安装版本
-cd C:\Users\admin\.vscode\extensions\coderwsh.image-preview-x.x.x
+```bash
+# VSCode（admin需替换）
+cd C:\Users\admin\AppData\Roaming\Code\User\globalStorage
+```
+
+创建一个本插件专用的文件夹（名字必须为`coderwsh.image-preview`）：
+
+```bash
+mkdir coderwsh.image-preview
+cd coderwsh.image-preview
 ```
 
 为了确保稳定性，请安装 0.33.5 版本的 sharp：
 
-```powershell
+```bash
 # 创建一个临时目录并 cd 进去
 mkdir temp_install
 cd temp_install
@@ -123,15 +130,22 @@ npm install sharp@0.33.5
 
 安装成功后：
 
-```powershell
-# 回到插件安装目录
+```bash
+# 回到`coderwsh.image-preview`目录
 cd ..
+
+# 创建一个 sharp 专门缓存目录（名字必须是`sharp-cache`）
+mkdir sharp-cache
+cd sharp-cache
 
 # 确保 node_modules 目录存在，若已经存在了则不用管
 mkdir node_modules
 
-# 将临时目录下的 node_modules 复制到插件目录中的 node_modules
-Copy-Item -Path temp_install/node_modules/* -Destination node_modules -Recurse -Force
+# 回到`coderwsh.image-preview`目录
+cd ..
+
+# 将临时目录下的 node_modules 复制到 sharp-cache 目录下的 node_modules
+Copy-Item -Path temp_install/node_modules/* -Destination sharp-cache/node_modules -Recurse -Force
 
 # 清理临时目录
 Remove-Item -Path temp_install -Recurse -Force
