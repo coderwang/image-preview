@@ -51,7 +51,7 @@ export async function installSharp(
           await mkdir(sharpCachePath, { recursive: true });
         }
 
-        // 创建一个临时目录
+        // 创建一个临时目录，防止污染原有文件
         const tempDir = path.join(globalStoragePath, "temp_install");
         if (!(await exists(tempDir))) {
           await mkdir(tempDir);
@@ -88,7 +88,7 @@ export async function installSharp(
           throw new Error("Install sharp failed, can't find installed modules");
         }
 
-        // 复制sharp及其依赖到全局缓存目录
+        // sharp模块最终存放位置
         const targetModulesPath = path.join(sharpCachePath, "node_modules");
         if (!(await exists(targetModulesPath))) {
           await mkdir(targetModulesPath);
@@ -96,10 +96,22 @@ export async function installSharp(
 
         // 复制模块到缓存目录
         if (process.platform === "win32") {
+          /**
+           * 使用xcopy复制
+           * /E 复制所有子目录（包括空目录）
+           * /I 目标路径extNodeModules不存在时自动创建，当然这里是一定存在的
+           * /H 包含隐藏文件和系统文件
+           * /Y 静默覆盖已有文件（不提示确认）
+           */
           await exec(
             `xcopy "${sourceModulesPath}\\*" "${targetModulesPath}" /E /I /H /Y`
           );
         } else {
+          /**
+           * 使用cp复制
+           * -R 递归复制
+           * -f 强制覆盖已有文件
+           */
           await exec(`cp -Rf "${sourceModulesPath}/"* "${targetModulesPath}/"`);
         }
 
