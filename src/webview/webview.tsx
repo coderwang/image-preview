@@ -13,6 +13,7 @@ import {
 import { ExtensionMessage, ImagePreviewRef } from "@/consts/interface";
 import { backgroundColorAtom } from "@/store/bgc";
 import { filterCountAtom, totalCountAtom } from "@/store/count";
+import { operationPanelExpandAtom } from "@/store/expand";
 import {
   currentPreviewImageIndexAtom,
   filterDirListAtom,
@@ -36,6 +37,7 @@ import { App, Dropdown } from "antd";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
+import clsx from "clsx";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React, { FC, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -75,6 +77,8 @@ const Webview: FC = () => {
   );
 
   const compressToastIdRef = useRef<string | number>(undefined);
+
+  const operationPanelExpand = useAtomValue(operationPanelExpandAtom);
 
   useEffect(() => {
     VsCodeApi.postMessage({
@@ -216,7 +220,12 @@ const Webview: FC = () => {
         ></Trans>
       </div>
 
-      <div className="actionBar">
+      <div
+        className={clsx(
+          "actionBar",
+          !operationPanelExpand && "actionBarCollapse"
+        )}
+      >
         <SearchContainer />
         <ImageTypeContainer />
         <ImageSizeContainer />
@@ -267,7 +276,6 @@ const Webview: FC = () => {
                     <Dropdown
                       key={image.name}
                       menu={{
-                        className: "customDropdown",
                         items: [
                           {
                             label: t("reveal_in_side_bar"),

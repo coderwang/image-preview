@@ -55,4 +55,5 @@ export const enum ExtensionMessageEnum {
 export const enum DropdownItemEnum {
   Refresh = "refresh",
   Settings = "settings",
+  Expand = "expand",
 }

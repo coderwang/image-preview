@@ -36,7 +36,7 @@ const ScrollToTop = () => {
           });
         }}
       >
-        <TopIcon className={styles.scrollToTopIcon} color="#ccc" />
+        <TopIcon className={styles.scrollToTopIcon} />
       </div>
     )
   );

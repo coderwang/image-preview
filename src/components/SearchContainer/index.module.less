@@ -19,7 +19,7 @@
       border: 1px solid var(--search-border);
       border-radius: 6px;
       font-size: 12px;
-      transition: all 0.3s ease;
+      transition: all 0.3s linear;
       outline: none;
       color: var(--text-color);
       background-color: var(--bg-color);
@@ -49,27 +49,6 @@
         color: var(--more-icon-color);
         cursor: pointer;
       }
-    }
-  }
-}
-
-.customDropdown {
-  :global {
-    .ant-dropdown-menu-item {
-      padding: 4px 8px !important;
-
-      .ant-dropdown-menu-item-icon {
-        width: 16px;
-        height: 16px;
-      }
-
-      .ant-dropdown-menu-title-content {
-        font-size: 12px;
-      }
-    }
-
-    .ant-dropdown-menu-item-divider {
-      margin: 4px 8px !important;
     }
   }
 }

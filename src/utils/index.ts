@@ -149,6 +149,10 @@ export const getImageBase64 = (image: ImageInfo): Promise<string> => {
 };
 
 export const refreshPage = () => {
+  scrollTo({
+    top: 0,
+    behavior: "instant",
+  });
   store.set(pageStatusAtom, "loading");
   store.set(showTypeAtom, RESET);
   store.set(numsAtom, RESET);

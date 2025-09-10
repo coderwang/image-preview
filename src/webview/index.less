@@ -17,6 +17,7 @@
   --bottom-color: #888;
   --bottom-bg: #ece9e4;
   --more-icon-color: #444;
+  --box-shadow-color: rgba(0, 0, 0, 0.16);
 }
 
 :root[data-theme="dark"] {
@@ -38,6 +39,7 @@
   --bottom-color: #555;
   --bottom-bg: #a7a7a7;
   --more-icon-color: #ddd;
+  --box-shadow-color: rgba(255, 255, 255, 0.8);
 }
 
 html,
@@ -53,4 +55,25 @@ i {
 
 .toastContainer {
   z-index: 1200;
+}
+
+.ant-dropdown {
+  .ant-dropdown-menu {
+    .ant-dropdown-menu-item {
+      padding: 4px 8px;
+
+      .ant-dropdown-menu-item-icon {
+        width: 16px;
+        height: 16px;
+      }
+
+      .ant-dropdown-menu-title-content {
+        font-size: 12px;
+      }
+    }
+
+    .ant-dropdown-menu-item-divider {
+      margin: 4px 8px;
+    }
+  }
 }
