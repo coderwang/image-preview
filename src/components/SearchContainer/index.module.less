@@ -43,21 +43,33 @@
       gap: 8px;
       margin-left: auto;
 
-      .themeIcon {
-        cursor: pointer;
-
-        .settingIcon {
-          display: block;
-          width: 20px;
-          height: 20px;
-        }
-      }
-
-      .refresh {
+      .moreIcon {
         width: 20px;
         height: 20px;
+        color: var(--more-icon-color);
         cursor: pointer;
       }
+    }
+  }
+}
+
+.customDropdown {
+  :global {
+    .ant-dropdown-menu-item {
+      padding: 4px 8px !important;
+
+      .ant-dropdown-menu-item-icon {
+        width: 16px;
+        height: 16px;
+      }
+
+      .ant-dropdown-menu-title-content {
+        font-size: 12px;
+      }
+    }
+
+    .ant-dropdown-menu-item-divider {
+      margin: 4px 8px !important;
     }
   }
 }

@@ -51,3 +51,8 @@ export const enum ExtensionMessageEnum {
   /** 提示已存在压缩后的图片 */
   TipCompressedImageExist = "tipCompressedImageExist",
 }
+
+export const enum DropdownItemEnum {
+  Refresh = "refresh",
+  Settings = "settings",
+}

@@ -5,7 +5,6 @@ import ImageTypeContainer from "@/components/ImageTypeContainer";
 import OperateBtnContainer from "@/components/OperateBtnContainer";
 import ScrollToTop from "@/components/ScrollToTop";
 import SearchContainer from "@/components/SearchContainer";
-import SettingButton from "@/components/SettingButton";
 import {
   ExtensionMessageEnum,
   OperationEnum,
@@ -204,20 +203,17 @@ const Webview: FC = () => {
 
   return (
     <div className="container">
-      <div className="titleContainer">
-        <div className="title">
-          <Trans
-            i18nKey="preview_title"
-            values={{
-              dirPath,
-              projectName,
-            }}
-            components={{
-              italic: <i />,
-            }}
-          ></Trans>
-        </div>
-        <SettingButton />
+      <div className="title">
+        <Trans
+          i18nKey="preview_title"
+          values={{
+            dirPath,
+            projectName,
+          }}
+          components={{
+            italic: <i />,
+          }}
+        ></Trans>
       </div>
 
       <div className="actionBar">

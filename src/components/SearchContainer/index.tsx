@@ -1,12 +1,11 @@
 import { ReactComponent as SettingIcon } from "@/assets/svg/settings.svg";
-import { Theme } from "@/consts/enum";
-import {
-  isSettingIconIntersectingAtom,
-  isSettingModalOpenAtom,
-} from "@/store/modal";
+import { DropdownItemEnum } from "@/consts/enum";
+import { isSettingModalOpenAtom } from "@/store/modal";
 import { searchValueAtom } from "@/store/searchValue";
 import { themeAtom } from "@/store/theme";
 import { refreshPage } from "@/utils";
+import { Dropdown } from "antd";
+import { ReactComponent as MoreIcon } from "assets/svg/more.svg";
 import { ReactComponent as RefreshIcon } from "assets/svg/refresh.svg";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import React from "react";
@@ -14,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 
 const SearchContainer: React.FC = () => {
-  const isSettingIconIntersecting = useAtomValue(isSettingIconIntersectingAtom);
   const theme = useAtomValue(themeAtom);
   const [searchValue, setSearchValue] = useAtom(searchValueAtom);
   const { t } = useTranslation();
@@ -30,24 +28,35 @@ const SearchContainer: React.FC = () => {
         placeholder={t("search_placeholder")}
       />
       <div className="iconContainer">
-        {!isSettingIconIntersecting && (
-          <div
-            className="themeIcon"
-            onClick={() => setIsSettingModalOpen(true)}
-          >
-            <SettingIcon
-              className="settingIcon"
-              color={theme === Theme.Light ? "#4CB6EC" : "#999"}
-            />
-          </div>
-        )}
-        <RefreshIcon
-          className="refresh"
-          color={theme === Theme.Light ? "#4CB6EC" : "#999"}
-          onClick={() => {
-            refreshPage();
+        <Dropdown
+          menu={{
+            className: styles.customDropdown,
+            items: [
+              {
+                icon: <RefreshIcon />,
+                label: t("refresh"),
+                key: DropdownItemEnum.Refresh,
+              },
+              {
+                icon: <SettingIcon />,
+                label: t("settings"),
+                key: DropdownItemEnum.Settings,
+              },
+            ],
+            onClick: ({ key }) => {
+              switch (key) {
+                case DropdownItemEnum.Refresh:
+                  refreshPage();
+                  break;
+                case DropdownItemEnum.Settings:
+                  setIsSettingModalOpen(true);
+                  break;
+              }
+            },
           }}
-        />
+        >
+          <MoreIcon className="moreIcon" />
+        </Dropdown>
       </div>
     </div>
   );

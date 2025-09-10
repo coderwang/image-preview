@@ -19,6 +19,12 @@ const SettingModal = () => {
 
   return (
     <Modal
+      maskProps={{
+        style: {
+          zIndex: 1080,
+        },
+      }}
+      wrapClassName={styles.settingsModalWrapper}
       className={styles.settingsModal}
       open={isSettingModalOpen}
       title={t("settings")}
