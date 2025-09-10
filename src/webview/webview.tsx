@@ -94,6 +94,7 @@ const Webview: FC = () => {
           setOriginDirList(message.dirList);
           setFilterDirList(message.dirList);
           setNums(message.nums);
+          console.log("message.dirList ===>", message.dirList);
 
           const total = Object.values(message.nums).reduce(
             (acc, count) => acc + count,

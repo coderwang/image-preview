@@ -11,13 +11,21 @@ import {
 import { Image, Space } from "antd";
 import clsx from "clsx";
 import { useAtom, useAtomValue } from "jotai";
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
+import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import styles from "./index.module.less";
 
 interface ImagePreviewProps {}
 
 const ImagePreview = forwardRef<ImagePreviewRef, ImagePreviewProps>(
   (props, ref) => {
+    const { t } = useTranslation();
     const [visible, setVisible] = useState(false);
     const previewImageList = useAtomValue(previewImageListAtom);
     const [currentPreviewImageIndex, setCurrentPreviewImageIndex] = useAtom(
@@ -32,6 +40,12 @@ const ImagePreview = forwardRef<ImagePreviewRef, ImagePreviewProps>(
         setVisible(false);
       },
     }));
+
+    const imageName = useMemo(() => {
+      return visible
+        ? previewImageList[currentPreviewImageIndex]?.split("/").pop()
+        : "";
+    }, [visible, previewImageList, currentPreviewImageIndex]);
 
     return (
       <div className={styles.imagePreview}>
@@ -108,18 +122,27 @@ const ImagePreview = forwardRef<ImagePreviewRef, ImagePreviewProps>(
             onChange: (current) => {
               setCurrentPreviewImageIndex(current);
             },
-            onTransform: ({ transform, action }) => {
-              if (["wheel", "zoomIn", "zoomOut"].includes(action)) {
-                const scalePercent = (transform.scale * 100).toFixed(2);
-                console.log(`当前缩放比例: ${scalePercent}%`);
-              }
-            },
+            // onTransform: ({ transform, action }) => {
+            //   if (["wheel", "zoomIn", "zoomOut"].includes(action)) {
+            //     const scalePercent = (transform.scale * 100).toFixed(2);
+            //     console.log(`当前缩放比例: ${scalePercent}%`);
+            //   }
+            // },
           }}
           items={previewImageList}
         />
         {visible && (
-          <div className={styles.imageName}>
-            {previewImageList[currentPreviewImageIndex].split("/").pop()}
+          <div
+            className={styles.imageName}
+            title="click to copy"
+            onClick={() => {
+              imageName &&
+                navigator.clipboard.writeText(imageName).then(() => {
+                  toast.success(t("copy_image_name_success"));
+                });
+            }}
+          >
+            {imageName}
           </div>
         )}
       </div>
