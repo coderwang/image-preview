@@ -40,6 +40,7 @@
   "delete_image_checkbox": "Don't ask me again",
   "cancel": "Cancel",
   "confirm": "Confirm",
+  "path": "Path",
   "copy_path": "Copy Path",
   "copy_path_success": "Copy path successfully!"
 }

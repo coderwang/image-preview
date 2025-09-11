@@ -427,7 +427,11 @@ const Webview: FC = () => {
                         style={{ width: imageSize }}
                         onClick={() => {
                           setPreviewImageList(
-                            dir.imageList.map((item) => item.url)
+                            dir.imageList.map((item) => ({
+                              url: item.url,
+                              name: item.name,
+                              path: dir.completePath,
+                            }))
                           );
                           setCurrentPreviewImageIndex(imageIndex);
                           imagePreviewRef.current?.show();

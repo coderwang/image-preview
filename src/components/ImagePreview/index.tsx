@@ -8,7 +8,8 @@ import {
   currentPreviewImageIndexAtom,
   previewImageListAtom,
 } from "@/store/image";
-import { Image, Space } from "antd";
+import { getCompleteImagePath } from "@/utils";
+import { Image, Space, Tag } from "antd";
 import clsx from "clsx";
 import { useAtom, useAtomValue } from "jotai";
 import React, {
@@ -42,10 +43,21 @@ const ImagePreview = forwardRef<ImagePreviewRef, ImagePreviewProps>(
     }));
 
     const imageName = useMemo(() => {
+      return visible ? previewImageList[currentPreviewImageIndex]?.name : "";
+    }, [visible, previewImageList, currentPreviewImageIndex]);
+
+    const imagePath = useMemo(() => {
       return visible
-        ? previewImageList[currentPreviewImageIndex]?.split("/").pop()
+        ? getCompleteImagePath(
+            previewImageList[currentPreviewImageIndex]?.path,
+            previewImageList[currentPreviewImageIndex]?.name
+          )
         : "";
     }, [visible, previewImageList, currentPreviewImageIndex]);
+
+    const previewImageListItems = useMemo(() => {
+      return previewImageList.map((item) => item.url);
+    }, [previewImageList]);
 
     return (
       <div className={styles.imagePreview}>
@@ -129,20 +141,35 @@ const ImagePreview = forwardRef<ImagePreviewRef, ImagePreviewProps>(
             //   }
             // },
           }}
-          items={previewImageList}
+          items={previewImageListItems}
         />
         {visible && (
-          <div
-            className={styles.imageName}
-            title="click to copy"
-            onClick={() => {
-              imageName &&
-                navigator.clipboard.writeText(imageName).then(() => {
-                  toast.success(t("copy_image_name_success"));
-                });
-            }}
-          >
-            {imageName}
+          <div className={styles.imageNameContainer}>
+            <div
+              className={styles.imageName}
+              title={t("copy_image_name")}
+              onClick={() => {
+                imageName &&
+                  navigator.clipboard.writeText(imageName).then(() => {
+                    toast.success(t("copy_image_name_success"));
+                  });
+              }}
+            >
+              {imageName}
+            </div>
+            <Tag
+              className={styles.imagePathTag}
+              title={t("copy_path")}
+              color="green"
+              onClick={() => {
+                imagePath &&
+                  navigator.clipboard.writeText(imagePath).then(() => {
+                    toast.success(t("copy_path_success"));
+                  });
+              }}
+            >
+              {t("path")}
+            </Tag>
           </div>
         )}
       </div>
