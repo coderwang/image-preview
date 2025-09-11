@@ -1,3 +1,3 @@
 import { atom } from "jotai";
 
-export const operationPanelExpandAtom = atom(true);
+export const operationPanelExpandAtom = atom(false);
