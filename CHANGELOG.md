@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.3.2] - 2025-09-11
+
+### 🌊 Optimized
+
+- Support expanding or collapsing the operation panel, and the default is collapsed.
+- Support copying image name and path when previewing an image.
+
 ## [2.3.1] - 2025-04-15
 
 ### 🌊 Optimized
