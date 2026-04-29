@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.3.3] - 2026-04-29
+
+### 🌊 Optimized
+
+- Move the image preview panel to the right side of the editor.
+
 ## [2.3.2] - 2025-09-11
 
 ### 🌊 Optimized

@@ -60,4 +60,4 @@ Use `superImagePreview.language` to set the language for image preview (it is `e
 If you have any questions or suggestions, please feel free to contact me.
 
 - Email: [coderwsh@gmail.com](mailto:coderwsh@gmail.com)
-- WeChat: `Java770880`
+- WeChat: `Cy6er_Kin9`
