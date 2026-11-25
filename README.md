@@ -11,10 +11,10 @@ This is a powerful VSCode extension that allows you to preview all images in the
 - Recursive preview of all images in the folder.
 - Display the height, width, and original size of the image when hovering.
 - Support adjusting the image size and background color.
-- Support filtering by image type.
-- Support searching by image name.
-- Allow opening the folder using the system file manager.
+- Support filtering by image type and searching by image name.
+- Support quickly importing images to the folder.
 - Click on the image to preview it in a large window.
+- Support editing SVG icons' code.
 - Right click on the image to open the operation menu, which includes revealing in the sidebar, revealing in the file folder, copying image name, copying base64, copying complete path, [compressing](./COMPRESS.md) the image, and deleting the image.
 - Support setting theme (light / dark).
 - Support setting language (en / zh).

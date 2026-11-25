@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.4.0] - 2026-11-25
+
+### 🚀 Added
+
+- Support editing SVG icons' code.
+- Support quickly importing images to the folder.
+
 ## [2.3.3] - 2026-04-29
 
 ### 🌊 Optimized
