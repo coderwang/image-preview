@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.5.0] - 2026-11-25
+
+### 🚀 Added
+
+- Support similar icon detection.
+
 ## [2.4.0] - 2026-11-25
 
 ### 🚀 Added
