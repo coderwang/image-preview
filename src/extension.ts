@@ -4,6 +4,8 @@ import * as path from "path";
 import * as svgo from "svgo";
 import * as vscode from "vscode";
 import { ExtensionMessageEnum, WebviewMessageEnum } from "./consts/enum";
+import type { SimilarImageInput } from "./consts/interface";
+import { computeAverageHash } from "./utils/perceptual-hash";
 import { installSharp } from "./utils/sharp-installer";
 
 let panel: vscode.WebviewPanel;
@@ -338,6 +340,10 @@ export function activate(context: vscode.ExtensionContext) {
             });
             break;
           }
+          case WebviewMessageEnum.DetectSimilarImages: {
+            detectSimilarImages(message.images as SimilarImageInput[]);
+            break;
+          }
         }
       });
     }
@@ -488,6 +494,41 @@ function compressSVG(svgPath: string) {
       command: ExtensionMessageEnum.TipSvgFileError,
     });
   }
+}
+
+/** 批量计算感知哈希，返回给 webview 做相似分组 */
+async function detectSimilarImages(images: SimilarImageInput[]) {
+  try {
+    // 确认 sharp 可用
+    require("sharp");
+  } catch {
+    panel.webview.postMessage({
+      command: ExtensionMessageEnum.TipSharpNotReady,
+    });
+    return;
+  }
+
+  const items: Array<SimilarImageInput & { hash: string }> = [];
+  let failedCount = 0;
+
+  for (const image of images) {
+    try {
+      if (!fs.existsSync(image.completePath)) {
+        failedCount += 1;
+        continue;
+      }
+      const hash = await computeAverageHash(image.completePath);
+      items.push({ ...image, hash });
+    } catch {
+      failedCount += 1;
+    }
+  }
+
+  panel.webview.postMessage({
+    command: ExtensionMessageEnum.ShowSimilarImagesResult,
+    items,
+    failedCount,
+  });
 }
 
 export function deactivate() {}

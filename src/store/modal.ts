@@ -18,3 +18,9 @@ export interface SvgEditorTarget {
 
 /** SVG编辑器弹窗的目标文件，为null时弹窗关闭 */
 export const svgEditorTargetAtom = atom<SvgEditorTarget | null>(null);
+
+/** 相似图片检测弹窗是否打开 */
+export const similarImagesModalOpenAtom = atom(false);
+
+/** 是否正在计算感知哈希 */
+export const similarImagesScanningAtom = atom(false);

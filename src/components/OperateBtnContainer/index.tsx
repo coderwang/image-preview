@@ -1,9 +1,11 @@
+import { useStartSimilarDetection } from "@/components/SimilarImagesModal";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import styles from "./index.module.less";
 
 const OperateBtnContainer = () => {
   const { t } = useTranslation();
+  const startSimilarDetection = useStartSimilarDetection();
 
   const expandAll = () => {
     document.querySelectorAll(`.imageCard`).forEach((item) => {
@@ -24,6 +26,12 @@ const OperateBtnContainer = () => {
       </div>
       <div className="gradientBtn gradientBorder" onClick={collapseAll}>
         {t("collapse_all")}
+      </div>
+      <div
+        className="gradientBtn gradientStatic"
+        onClick={startSimilarDetection}
+      >
+        {t("find_similar")}
       </div>
     </div>
   );

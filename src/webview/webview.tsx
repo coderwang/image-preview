@@ -6,6 +6,7 @@ import ImportModal from "@/components/ImportModal";
 import OperateBtnContainer from "@/components/OperateBtnContainer";
 import ScrollToTop from "@/components/ScrollToTop";
 import SearchContainer from "@/components/SearchContainer";
+import SimilarImagesModal from "@/components/SimilarImagesModal";
 import SvgEditorModal from "@/components/SvgEditorModal";
 import {
   ExtensionMessageEnum,
@@ -544,6 +545,7 @@ const Webview: FC = () => {
       <ImagePreview ref={imagePreviewRef} />
       <ImportModal />
       <SvgEditorModal />
+      <SimilarImagesModal />
     </div>
   );
 };

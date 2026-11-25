@@ -7,8 +7,12 @@
 
   :global {
     .gradientBtn {
-      width: 118px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 118px;
       height: 38px;
+      padding: 0 14px;
       border-radius: 6px;
       font-size: 15px;
       font-weight: 500;
@@ -24,7 +28,6 @@
     }
 
     .gradientStatic {
-      line-height: 38px;
       background: linear-gradient(45deg, #6366f1, #ec4899);
 
       &:hover {
@@ -36,7 +39,6 @@
     .gradientBorder {
       background: white;
       color: #6366f1;
-      line-height: 34px;
       border: 2px solid transparent;
       background-image: linear-gradient(white, white),
         linear-gradient(45deg, #6366f1, #ec4899);

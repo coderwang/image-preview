@@ -44,6 +44,8 @@ export const enum WebviewMessageEnum {
   SaveSvg = "saveSvg",
   /** SVGO优化SVG代码 */
   OptimizeSvg = "optimizeSvg",
+  /** 检测相似图片 */
+  DetectSimilarImages = "detectSimilarImages",
 }
 
 // 扩展发送的消息枚举
@@ -62,6 +64,10 @@ export const enum ExtensionMessageEnum {
   SaveSvgResult = "saveSvgResult",
   /** SVGO优化SVG结果 */
   OptimizeSvgResult = "optimizeSvgResult",
+  /** 相似图片检测结果 */
+  ShowSimilarImagesResult = "showSimilarImagesResult",
+  /** sharp 未就绪 */
+  TipSharpNotReady = "tipSharpNotReady",
 }
 
 export const enum DropdownItemEnum {

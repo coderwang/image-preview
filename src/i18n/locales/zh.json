@@ -68,5 +68,17 @@
   "svg_optimize_hint": "调用 SVGO 优化代码",
   "svg_decolor_success": "已将颜色替换为 currentColor",
   "svg_optimize_success": "SVGO 优化成功!",
-  "svg_optimize_failed": "优化失败，请检查 SVG 代码"
+  "svg_optimize_failed": "优化失败，请检查 SVG 代码",
+  "find_similar": "检测相似",
+  "similar_title": "相似图标检测",
+  "similar_scanning": "正在计算感知哈希…",
+  "similar_summary": "找到 {{groups}} 组相似图片，共 {{images}} 张",
+  "similar_threshold": "相似度阈值",
+  "similar_empty": "未发现相似图片。可尝试调高阈值。",
+  "similar_group_title": "相似组 {{index}}",
+  "similar_group_count": "{{count}} 张",
+  "similar_click_reveal": "点击在侧边栏中打开",
+  "similar_need_more": "至少需要 2 张图片才能检测相似",
+  "similar_partial_failed": "{{count}} 张图片无法分析（格式或文件异常），已跳过",
+  "sharp_not_ready": "图片处理库尚未就绪，请稍候再试或查看压缩功能文档"
 }

@@ -1,0 +1,176 @@
+.similarModalWrapper {
+  z-index: 1080 !important;
+}
+
+.similarModal {
+  width: 720px !important;
+  max-width: 92vw;
+
+  .toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 20px;
+    margin-bottom: 16px;
+  }
+
+  .summary {
+    flex: 1;
+    min-width: 160px;
+    color: var(--text-secondary);
+    font-size: 13px;
+    line-height: 20px;
+  }
+
+  .thresholdBox {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 220px;
+  }
+
+  .thresholdLabel {
+    flex-shrink: 0;
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+
+  .thresholdValue {
+    flex-shrink: 0;
+    width: 20px;
+    color: var(--text-color);
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .slider {
+    flex: 1;
+    min-width: 100px;
+  }
+
+  .body {
+    max-height: 60vh;
+    overflow: auto;
+  }
+
+  .empty {
+    padding: 48px 16px;
+    color: var(--text-tertiary);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .group {
+    margin-bottom: 16px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .groupHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    font-size: 13px;
+  }
+
+  .groupTitle {
+    font-weight: 500;
+    color: var(--text-color);
+  }
+
+  .memberList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .member {
+    width: 112px;
+  }
+
+  .thumbBox {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 112px;
+    height: 112px;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--thumb-bg, #f5f5f5);
+    cursor: pointer;
+  }
+
+  .thumb {
+    max-width: 88%;
+    max-height: 88%;
+    object-fit: contain;
+  }
+
+  .distanceBadge {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    padding: 0 5px;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 11px;
+    line-height: 18px;
+  }
+
+  .deleteBtn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    display: none;
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    background: rgba(220, 38, 38, 0.9);
+    color: #fff;
+    font-size: 14px;
+    line-height: 22px;
+    text-align: center;
+    cursor: pointer;
+
+    &:hover {
+      background: rgba(185, 28, 28, 1);
+    }
+  }
+
+  .thumbBox:hover .deleteBtn {
+    display: block;
+  }
+
+  .memberName {
+    margin-top: 6px;
+    overflow: hidden;
+    color: var(--text-color);
+    font-size: 12px;
+    line-height: 16px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .memberPath {
+    overflow: hidden;
+    color: var(--text-tertiary);
+    font-size: 11px;
+    line-height: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

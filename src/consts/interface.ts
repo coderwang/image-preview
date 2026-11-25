@@ -50,6 +50,30 @@ export interface OptimizeSvgResultMessage {
   data?: string;
 }
 
+/** 参与相似检测的单张图片（webview → extension） */
+export interface SimilarImageInput {
+  completePath: string;
+  url: string;
+  name: string;
+  shortPath: string;
+  ext: string;
+}
+
+/** 带感知哈希的检测结果项 */
+export interface SimilarImageHashItem extends SimilarImageInput {
+  hash: string;
+}
+
+export interface ShowSimilarImagesResultMessage {
+  command: ExtensionMessageEnum.ShowSimilarImagesResult;
+  items: SimilarImageHashItem[];
+  failedCount: number;
+}
+
+export interface TipSharpNotReadyMessage {
+  command: ExtensionMessageEnum.TipSharpNotReady;
+}
+
 export type ExtensionMessage =
   | ShowImagesMessage
   | CompressImageCallbackMessage
@@ -57,4 +81,6 @@ export type ExtensionMessage =
   | TipCompressedImageExistMessage
   | ImportImagesResultMessage
   | SaveSvgResultMessage
-  | OptimizeSvgResultMessage;
+  | OptimizeSvgResultMessage
+  | ShowSimilarImagesResultMessage
+  | TipSharpNotReadyMessage;

@@ -68,5 +68,17 @@
   "svg_optimize_hint": "Optimize code with SVGO",
   "svg_decolor_success": "Colors replaced with currentColor",
   "svg_optimize_success": "Optimized with SVGO successfully!",
-  "svg_optimize_failed": "Failed to optimize SVG, please check the code"
+  "svg_optimize_failed": "Failed to optimize SVG, please check the code",
+  "find_similar": "Find Similar",
+  "similar_title": "Similar Icons",
+  "similar_scanning": "Computing perceptual hashes…",
+  "similar_summary": "Found {{groups}} similar group(s), {{images}} image(s)",
+  "similar_threshold": "Threshold",
+  "similar_empty": "No similar images found. Try raising the threshold.",
+  "similar_group_title": "Group {{index}}",
+  "similar_group_count": "{{count}} image(s)",
+  "similar_click_reveal": "Click to reveal in Side Bar",
+  "similar_need_more": "Need at least 2 images to detect similarities",
+  "similar_partial_failed": "{{count}} image(s) could not be analyzed and were skipped",
+  "sharp_not_ready": "Image processor is not ready yet. Please wait or check the compression docs."
 }
