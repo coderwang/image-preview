@@ -2,53 +2,35 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 10px;
   padding: 8px 12px;
 
-  :global {
-    .gradientBtn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 118px;
-      height: 38px;
-      padding: 0 14px;
-      border-radius: 6px;
-      font-size: 15px;
-      font-weight: 500;
-      text-align: center;
-      color: #fff;
-      cursor: pointer;
-      box-sizing: border-box;
-      transition: all 0.3s linear;
+  .actionBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 96px;
+    height: 32px;
+    padding: 0 15px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    text-align: center;
+    color: #fff;
+    background-color: var(--title-bg);
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.3s linear;
 
-      &:active {
-        opacity: 0.8;
-      }
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 115, 230, 0.2);
     }
 
-    .gradientStatic {
-      background: linear-gradient(45deg, #6366f1, #ec4899);
-
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-      }
-    }
-
-    .gradientBorder {
-      background: white;
-      color: #6366f1;
-      border: 2px solid transparent;
-      background-image: linear-gradient(white, white),
-        linear-gradient(45deg, #6366f1, #ec4899);
-      background-origin: border-box;
-      background-clip: padding-box, border-box;
-
-      &:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
-      }
+    &:active {
+      opacity: 0.8;
     }
   }
 }

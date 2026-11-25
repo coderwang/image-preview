@@ -7,30 +7,25 @@ const OperateBtnContainer = () => {
   const { t } = useTranslation();
   const startSimilarDetection = useStartSimilarDetection();
 
-  const expandAll = () => {
-    document.querySelectorAll(`.imageCard`).forEach((item) => {
-      item.setAttribute("data-expanded", "true");
-    });
-  };
-
-  const collapseAll = () => {
-    document.querySelectorAll(`.imageCard`).forEach((item) => {
-      item.setAttribute("data-expanded", "false");
+  const toggleExpandOrCollapseAll = () => {
+    const cards = document.querySelectorAll(`.imageCard`);
+    const currentlyAllExpanded = Array.from(cards).every(
+      (item) => item.getAttribute("data-expanded") === "true"
+    );
+    cards.forEach((item) => {
+      item.setAttribute(
+        "data-expanded",
+        currentlyAllExpanded ? "false" : "true"
+      );
     });
   };
 
   return (
     <div className={styles.operateBtnContainer}>
-      <div className="gradientBtn gradientStatic" onClick={expandAll}>
-        {t("expand_all")}
+      <div className={styles.actionBtn} onClick={toggleExpandOrCollapseAll}>
+        {t("expand_collapse")}
       </div>
-      <div className="gradientBtn gradientBorder" onClick={collapseAll}>
-        {t("collapse_all")}
-      </div>
-      <div
-        className="gradientBtn gradientStatic"
-        onClick={startSimilarDetection}
-      >
+      <div className={styles.actionBtn} onClick={startSimilarDetection}>
         {t("find_similar")}
       </div>
     </div>

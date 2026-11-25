@@ -1,6 +1,5 @@
 {
-  "expand_all": "Expand All",
-  "collapse_all": "Collapse All",
+  "expand_collapse": "Expand / Collapse",
   "expand": "Expand",
   "collapse": "Collapse",
   "ok": "OK",
@@ -69,7 +68,7 @@
   "svg_decolor_success": "Colors replaced with currentColor",
   "svg_optimize_success": "Optimized with SVGO successfully!",
   "svg_optimize_failed": "Failed to optimize SVG, please check the code",
-  "find_similar": "Find Similar",
+  "find_similar": "Similar Icons Detection",
   "similar_title": "Similar Icons",
   "similar_scanning": "Computing perceptual hashes…",
   "similar_summary": "Found {{groups}} similar group(s), {{images}} image(s)",

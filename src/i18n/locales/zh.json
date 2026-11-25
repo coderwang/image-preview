@@ -1,6 +1,5 @@
 {
-  "expand_all": "展开全部",
-  "collapse_all": "折叠全部",
+  "expand_collapse": "展开 / 折叠",
   "expand": "展开",
   "collapse": "收起",
   "ok": "好了",
@@ -69,7 +68,7 @@
   "svg_decolor_success": "已将颜色替换为 currentColor",
   "svg_optimize_success": "SVGO 优化成功!",
   "svg_optimize_failed": "优化失败，请检查 SVG 代码",
-  "find_similar": "检测相似",
+  "find_similar": "相似图标检测",
   "similar_title": "相似图标检测",
   "similar_scanning": "正在计算感知哈希…",
   "similar_summary": "找到 {{groups}} 组相似图片，共 {{images}} 张",
