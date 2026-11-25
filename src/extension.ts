@@ -247,6 +247,62 @@ export function activate(context: vscode.ExtensionContext) {
               });
             }
             break;
+          case WebviewMessageEnum.ImportImages: {
+            const suffix = [
+              ".avif",
+              ".ico",
+              ".jpg",
+              ".jpeg",
+              ".png",
+              ".gif",
+              ".webp",
+              ".svg",
+            ];
+            const targetDir: string = message.targetDirPath;
+            const importedImages: ImageInfo[] = [];
+            const failedNames: string[] = [];
+
+            for (const file of message.files as {
+              name: string;
+              data: string;
+            }[]) {
+              const originalExt = path.extname(file.name);
+              const ext = originalExt.toLowerCase();
+              if (!suffix.includes(ext)) {
+                failedNames.push(file.name);
+                continue;
+              }
+              try {
+                const basename = path.basename(file.name, originalExt);
+                // 与目标文件夹已有图片重名时，依次在文件名后追加-1、-2…序号
+                let finalName = file.name;
+                let counter = 0;
+                while (fs.existsSync(path.join(targetDir, finalName))) {
+                  counter += 1;
+                  finalName = `${basename}-${counter}${originalExt}`;
+                }
+                const targetPath = path.join(targetDir, finalName);
+                fs.writeFileSync(targetPath, Buffer.from(file.data, "base64"));
+                importedImages.push({
+                  url: panel.webview
+                    .asWebviewUri(vscode.Uri.file(targetPath))
+                    .toString(),
+                  name: finalName,
+                  ext,
+                });
+              } catch {
+                failedNames.push(file.name);
+              }
+            }
+
+            panel.webview.postMessage({
+              command: ExtensionMessageEnum.ImportImagesResult,
+              dirPath: targetDir,
+              imageList: importedImages,
+              failedNames,
+            });
+            break;
+          }
         }
       });
     }

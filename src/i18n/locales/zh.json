@@ -42,5 +42,14 @@
   "confirm": "确定",
   "path": "路径",
   "copy_path": "复制路径",
-  "copy_path_success": "复制路径成功!"
+  "copy_path_success": "复制路径成功!",
+  "import_image": "导入图片",
+  "import_upload_text": "点击或拖拽图片到此区域上传",
+  "import_upload_hint": "支持 avif、ico、jpg、jpeg、png、gif、webp、svg 格式，可一次上传多张",
+  "import_upload_hint_shift": "注意：受编辑器限制，从文件管理器拖入图片时需按住 Shift 键",
+  "import_uploading": "正在导入...",
+  "import_unsupported": "不支持的图片格式：{{names}}",
+  "import_success": "成功导入 {{count}} 张图片",
+  "import_failed": "导入失败：{{names}}",
+  "import_read_failed": "读取文件失败，请重试"
 }

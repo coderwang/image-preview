@@ -62,7 +62,7 @@
       cursor: pointer;
 
       &:hover {
-        @keyframes showFolderIcon {
+        @keyframes showActionIcon {
           from {
             opacity: 0;
           }
@@ -71,9 +71,10 @@
           }
         }
 
-        .folderIconBox {
+        .folderIconBox,
+        .importIconBox {
           display: block;
-          animation: showFolderIcon 0.2s linear;
+          animation: showActionIcon 0.2s linear;
         }
       }
 
@@ -102,6 +103,26 @@
 
           &:hover {
             transform: translate(1px, 0px);
+          }
+        }
+      }
+
+      .importIconBox {
+        flex-shrink: 0;
+        display: none;
+        width: 22px;
+        height: 22px;
+        margin-right: 8px;
+
+        .importIcon {
+          // import.svg 内容占比更大且重心偏下，缩小1px并上移1px与folderIcon视觉对齐
+          width: 19px;
+          height: 19px;
+          transform: translate(1.5px, 0.5px);
+          transition: all 0.15s linear;
+
+          &:hover {
+            transform: translate(1.5px, -0.5px);
           }
         }
       }

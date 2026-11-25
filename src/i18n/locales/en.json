@@ -42,5 +42,14 @@
   "confirm": "Confirm",
   "path": "Path",
   "copy_path": "Copy Path",
-  "copy_path_success": "Copy path successfully!"
+  "copy_path_success": "Copy path successfully!",
+  "import_image": "Import Images",
+  "import_upload_text": "Click or drag images here to upload",
+  "import_upload_hint": "Supports avif, ico, jpg, jpeg, png, gif, webp, svg. Multiple files allowed.",
+  "import_upload_hint_shift": "Note: Due to editor limitations, hold Shift while dragging images in from your file manager.",
+  "import_uploading": "Importing...",
+  "import_unsupported": "Unsupported image format: {{names}}",
+  "import_success": "Successfully imported {{count}} image(s)",
+  "import_failed": "Failed to import: {{names}}",
+  "import_read_failed": "Failed to read files, please try again"
 }

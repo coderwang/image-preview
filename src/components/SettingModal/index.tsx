@@ -38,6 +38,7 @@ const SettingModal = () => {
       onOk={() => {
         setIsSettingModalOpen(false);
       }}
+      centered
     >
       <div className={styles.settingsContent}>
         <div className={styles.themeContainer}>

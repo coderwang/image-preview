@@ -1,0 +1,51 @@
+.importModalWrapper {
+  z-index: 1080 !important;
+}
+
+.importModal {
+  width: 480px !important;
+  min-width: 350px;
+
+  .dropzone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px 16px;
+    border: 1px dashed var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition:
+      border-color 0.2s linear,
+      background-color 0.2s linear,
+      opacity 0.2s linear;
+
+    &:hover,
+    &.dropzoneActive {
+      border-color: #1677ff;
+    }
+
+    &.dropzoneImporting {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .dropzoneIcon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 12px;
+    }
+
+    .dropzoneText {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .dropzoneHint {
+      color: #999;
+      font-size: 12px;
+      line-height: 18px;
+      text-align: center;
+    }
+  }
+}

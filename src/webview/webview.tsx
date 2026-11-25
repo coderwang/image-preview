@@ -2,6 +2,7 @@ import BackgroundContainer from "@/components/BackgroundContainer";
 import ImagePreview from "@/components/ImagePreview";
 import ImageSizeContainer from "@/components/ImageSizeContainer";
 import ImageTypeContainer from "@/components/ImageTypeContainer";
+import ImportModal from "@/components/ImportModal";
 import OperateBtnContainer from "@/components/OperateBtnContainer";
 import ScrollToTop from "@/components/ScrollToTop";
 import SearchContainer from "@/components/SearchContainer";
@@ -24,7 +25,7 @@ import {
 } from "@/store/image";
 import { imageSizeAtom } from "@/store/imageSize";
 import { numsAtom, showTypeAtom } from "@/store/imageType";
-import { needAskForDeleteImageAtom } from "@/store/modal";
+import { importModalDirAtom, needAskForDeleteImageAtom } from "@/store/modal";
 import { searchValueAtom } from "@/store/searchValue";
 import {
   deleteImage,
@@ -36,6 +37,7 @@ import {
 import { App, Dropdown } from "antd";
 import { ReactComponent as ArrowDown } from "assets/svg/arrow_down.svg";
 import { ReactComponent as Folder } from "assets/svg/folder.svg";
+import { ReactComponent as ImportIcon } from "assets/svg/import.svg";
 import { ReactComponent as Loading } from "assets/svg/loading.svg";
 import clsx from "clsx";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
@@ -75,6 +77,7 @@ const Webview: FC = () => {
   const [needAskForDeleteImage, setNeedAskForDeleteImage] = useAtom(
     needAskForDeleteImageAtom
   );
+  const setImportModalDir = useSetAtom(importModalDirAtom);
 
   const compressToastIdRef = useRef<string | number>(undefined);
 
@@ -269,6 +272,17 @@ const Webview: FC = () => {
                   >
                     <Folder className="folderIcon" />
                   </div>
+
+                  <div
+                    className="importIconBox"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setImportModalDir(dir);
+                    }}
+                  >
+                    <ImportIcon className="importIcon" />
+                  </div>
+
                   <ArrowDown className="arrowDown" color="#fff" />
                 </div>
                 <div className="imageContainer">
@@ -512,6 +526,7 @@ const Webview: FC = () => {
       <CounterContainer />
       <ScrollToTop />
       <ImagePreview ref={imagePreviewRef} />
+      <ImportModal />
     </div>
   );
 };

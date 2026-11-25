@@ -38,6 +38,8 @@ export const enum WebviewMessageEnum {
   CompressSVG = "compressSVG",
   /** 删除图片 */
   DeleteImage = "deleteImage",
+  /** 导入图片 */
+  ImportImages = "importImages",
 }
 
 // 扩展发送的消息枚举
@@ -50,6 +52,8 @@ export const enum ExtensionMessageEnum {
   TipSvgFileError = "tipSvgFileError",
   /** 提示已存在压缩后的图片 */
   TipCompressedImageExist = "tipCompressedImageExist",
+  /** 导入图片结果 */
+  ImportImagesResult = "importImagesResult",
 }
 
 export const enum DropdownItemEnum {
