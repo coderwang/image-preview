@@ -100,6 +100,7 @@
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^16.x",
+    "@types/prismjs": "^1.26.6",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "@types/vscode": "^1.80.0",
@@ -123,10 +124,12 @@
     "i18next": "^24.2.3",
     "jotai": "^2.12.2",
     "jotai-immer": "^0.4.1",
+    "prismjs": "^1.30.0",
     "rc-slider": "^11.1.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^15.4.1",
+    "react-simple-code-editor": "^0.14.1",
     "sonner": "^1.7.4",
     "svgo": "^3.3.2",
     "use-immer": "^0.11.0"

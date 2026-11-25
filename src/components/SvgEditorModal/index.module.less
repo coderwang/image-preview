@@ -1,0 +1,141 @@
+.svgEditorModalWrapper {
+  z-index: 1080 !important;
+}
+
+.svgEditorModal {
+  width: 960px !important;
+  max-width: 90vw;
+
+  .fileName {
+    color: var(--text-secondary);
+    font-size: 13px;
+    font-weight: normal;
+  }
+
+  .content {
+    display: flex;
+    gap: 12px;
+    height: 60vh;
+    min-height: 360px;
+  }
+
+  .editorPane {
+    flex: 1;
+    min-width: 0;
+    overflow: auto;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--card-bg);
+  }
+
+  .editor {
+    min-height: 100%;
+    font-family:
+      "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 13px;
+    line-height: 20px;
+
+    textarea {
+      outline: none;
+    }
+
+    :global {
+      .token.tag,
+      .token.punctuation {
+        color: #1677ff;
+      }
+
+      .token.attr-name {
+        color: #9333ea;
+      }
+
+      .token.attr-value,
+      .token.string {
+        color: #c41d7f;
+      }
+
+      .token.comment {
+        color: #8c8c8c;
+      }
+    }
+  }
+
+  .previewPane {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .previewToolbar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 12px;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+  }
+
+  .toolbarIcon {
+    width: 16px;
+    height: 16px;
+    color: var(--text-tertiary);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--text-tertiary-hover);
+    }
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+
+      &:hover {
+        color: var(--text-tertiary);
+      }
+    }
+  }
+
+  .scaleText {
+    min-width: 44px;
+    color: var(--text-secondary);
+    font-size: 12px;
+    text-align: center;
+  }
+
+  .previewBox {
+    position: relative;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    background-color: var(--bg-color);
+  }
+
+  .previewImage {
+    max-width: 80%;
+    max-height: 80%;
+    transition: transform 0.15s linear;
+  }
+
+  .parseError {
+    max-width: 80%;
+    padding: 8px 12px;
+    color: #cf1322;
+    font-size: 12px;
+    line-height: 18px;
+    word-break: break-all;
+    background-color: #fff2f0;
+    border: 1px solid #ffccc7;
+    border-radius: 6px;
+  }
+
+  .footer {
+    display: flex;
+    justify-content: space-between;
+  }
+}

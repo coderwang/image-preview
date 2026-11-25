@@ -36,9 +36,25 @@ export interface ImportImagesResultMessage {
   failedNames: string[];
 }
 
+export interface SaveSvgResultMessage {
+  command: ExtensionMessageEnum.SaveSvgResult;
+  /** 保存的SVG完整路径 */
+  completeSvgPath: string;
+  success: boolean;
+}
+
+export interface OptimizeSvgResultMessage {
+  command: ExtensionMessageEnum.OptimizeSvgResult;
+  success: boolean;
+  /** 优化后的SVG代码，success为false时不存在 */
+  data?: string;
+}
+
 export type ExtensionMessage =
   | ShowImagesMessage
   | CompressImageCallbackMessage
   | TipSvgFileErrorMessage
   | TipCompressedImageExistMessage
-  | ImportImagesResultMessage;
+  | ImportImagesResultMessage
+  | SaveSvgResultMessage
+  | OptimizeSvgResultMessage;

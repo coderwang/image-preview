@@ -6,6 +6,7 @@ import ImportModal from "@/components/ImportModal";
 import OperateBtnContainer from "@/components/OperateBtnContainer";
 import ScrollToTop from "@/components/ScrollToTop";
 import SearchContainer from "@/components/SearchContainer";
+import SvgEditorModal from "@/components/SvgEditorModal";
 import {
   ExtensionMessageEnum,
   OperationEnum,
@@ -25,7 +26,11 @@ import {
 } from "@/store/image";
 import { imageSizeAtom } from "@/store/imageSize";
 import { numsAtom, showTypeAtom } from "@/store/imageType";
-import { importModalDirAtom, needAskForDeleteImageAtom } from "@/store/modal";
+import {
+  importModalDirAtom,
+  needAskForDeleteImageAtom,
+  svgEditorTargetAtom,
+} from "@/store/modal";
 import { searchValueAtom } from "@/store/searchValue";
 import {
   deleteImage,
@@ -78,6 +83,7 @@ const Webview: FC = () => {
     needAskForDeleteImageAtom
   );
   const setImportModalDir = useSetAtom(importModalDirAtom);
+  const setSvgEditorTarget = useSetAtom(svgEditorTargetAtom);
 
   const compressToastIdRef = useRef<string | number>(undefined);
 
@@ -398,6 +404,7 @@ const Webview: FC = () => {
                             case WebviewMessageEnum.DeleteImage:
                               if (needAskForDeleteImage) {
                                 modal.confirm({
+                                  centered: true,
                                   className: "deleteImageModal",
                                   title: t("delete_image_title"),
                                   content: (
@@ -440,6 +447,15 @@ const Webview: FC = () => {
                         className="imageItem"
                         style={{ width: imageSize }}
                         onClick={() => {
+                          if (image.ext === ".svg") {
+                            // svg类型点击进入代码编辑器（自带实时预览）
+                            setSvgEditorTarget({
+                              url: image.url,
+                              name: image.name,
+                              completePath: dir.completePath,
+                            });
+                            return;
+                          }
                           setPreviewImageList(
                             dir.imageList.map((item) => ({
                               url: item.url,
@@ -527,6 +543,7 @@ const Webview: FC = () => {
       <ScrollToTop />
       <ImagePreview ref={imagePreviewRef} />
       <ImportModal />
+      <SvgEditorModal />
     </div>
   );
 };

@@ -51,5 +51,22 @@
   "import_unsupported": "不支持的图片格式：{{names}}",
   "import_success": "成功导入 {{count}} 张图片",
   "import_failed": "导入失败：{{names}}",
-  "import_read_failed": "读取文件失败，请重试"
+  "import_read_failed": "读取文件失败，请重试",
+  "edit_svg": "编辑 SVG",
+  "save": "保存",
+  "reset": "重置",
+  "unsaved": "未保存",
+  "svg_load_failed": "读取 SVG 源码失败，请重试",
+  "svg_save_success": "SVG 保存成功!",
+  "svg_save_failed": "SVG 保存失败，请重试",
+  "svg_invalid": "SVG 代码不合法，请检查！",
+  "svg_unsaved_title": "有未保存的修改",
+  "svg_unsaved_content": "关闭将丢失未保存的修改，确定要关闭吗？",
+  "decolor": "去色",
+  "optimize": "一键优化",
+  "svg_decolor_hint": "将所有 fill、stroke 等颜色替换为 currentColor",
+  "svg_optimize_hint": "调用 SVGO 优化代码",
+  "svg_decolor_success": "已将颜色替换为 currentColor",
+  "svg_optimize_success": "SVGO 优化成功!",
+  "svg_optimize_failed": "优化失败，请检查 SVG 代码"
 }

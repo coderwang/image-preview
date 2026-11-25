@@ -247,6 +247,41 @@ export function activate(context: vscode.ExtensionContext) {
               });
             }
             break;
+          case WebviewMessageEnum.SaveSvg: {
+            let success = true;
+            try {
+              fs.writeFileSync(message.completeSvgPath, message.content, {
+                encoding: "utf8",
+              });
+            } catch {
+              success = false;
+            }
+            panel.webview.postMessage({
+              command: ExtensionMessageEnum.SaveSvgResult,
+              completeSvgPath: message.completeSvgPath,
+              success,
+            });
+            break;
+          }
+          case WebviewMessageEnum.OptimizeSvg: {
+            try {
+              const result = svgo.optimize(message.content, {
+                multipass: true,
+              });
+              panel.webview.postMessage({
+                command: ExtensionMessageEnum.OptimizeSvgResult,
+                success: true,
+                data: result.data,
+              });
+            } catch {
+              // svg代码有问题时svgo会抛错
+              panel.webview.postMessage({
+                command: ExtensionMessageEnum.OptimizeSvgResult,
+                success: false,
+              });
+            }
+            break;
+          }
           case WebviewMessageEnum.ImportImages: {
             const suffix = [
               ".avif",

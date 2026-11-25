@@ -51,5 +51,22 @@
   "import_unsupported": "Unsupported image format: {{names}}",
   "import_success": "Successfully imported {{count}} image(s)",
   "import_failed": "Failed to import: {{names}}",
-  "import_read_failed": "Failed to read files, please try again"
+  "import_read_failed": "Failed to read files, please try again",
+  "edit_svg": "Edit SVG",
+  "save": "Save",
+  "reset": "Reset",
+  "unsaved": "Unsaved",
+  "svg_load_failed": "Failed to load SVG source, please try again",
+  "svg_save_success": "SVG saved successfully!",
+  "svg_save_failed": "Failed to save SVG, please try again",
+  "svg_invalid": "Invalid SVG code, please check it!",
+  "svg_unsaved_title": "Unsaved changes",
+  "svg_unsaved_content": "Closing will discard your changes. Are you sure?",
+  "decolor": "Decolor",
+  "optimize": "Optimize",
+  "svg_decolor_hint": "Replace all fill/stroke colors with currentColor",
+  "svg_optimize_hint": "Optimize code with SVGO",
+  "svg_decolor_success": "Colors replaced with currentColor",
+  "svg_optimize_success": "Optimized with SVGO successfully!",
+  "svg_optimize_failed": "Failed to optimize SVG, please check the code"
 }
