@@ -18,8 +18,8 @@ import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import styles from "./index.module.less";
 
-/** 默认汉明距离阈值（64 位 aHash 下 6 较适合图标） */
-const DEFAULT_THRESHOLD = 6;
+/** 默认汉明距离阈值（64 位 aHash 下 3 更严，减少误报） */
+const DEFAULT_THRESHOLD = 3;
 
 const SIMILAR_SCAN_TOAST_ID = "similar-scan";
 
